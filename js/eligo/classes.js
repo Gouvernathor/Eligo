@@ -1,4 +1,4 @@
-import { votingMethods } from "./constants";
+import { VotingMethods } from "./constants";
 
 export class Candidat {
     /**
@@ -27,7 +27,7 @@ export class Bulletin {
     }
 }
 export class BulletinSimple extends Bulletin {
-    static kind = votingMethods.SIMPLE;
+    static kind = VotingMethods.SIMPLE;
     /**
      * @param {number} candidatId
      */
@@ -37,7 +37,7 @@ export class BulletinSimple extends Bulletin {
     }
 }
 export class BulletinApprobation extends Bulletin {
-    static kind = votingMethods.APPROBATION;
+    static kind = VotingMethods.APPROBATION;
     /**
      * @param {Set<number>|number[]} candidatIds
      */
@@ -47,7 +47,7 @@ export class BulletinApprobation extends Bulletin {
     }
 }
 export class BulletinClassement extends Bulletin {
-    static kind = votingMethods.CLASSEMENT;
+    static kind = VotingMethods.CLASSEMENT;
     /**
      * @param {number[]} candidatIds
      */
@@ -57,7 +57,7 @@ export class BulletinClassement extends Bulletin {
     }
 }
 export class BulletinNotes extends Bulletin {
-    static kind = votingMethods.NOTES;
+    static kind = VotingMethods.NOTES;
     /**
      * @param {Map<number, number>} notes
      */
