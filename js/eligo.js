@@ -60,8 +60,8 @@ $(document).ready(function() {
         input.className = "form-check-input";
         input.type = "radio";
         input.name = "votingMethod";
-        input.value = method;
-        input.id = `votingMethod_${method}`;
+        input.value = method.id;
+        input.id = `votingMethod_${method.id}`;
         input.onclick = () => {
             votingMethod = method;
         };
@@ -69,6 +69,6 @@ $(document).ready(function() {
         const label = formCheck.appendChild(document.createElement("label"));
         label.className = "form-check-label";
         label.htmlFor = input.id;
-        label.textContent = method;
+        label.textContent = method.desc;
     }
 });
