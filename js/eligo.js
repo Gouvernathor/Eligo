@@ -32,7 +32,7 @@ function computeNbVotes() {
 function computeNbElecteurs(nbVotes = null) {
     if (nbVotes === null)
         nbVotes = computeNbVotes();
-    return Math.max(nbVotes, $("nbElecteursManuel").value() || 0);
+    return Math.max(nbVotes, document.getElementById("nbElecteursManuel").value || 0);
 }
 
 
@@ -118,7 +118,7 @@ function actuateBulletins() {
 // des pourcentages et du diagramme sommaire
 // du nombre d'électeurs (changement de bulletins même indirect)
 function actuateNbElecteurs() {
-    const input = document.getElementById("nbElecteurs");
+    const input = document.getElementById("nbElecteursManuel");
     const nbVotes = computeNbVotes();
     input.min = nbVotes;
     const nbElecteurs = computeNbElecteurs(nbVotes);
