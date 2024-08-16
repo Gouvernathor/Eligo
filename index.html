@@ -56,8 +56,11 @@
                         Bulletins
                     </div>
                     <div class="card-body">
-                        <label for="nbElecteursManuel">Nombre d'électeurs</label>
-                        <input id="nbElecteursManuel" class="form-control" type="number" value="0" min="0"/>
+                        <label for="nbElecteursManuel" class="form-label">Nombre d'électeurs</label>
+                        <input id="nbElecteursManuel" class="form-control" aria-describedby="nbElecteursManuelHelp" type="number" value="0" min="0"/>
+                        <div id="nbElecteursManuelHelp" class="form-text">
+                            Sera pris en compte pour le calcul de l'abstention
+                        </div>
 
                         <div id="bulletinsContainer" class="mb-2"></div>
 
