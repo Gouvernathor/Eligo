@@ -33,14 +33,14 @@ function computeNbVotes() {
 function actuateNbElecteurs() {
     const valeurCanonique = computeNbVotes();
 
-    const jinput = $("#nbElecteurs");
+    const input = document.getElementById("nbElecteurs");
     if (nbElecteurs === null) {
         // valeur non-manuelle, mise à la valeur canonique
-        jinput.val(valeurCanonique);
+        input.setAttribute("value", valeurCanonique);
     } else {
         // valeur manuelle, max entre la valeur actuelle et la valeur canonique
         // sans modifier la valeur manuelle enregistrée
-        jinput.val(Math.max(nbElecteurs, valeurCanonique));
+        input.setAttribute("value", Math.max(nbElecteurs, valeurCanonique));
     }
 }
 
