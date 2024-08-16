@@ -59,10 +59,10 @@ export class BulletinClassement extends Bulletin {
 export class BulletinNotes extends Bulletin {
     static kind = VotingMethods.NOTES;
     /**
-     * @param {Map<number, number>} notes
+     * @param {Map<number, number>} notes candidatId => note
      */
     constructor(id, notes) {
         super(id);
-        this.notes = notes; // candidat vers note, ou note vers candidat ?
+        this.notes = notes;
     }
 }
