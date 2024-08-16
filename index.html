@@ -6,6 +6,8 @@
         <link rel="icon" href="favicon.svg">
         <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
         <link rel="stylesheet" type="text/css" href="css/bootstrap-5.3.3.css">
+        <script src="js/bootstrap-5.3.3.bundle.js"></script>
+        <script src="js/bootstrapThemeSwitcher.js"></script>
         <script src="js/jquery-3.7.1.min.js"></script>
         <!-- jscolor -->
         <script src="js/chart-4.4.1.umd.min.js"></script>
@@ -21,7 +23,39 @@
     </head>
 
     <body>
-        <!-- navbar at the top, with title and stuff ? not strictly necessary -->
+        <nav class="sb-topnav navbar navbar-expand bg-secondary">
+            <a class="navbar-brand ps-3" href="index.html">
+                Eligo
+            </a>
+
+            <ul class="navbar-nav ms-auto my-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <button id="bd-theme" class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+                            type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme">
+                        <!-- svg icon -->
+                        T
+                        <span id="bd-theme-text" class="d-lg-none ms-2">Changer le thème</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text" data-bs-popper="static">
+                        <li><button class="dropdown-item d-flex align-items-center" type="button" data-bs-theme-value="light" aria-pressed="false">
+                            <!-- svg icon class="bi me-2 opacity-50" -->
+                            Light
+                            <!-- svg check class="bi ms-auto d-none" -->
+                        </button></li>
+                        <li><button class="dropdown-item d-flex align-items-center" type="button" data-bs-theme-value="dark" aria-pressed="false">
+                            <!-- svg icon class="bi me-2 opacity-50" -->
+                            Dark
+                            <!-- svg check class="bi ms-auto d-none" -->
+                        </button></li>
+                        <li><button class="dropdown-item d-flex align-items-center" type="button" data-bs-theme-value="auto" aria-pressed="false">
+                            <!-- svg icon class="bi me-2 opacity-50" -->
+                            Auto
+                            <!-- svg check class="bi ms-auto d-none" -->
+                        </button></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
 
         <main>
             <div class="container-fluid px-4">
@@ -101,7 +135,7 @@
             </div>
         </main>
 
-        <footer class="py-4 bg-light mt-auto">
+        <footer class="py-4 bg-secondary mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
                     <div class="text-muted">Copyright &copy; Gouvernathor 2024</div>
