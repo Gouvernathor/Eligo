@@ -26,12 +26,14 @@ liste des différents bulletins
     hors cas du vote simple ou par approbation :
         bouton pour supprimer le bulletin
         pop-up formulaire pour ajouter un nouveau bulletin
-pie chart pour visualiser les votes en mode vote simple
-polar area chart en mode approbation
-radar chart en mode ordering ou grades
-    avec un dégradé de couleur pour les rangs/notes
-    en option, un affichage cumulé (note 5, notes 5+4, notes 5+4+3...)
-    pour les notes, affichage du cercle de la médiane
+graphique du résultat des votes
+    attention, dans un format de résultats (3 types) et pas de bulletins (4 types)
+    pie chart pour visualiser les votes en mode vote simple
+    polar area chart en mode approbation
+    radar chart en mode ordering ou grades
+        avec un dégradé de couleur pour les rangs/notes
+        en option, un affichage cumulé (note 5, notes 5+4, notes 5+4+3...)
+        pour les notes, affichage du cercle de la médiane
 
 Section de spécification de la chambre
 nombre de sièges
