@@ -74,7 +74,7 @@ function actuateBulletins() {
                 }
             }
             // ordre des bulletins suivant l'ordre des candidats
-            sortMap(bulletins, candidats.keys().map(cid => bulletinByCandidatId.get(cid).id));
+            sortMap(bulletins, [...candidats.keys()].map(cid => bulletinByCandidatId.get(cid).id));
 
             // rendre invisible le bouton de formulaire de bulletins
 
