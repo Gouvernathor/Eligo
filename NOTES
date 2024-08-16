@@ -40,3 +40,5 @@ toutes les options parliamentarch dans un sous-menu collapsable
 Page de résultats
 affichage de l'hémicycle
 possible d'en faire un pop-up, ou un cadre dans un coin avec un bouton pour actualiser
+
+py -m http.server 9000
