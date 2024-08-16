@@ -56,7 +56,14 @@
                         Bulletins
                     </div>
                     <div class="card-body">
-                        <input id="nbElecteurs" type="number">
+                        <input id="nbElecteurs" type="number" value="0" min="0">
+                        <!-- légende de cet input ? -->
+
+                        <div id="bulletinsContainer" class="mb-2"></div>
+
+                        <button id="bulletinFormButton" class="btn btn-primary" style="display: none;">
+                            Ajouter un bulletin
+                        </button>
                     </div>
                 </div>
 

@@ -77,6 +77,7 @@ function actuateBulletins() {
             sortMap(bulletins, [...candidats.keys()].map(cid => bulletinByCandidatId.get(cid).id));
 
             // rendre invisible le bouton de formulaire de bulletins
+            $("#bulletinFormButton").hide();
 
             break;
 
@@ -101,6 +102,7 @@ function actuateBulletins() {
             // pas d'ordre particulier des bulletins
 
             // rendre visible le bouton de formulaire de bulletins
+            $("#bulletinFormButton").show();
 
             break;
 
@@ -108,15 +110,17 @@ function actuateBulletins() {
             throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
     }
 
-    // traiter allowBulletinCreation (dans le switch en fait)
+    actuateNbElecteurs();
 }
 
 // des pourcentages et du diagramme sommaire
 // du nombre d'électeurs (changement de bulletins même indirect)
 function actuateNbElecteurs() {
-    document.getElementById("nbElecteurs")
-        .setAttribute("value", computeNbElecteurs());
-    // set du max aussi ? seulement ? à voir en fonction du résultat
+    const input = document.getElementById("nbElecteurs");
+    const nbElecteurs = computeNbElecteurs();
+    input.value = nbElecteurs;
+    input.min = nbElecteurs;
+    // set du min aussi ? seulement ? à voir en fonction du résultat
 }
 
 
@@ -139,6 +143,7 @@ $(document).ready(function () {
         input.id = `votingMethod_${method.id}`;
         input.onclick = () => {
             votingMethod = method;
+            actuateBulletins();
         };
 
         const label = formCheck.appendChild(document.createElement("label"));
