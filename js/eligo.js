@@ -135,11 +135,11 @@ $(document).ready(function () {
     // remplissage de la liste des méthodes de vote
     const votingMethodContainer = document.getElementById("votingMethodContainer");
     for (const method of VotingMethods.values()) {
-        const formCheck = votingMethodContainer.appendChild(document.createElement("div"));
-        formCheck.className = "form-check";
+        const li = votingMethodContainer.appendChild(document.createElement("li"));
+        li.className = "list-group-item";
 
-        const input = formCheck.appendChild(document.createElement("input"));
-        input.className = "form-check-input";
+        const input = li.appendChild(document.createElement("input"));
+        input.className = "form-check-input me-1";
         input.type = "radio";
         input.name = "votingMethod";
         input.value = method.id;
@@ -149,8 +149,8 @@ $(document).ready(function () {
             actuateBulletins();
         };
 
-        const label = formCheck.appendChild(document.createElement("label"));
-        label.className = "form-check-label";
+        const label = li.appendChild(document.createElement("label"));
+        label.className = "form-check-label stretched-link";
         label.htmlFor = input.id;
         label.textContent = method.desc;
     }
