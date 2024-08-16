@@ -1,3 +1,4 @@
+import { VotingMethods } from "./eligo/constants.js";
 // import { Candidat, Bulletin, BulletinSimple, BulletinApprobation, BulletinClassement, BulletinNotes } from "./eligo/classes.js";
 // import { newRandomValue } from "./eligo/utils.js";
 
@@ -27,7 +28,8 @@ function computeNbVotes() {
 // application des ordres du formulaire aux données
 
 // actualisation de données
-// des bulletins (changement de méthode de vote/attributions)
+// de la liste des méthodes d'attribution (changement de méthode de vote)
+// des bulletins (changement de méthode de vote/attribution)
 // des pourcentages et du diagramme sommaire
 
 function actuateNbElecteurs() {
@@ -46,6 +48,27 @@ function actuateNbElecteurs() {
 
 // création du diagramme parliamentarch
 
-// application initiale des actions du clic aux boutons du formulaire
+// initialisation de l'interface
 $(document).ready(function() {
+    // remplissage de la liste des méthodes de vote
+    const votingMethodContainer = document.getElementById("votingMethodContainer");
+    for (const method of VotingMethods.values()) {
+        const formCheck = votingMethodContainer.appendChild(document.createElement("div"));
+        formCheck.className = "form-check";
+
+        const input = formCheck.appendChild(document.createElement("input"));
+        input.className = "form-check-input";
+        input.type = "radio";
+        input.name = "votingMethod";
+        input.value = method;
+        input.id = `votingMethod_${method}`;
+        input.onclick = () => {
+            votingMethod = method;
+        };
+
+        const label = formCheck.appendChild(document.createElement("label"));
+        label.className = "form-check-label";
+        label.htmlFor = input.id;
+        label.textContent = method;
+    }
 });
