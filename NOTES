@@ -1,0 +1,37 @@
+Un site qui fasse une répartition de sièges en fonction de valeurs plus ou moins arbitraires (pourcentages ou nombres de voix)
+Implémenter plusieurs répartitions
+Ajouter un formulaire pour ajouter un par un des bulletins de vote selon les trois formats possibles
+
+
+bulletins = set(votes) # en gros
+
+Page principale
+
+Section de création des votes
+liste des candidats en présence
+    avec des boutons pour modifier la liste ou modifier les différentes entrées
+    avec le style des sièges de chaque candidat (pour parliamentarch)
+spécification du mode de scrutin
+    type de vote
+    type d'attribution
+liste des différents bulletins
+    pré-peuplé avec un bulletin par candidat pour un vote simple, pareil pour le vote par approbation
+    jauge de nombre de votes pour chaque bulletin
+    bouton pour en ajouter, et en retirer
+    hors cas du vote simple ou par approbation :
+        bouton pour supprimer le bulletin
+        pop-up formulaire pour ajouter un nouveau bulletin
+pie chart pour visualiser les votes en mode vote simple
+polar area chart en mode approbation
+radar chart en mode ordering ou grades
+    avec un dégradé de couleur pour les rangs/notes
+    en option, un affichage cumulé (note 5, notes 5+4, notes 5+4+3...)
+    pour les notes, affichage du cercle de la médiane
+
+Section de spécification de la chambre
+nombre de sièges
+toutes les options parliamentarch dans un sous-menu collapsable
+
+Page de résultats
+affichage de l'hémicycle
+possible d'en faire un pop-up, ou un cadre dans un coin avec un bouton pour actualiser

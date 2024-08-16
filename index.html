@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Eligo - Election simulator</title>
+        <link rel="icon" href="favicon.svg">
+        <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <!-- jquery? -->
+        <!-- jscolor -->
+        <script src="js/chart.umd.min.js"></script>
+        <script type="importmap">
+            {
+                "imports": {
+                    "parliamentarch": "./js/parliamentarch.js",
+                    "parliamentarch/": "./js/parliamentarch/"
+                }
+            }
+        </script>
+        <!-- <script type="module" src="js/main.js"></script> -->
+    </head>
+
+    <body>
+        <!-- navbar at the top, with title and stuff ? not strictly necessary -->
+
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Page principale</h1>
+
+                <!-- Création des votes -->
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Candidats
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Mode de scrutin
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Type de vote
+                            <!-- liste simple avec checkbox rondes, ou menu déroulant -->
+                        </p>
+                        <p>
+                            Type d'attribution
+                            <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
+                            <!-- liste d'options pour cette attribution -->
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Bulletins
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Diagramme sommaire
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chartSommaire" width="100%" height="50"></canvas>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <!-- Spécification de la Chambre -->
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Chambre
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Nombre de sièges
+                        </p>
+                        <p>
+                            Options collapsables pour parliamentarch
+                        </p>
+                    </div>
+                </div>
+
+                <!-- gros bouton de validation -->
+            </div>
+        </main>
+
+        <!-- footer, copyright at the bottom ? -->
+        <footer class="py-4 bg-light mt-auto" style="display: none;">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Gouvernathor 2024</div>
+                    <div>
+                        <a href="">Code source</a>
+                        &middot;
+                        <a href="">Signaler un problème</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
