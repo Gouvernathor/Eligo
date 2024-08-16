@@ -22,6 +22,13 @@ function computeNbVotes() {
                 value += nvotes;
     return value;
 }
+/**
+ * calcul du nombre d'électeurs (pour le calcul de l'abstention notamment)
+ */
+function computeNbElecteurs() {
+    return Math.max(computeNbVotes(), nbElecteurs || 0);
+}
+
 
 // application des actions de clic aux boutons du formulaire
 
@@ -33,18 +40,11 @@ function computeNbVotes() {
 // des pourcentages et du diagramme sommaire
 
 function actuateNbElecteurs() {
-    const valeurCanonique = computeNbVotes();
-
-    const input = document.getElementById("nbElecteurs");
-    if (nbElecteurs === null) {
-        // valeur non-manuelle, mise à la valeur canonique
-        input.setAttribute("value", valeurCanonique);
-    } else {
-        // valeur manuelle, max entre la valeur actuelle et la valeur canonique
-        // sans modifier la valeur manuelle enregistrée
-        input.setAttribute("value", Math.max(nbElecteurs, valeurCanonique));
-    }
+    document.getElementById("nbElecteurs")
+        .setAttribute("value", computeNbElecteurs());
+    // set du max aussi ? seulement ? à voir en fonction du résultat
 }
+
 
 // création du diagramme parliamentarch
 
