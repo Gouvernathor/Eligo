@@ -121,7 +121,7 @@ function actuateNbElecteurs() {
     const input = document.getElementById("nbElecteurs");
     const nbVotes = computeNbVotes();
     input.min = nbVotes;
-    const nbElecteurs = computeNbElecteurs();
+    const nbElecteurs = computeNbElecteurs(nbVotes);
     input.value = nbElecteurs;
     // set du min aussi ? seulement ? à voir en fonction du résultat
 }
