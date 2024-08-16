@@ -8,3 +8,16 @@ export function newRandomValue(blacklist = []) {
             if (!blackset.has(value))
                 return value;
 }
+
+/**
+ * Makes the given keys of the map end up being ordered in the given order.
+ * All members of orderedKeys must be present in map.
+ * The ordering of other keys is kept stable.
+ * @param {Map<K, V>} map
+ * @param {Iterable<K>} orderedKeys
+ */
+export function sortMap(map, orderedKeys) {
+    for (const key of orderedKeys) {
+        map.set(key, map.pop(key));
+    }
+}
