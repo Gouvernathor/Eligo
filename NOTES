@@ -15,6 +15,11 @@ spécification du mode de scrutin
     type de vote
     type d'attribution
 liste des différents bulletins
+    nombre d'électeurs
+        jamais readonly, pour avoir un taux de participation
+        mais spécialement utile pour le vote par approbation
+        bouton pour reset
+        info que mettre une valeur active la prise en compte de l'abstention
     pré-peuplé avec un bulletin par candidat pour un vote simple, pareil pour le vote par approbation
     jauge de nombre de votes pour chaque bulletin
     bouton pour en ajouter, et en retirer

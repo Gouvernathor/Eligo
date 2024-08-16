@@ -5,7 +5,7 @@
         <link rel="icon" href="favicon.svg">
         <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
         <link rel="stylesheet" type="text/css" href="css/bootstrap-5.3.3.css">
-        <!-- jquery? -->
+        <script src="js/jquery-3.7.1.min.js"></script>
         <!-- jscolor -->
         <script src="js/chart-4.4.1.umd.min.js"></script>
         <script type="importmap">
@@ -16,7 +16,7 @@
                 }
             }
         </script>
-        <!-- <script type="module" src="js/main.js"></script> -->
+        <script type="module" src="js/eligo.js"></script>
     </head>
 
     <body>
@@ -24,7 +24,7 @@
 
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Page principale</h1>
+                <h1 class="my-4">Page principale</h1>
 
                 <!-- Création des votes -->
 
@@ -54,6 +54,9 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         Bulletins
+                    </div>
+                    <div class="card-body">
+                        <input id="nbElecteurs" type="number">
                     </div>
                 </div>
 
