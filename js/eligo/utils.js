@@ -1,10 +1,10 @@
 export function newRandomValue(blacklist = []) {
-    if (!blacklist.length)
+    const blackset = new Set(blacklist);
+    if (!blackset.size)
         return Crypto.getRandomValues(new Uint32Array(1))[0];
 
-    const black = new Set(blacklist);
     while (true)
-        for (const value of Crypto.getRandomValues(new Uint32Array(black.size)))
-            if (!black.has(value))
+        for (const value of Crypto.getRandomValues(new Uint32Array(blackset.size)))
+            if (!blackset.has(value))
                 return value;
 }
