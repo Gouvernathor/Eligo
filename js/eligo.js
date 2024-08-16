@@ -10,7 +10,6 @@ let attributionMethod = null;
 const candidats = new Map(); // candidat id -> Candidat
 const bulletins = new Map(); // bulletin id -> Bulletin
 const votes = new Map(); // bulletin id -> nombre de votes
-let nbElecteurs = null; // null si automatique, number si manuel
 
 
 // utils de lecture des données
@@ -28,9 +27,12 @@ function computeNbVotes() {
 }
 /**
  * calcul du nombre d'électeurs (pour le calcul de l'abstention notamment)
+ * @param {number} nbVotes si déjà calculé
  */
-function computeNbElecteurs() {
-    return Math.max(computeNbVotes(), nbElecteurs || 0);
+function computeNbElecteurs(nbVotes = null) {
+    if (nbVotes === null)
+        nbVotes = computeNbVotes();
+    return Math.max(nbVotes, $("nbElecteursManuel").value() || 0);
 }
 
 
@@ -117,9 +119,10 @@ function actuateBulletins() {
 // du nombre d'électeurs (changement de bulletins même indirect)
 function actuateNbElecteurs() {
     const input = document.getElementById("nbElecteurs");
+    const nbVotes = computeNbVotes();
+    input.min = nbVotes;
     const nbElecteurs = computeNbElecteurs();
     input.value = nbElecteurs;
-    input.min = nbElecteurs;
     // set du min aussi ? seulement ? à voir en fonction du résultat
 }
 
