@@ -27,7 +27,7 @@ export class Bulletin {
     }
 }
 export class BulletinSimple extends Bulletin {
-    static kind = VotingMethods.SIMPLE;
+    static kind = VotingMethods.UNIQUE;
     /**
      * @param {number} candidatId
      */
