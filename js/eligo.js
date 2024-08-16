@@ -113,6 +113,13 @@ function actuateBulletins() {
     }
 
     actuateNbElecteurs();
+    actuateBulletinsDisplay();
+}
+/**
+ * actualisation de l'affichage des bulletins dans le DOM
+ */
+function actuateBulletinsDisplay() {
+    // TODO
 }
 
 // des pourcentages et du diagramme sommaire
