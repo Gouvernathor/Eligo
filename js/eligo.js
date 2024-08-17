@@ -185,6 +185,7 @@ function actuateBulletins() {
             for (const [cid, b] of bulletinByCandidatId.entries()) {
                 if (!candidats.has(cid)) {
                     bulletins.delete(b.id);
+                    votes.delete(b.id);
                     bulletinByCandidatId.delete(cid);
                 }
             }
@@ -194,6 +195,7 @@ function actuateBulletins() {
                     const bid = newRandomValue(bulletins.keys());
                     const bulletin = new BulletinSimple(bid, cid);
                     bulletins.set(bid, bulletin);
+                    votes.set(bid, 1);
                     bulletinByCandidatId.set(cid, bulletin);
                 }
             }
@@ -219,6 +221,7 @@ function actuateBulletins() {
                 // si y'a des candidats inconnus
                 if ([...candidateIdsIterator(bulletin)].some(cid => !candidats.has(cid))) {
                     bulletins.delete(bulletin.id);
+                    votes.delete(bulletin.id);
                     bulletinsConcernes.delete(bulletin);
                 }
             }
