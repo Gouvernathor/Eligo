@@ -75,7 +75,7 @@ function resetModalBulletinForm() {
                 formcheck.className = "form-check";
 
                 const input = formcheck.appendChild(document.createElement("input"));
-                input.className = "form-check-input";
+                input.className = "form-check-input modal-bulletin-form-input";
                 input.type = "checkbox";
                 input.id = `bulletinFormInput_${candidat.id}`;
 
@@ -90,14 +90,12 @@ function resetModalBulletinForm() {
             throw new Error("TODO");
             break;
         case VotingMethods.NOTES:
-            // input number pour l'intervalle de notes,
-            // le min étant le max des notes sur tous les bulletins
-            // valeur par défaut = max(min, 5)
+            // input number pour l'intervalle de notes
             const labelNNotes = container.appendChild(document.createElement("label"));
             labelNNotes.htmlFor = "bulletinFormNGradesInput";
             labelNNotes.className = "form-label";
             labelNNotes.textContent = "Nombre de notes";
-            const minNGrades = Math.max(1, ...Array.from(bulletins.values())
+            const minNNotes = Math.max(1, ...Array.from(bulletins.values())
                 .filter(b => b.kind === VotingMethods.NOTES)
                 .flatMap(b => b.notes.values()));
             const inputNNotes = container.appendChild(document.createElement("input"));
@@ -105,8 +103,8 @@ function resetModalBulletinForm() {
             inputNNotes.className = "form-control";
             inputNNotes.type = "number";
             inputNNotes.setAttribute("aria-describedby", "bulletinFormNGradesHelp");
-            inputNNotes.min = minNGrades;
-            inputNNotes.value = Math.max(minNGrades, nNotes);
+            inputNNotes.min = minNNotes;
+            inputNNotes.value = Math.max(minNNotes, nNotes);
             const helpNNotes = container.appendChild(document.createElement("div"));
             helpNNotes.id = "bulletinFormNGradesHelp";
             helpNNotes.className = "form-text";
@@ -130,7 +128,7 @@ function resetModalBulletinForm() {
 
                 const range = container.appendChild(document.createElement("input"));
                 range.id = labelRange.htmlFor;
-                range.className = "form-range";
+                range.className = "form-range modal-bulletin-form-input";
                 range.type = "range";
                 range.min = 0;
                 range.max = inputNNotes.value;
@@ -138,22 +136,71 @@ function resetModalBulletinForm() {
                 ranges.push(range);
                 // chaque update d'un range met à jour le min de l'input
                 range.onchange = () => {
-                    inputNNotes.min = Math.max(minNGrades, ...ranges.map(r => r.value));
+                    inputNNotes.min = Math.max(minNNotes, ...ranges.map(r => r.value));
                 };
             }
             break;
 
-        case null:
         default:
             throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
     }
 }
 function validerBulletinForm() {
-    // TODO
     // construire le Bulletin correspondant, en fonction de votingMethod
+    let bulletin = null;
+    switch (votingMethod) {
+        case VotingMethods.UNIQUE:
+            throw new Error("Impossible de créer des nouveaux bulletins pour le vote unique");
+
+        case VotingMethods.APPROBATION: {
+            const inputs = document.getElementsByClassName("modal-bulletin-form-input");
+            const candidatIds = new Set();
+            for (const input of inputs)
+                if (input.checked)
+                    candidatIds.add(parseInt(input.id.split("_")[1]));
+
+            if (![...bulletins.values()].some(b => b.kind === votingMethod && b.candidatIds.equals(candidatIds)))
+                // aucun doublon détecté
+                bulletin = new BulletinApprobation(newRandomValue(bulletins.keys()), candidatIds);
+        }
+            break;
+
+        case VotingMethods.CLASSEMENT:
+            throw new Error("TODO");
+            break;
+
+        case VotingMethods.NOTES: {
+            const ranges = document.getElementsByClassName("modal-bulletin-form-input");
+            const notes = new Map();
+            for (const range of ranges)
+                notes.set(parseInt(range.id.split("_")[1]), parseInt(range.value));
+
+            if (![...bulletins.values()].some(b => b.kind === votingMethod && b.notes.equals(notes)))
+                // aucun doublon détecté
+                bulletin = new BulletinNotes(newRandomValue(bulletins.keys()), notes);
+        }
+            break;
+
+        default:
+            throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
+    }
+
     // si un bulletin de bulletins.values() est égal, afficher une erreur
+    if (bulletin === null)
+        // TODO traiter de manière visible et normale pour l'utilisateur
+        throw new Error("Un bulletin identique existe déjà");
+
     // sinon, si tout va bien, ajouter le bulletin à bulletins et votes
+    bulletins.set(bulletin.id, bulletin);
+    votes.set(bulletin.id, 0);
+
     // dans le cas de NOTES, mise à jour de nNotes (seulement si tout va bien)
+    if (votingMethod === VotingMethods.NOTES) {
+        nNotes = parseInt(document.getElementById("bulletinFormNGradesInput").value);
+    }
+
+    // dismiss du modal
+    $("#bulletinFormModal").modal("hide");
 }
 
 
@@ -452,7 +499,7 @@ function updateBulletinsDisplay() {
                     .map(cid => candidats.get(cid)).sort();
 
                 if (candidats.length === 0) {
-                    bulletincontent.innerText = "Aucun candidat";
+                    bulletincontent.innerText = "Aucun candidat (bulletin blanc)";
                 } else {
                     if (candidats.length === 1) {
                         progresscolor = candidats[0].color;
@@ -465,7 +512,7 @@ function updateBulletinsDisplay() {
                 const candidats = bulletin.candidatIds.map(cid => candidats.get(cid));
 
                 if (candidats.length === 0) {
-                    bulletincontent.innerText = "Aucun candidat";
+                    bulletincontent.innerText = "Aucun candidat (bulletin blanc)";
                 } else {
                     if (candidats.length === 1) {
                         progresscolor = candidats[0].color;
