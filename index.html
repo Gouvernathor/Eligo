@@ -187,9 +187,15 @@
                     </div>
                     <div class="card-body">
                         <label for="nbElecteursManuel" class="form-label">Nombre d'électeurs</label>
-                        <input id="nbElecteursManuel" class="w-auto form-control" aria-describedby="nbElecteursManuelHelp" type="number" value="0" min="0"/>
+                        <div class="input-group">
+                            <input id="nbElecteursManuel" class="w-auto form-control" aria-describedby="nbElecteursManuelHelp" type="number" value="0" min="0" autocomplete="off" disabled/>
+                            <input type="checkbox" class="btn-check" id="toggleElecteursManuel" autocomplete="off"/>
+                            <label for="toggleElecteursManuel" class="btn btn-outline-primary">
+                                Entrer manuellement le nombre d'électeurs
+                            </label>
+                        </div>
                         <div id="nbElecteursManuelHelp" class="form-text">
-                            Sera pris en compte pour le calcul de l'abstention
+                            Pris en compte pour le calcul de l'abstention
                         </div>
 
                         <div id="bulletinsContainer" class="card card-body mt-3 gap-2"></div>

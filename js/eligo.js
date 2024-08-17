@@ -10,6 +10,7 @@ let attributionMethod = null;
 const candidats = new Map(); // candidat id -> Candidat
 const bulletins = new Map(); // bulletin id -> Bulletin
 const votes = new Map(); // bulletin id -> nombre de votes
+let nbElecteursManuel = null; // dernière valeur choisie par l'utilisateur
 
 
 // utils de lecture des données
@@ -32,11 +33,29 @@ function computeNbVotes() {
 function computeNbElecteurs(nbVotes = null) {
     if (nbVotes === null)
         nbVotes = computeNbVotes();
-    return Math.max(nbVotes, document.getElementById("nbElecteursManuel").value || 0);
+    return Math.max(nbVotes, nbElecteursManuel || 0);
 }
 
 
 // application des actions de clic aux boutons du formulaire
+function toggleElecteursManuel() {
+    const nbElecteursManuelInput = document.getElementById("nbElecteursManuel");
+    if (document.getElementById("toggleElecteursManuel").checked) {
+        nbElecteursManuelInput.disabled = false;
+        const nbVotes = computeNbVotes();
+        if (nbElecteursManuel === null)
+            nbElecteursManuel = nbVotes;
+        nbElecteursManuelInput.value = Math.max(nbElecteursManuel, nbVotes);
+    } else {
+        nbElecteursManuelInput.disabled = true;
+        nbElecteursManuelInput.value = computeNbVotes();
+    }
+    updateBulletinsDisplay();
+}
+function changeNbElecteursManuel() {
+    nbElecteursManuel = document.getElementById("nbElecteursManuel").value;
+    updateBulletinsDisplay();
+}
 
 
 // application des ordres du formulaire aux données
@@ -420,6 +439,9 @@ $(document).ready(function () {
         label.htmlFor = input.id;
         label.textContent = method.desc;
     }
+
+    document.getElementById("nbElecteursManuel").onchange = changeNbElecteursManuel;
+    document.getElementById("toggleElecteursManuel").onclick = toggleElecteursManuel;
 
     // bulletinFormButton
 });
