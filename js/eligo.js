@@ -43,7 +43,7 @@ function computeNbElecteurs(nbVotes = null) {
 
 function addCandidat() {
     const cid = newRandomValue(candidats.keys());
-    const candidat = new Candidat(cid, "Nouveau parti", getRandomColor(), 0, "#000000");
+    const candidat = new Candidat(cid, "", getRandomColor(), 0, "#000000");
     candidats.set(cid, candidat);
 
     // append a new card to the end
@@ -67,6 +67,7 @@ function addCandidat() {
     nameInput.className = "form-control";
     nameInput.id = `candidatName_${candidat.id}`;
     nameInput.value = candidat.name;
+    nameInput.placeholder = "Nom du parti";
     nameInput.onchange = () => {
         candidat.name = nameInput.value;
         updateBulletinsDisplay();
