@@ -22,11 +22,12 @@ export function sortMap(map, orderedKeys) {
     }
 }
 
-export function getRandomColor() {
+export function getRandomColor(seed = null) {
+    const rng = new RNG(seed);
     const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+        color += letters[rng.randRange(0, 16)];
     }
     return color;
 }
@@ -45,3 +46,42 @@ Object.defineProperty(Map.prototype, 'pop', {
     writable: true,
     configurable: true,
 });
+
+export class RNG {
+    #m;
+    #a;
+    #c;
+    #state;
+    /**
+     * @param {number} seed integer between 0 and 2^31 - 1
+     */
+    constructor(seed = null) {
+        // LCG using GCC's constants
+        this.m = 0x80000000; // 2**31;
+        this.a = 1103515245;
+        this.c = 12345;
+
+        this.state = seed ? seed : Math.floor(Math.random() * (this.m - 1));
+    }
+    /**
+     * @param {number} seed
+     */
+    set seed(seed) {
+        this.state = seed;
+    }
+    randInt() {
+        this.state = (this.a * this.state + this.c) % this.m;
+        return this.state;
+    }
+    random() {
+        // returns in [0, 1[
+        return this.randInt() / (this.m);
+    }
+    randRange(min, max) {
+        // returns in [[min, max[[
+        return min + Math.floor(this.random() * (max - min));
+    }
+    choice(array) {
+        return array[this.randRange(0, array.length)];
+    }
+}
