@@ -1,4 +1,4 @@
-import { VotingMethods } from "./constants";
+import { VotingMethods } from "./constants.js";
 
 export class Candidat {
     /**
