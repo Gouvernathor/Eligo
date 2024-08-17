@@ -25,6 +25,9 @@ export class Bulletin {
     constructor(id) {
         this.id = id;
     }
+    get kind() {
+        return this.constructor.kind;
+    }
 }
 export class BulletinSimple extends Bulletin {
     static kind = VotingMethods.UNIQUE;
