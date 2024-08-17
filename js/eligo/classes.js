@@ -46,7 +46,7 @@ export class BulletinApprobation extends Bulletin {
      */
     constructor(id, candidatIds) {
         super(id);
-        this.candidatIds = candidatIds;
+        this.candidatIds = new Set(candidatIds);
     }
 }
 export class BulletinClassement extends Bulletin {
