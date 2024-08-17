@@ -394,6 +394,8 @@ function updateBulletinsDisplay() {
         }
         bulletinprogressbar.style.backgroundColor = progresscolor;
     }
+
+    writeChartSommaire();
 }
 
 // du nombre d'électeurs (changement de votes même indirect)
@@ -406,6 +408,68 @@ function actuateNbElecteurs() {
     // TODO quand le nombre de votes diminue,
     // dans le cas où l'utilisateur ne l'aurait pas modifié lui-même,
     // il faudrait le diminuer automatiquement
+}
+
+
+// gestion du diagramme sommaire
+function writeChartSommaire() {
+    const container = document.getElementById("chartSommaireContainer");
+    while (container.hasChildNodes())
+        container.removeChild(container.firstChild);
+
+    if (votingMethod === null)
+        return;
+
+    const canvas = container.appendChild(document.createElement("canvas"));
+    canvas.id = "chartSommaire";
+    canvas.width = "100%";
+    canvas.height = "50";
+
+    switch (votingMethod) {
+        case VotingMethods.UNIQUE:
+            const labels = []; // noms des candidats dans l'ordre des candidats
+            const data = []; // nombre de votes pour le bulletin de chaque candidat
+            const backgroundColor = []; // couleurs des candidats dans l'ordre des candidats
+            const borderWidth = []; // bordures des candidats dans l'ordre des candidats
+            const borderColor = []; // couleurs des bordures des candidats dans l'ordre des candidats
+            for (const candidat of candidats.values()) {
+                labels.push(candidat.name);
+                const bulletin = Array.from(bulletins.values()).find(b => b.candidatId === candidat.id);
+                data.push(votes.getOrDefault(bulletin.id, 0));
+                backgroundColor.push(candidat.color);
+                borderWidth.push(candidat.borderWidth);
+                borderColor.push(candidat.borderColor);
+            }
+            // if abstention, ajouter une zone transparente
+
+            new Chart(canvas, {
+                type: "pie",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Votes",
+                        data: data,
+                        backgroundColor: backgroundColor,
+                        borderWidth: borderWidth,
+                        borderColor: borderColor,
+                    }],
+                },
+                options: {
+                    animation: {
+                        animateRotate: false,
+                    },
+                    // plugins: {
+                    //     legend: {
+                    //         display: false,
+                    //     },
+                    // },
+                },
+            });
+            break;
+
+        default:
+            throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
+    }
 }
 
 
