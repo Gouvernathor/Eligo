@@ -94,6 +94,18 @@ Object.defineProperty(Map.prototype, 'getOrDefault', {
     writable: true,
     configurable: true,
 });
+Object.defineProperty(Map.prototype, 'equals', {
+    value: function (other) {
+        if (this.size !== other.size)
+            return false;
+        for (const [key, value] of this)
+            if (value !== other.get(key))
+                return false;
+        return true;
+    },
+    writable: true,
+    configurable: true,
+});
 
 export function sum(ar, start = 0) {
     return (Array.isArray(ar) ? ar : [...ar])
@@ -109,3 +121,11 @@ export function* generate_rainbow(n, alpha = "100%", maxhue = 300) {
     for (let i = 0; i < n; i++)
         yield `hsla(${maxhue * i / (n-1)}deg, 100%, 50%, ${alpha})`;
 }
+
+Object.defineProperty(Set.prototype, 'equals', {
+    value: function (other) {
+        return this.symmetricDifference(other).size === 0;
+    },
+    writable: true,
+    configurable: true,
+});
