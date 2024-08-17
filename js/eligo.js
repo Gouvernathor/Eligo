@@ -40,15 +40,16 @@ function computeNbElecteurs(nbVotes = null) {
 // application des actions de clic aux boutons du formulaire
 function toggleElecteursManuel() {
     const nbElecteursManuelInput = document.getElementById("nbElecteursManuel");
+    const nbVotes = computeNbVotes();
     if (document.getElementById("toggleElecteursManuel").checked) {
         nbElecteursManuelInput.disabled = false;
-        const nbVotes = computeNbVotes();
         if (nbElecteursManuel === null)
             nbElecteursManuel = nbVotes;
         nbElecteursManuelInput.value = Math.max(nbElecteursManuel, nbVotes);
     } else {
         nbElecteursManuelInput.disabled = true;
-        nbElecteursManuelInput.value = computeNbVotes();
+        nbElecteursManuelInput.value = nbVotes;
+        nbElecteursManuel = null;
     }
     updateBulletinsDisplay();
 }
@@ -182,8 +183,6 @@ function deleteCandidat(cid) {
 
     actuateBulletins();
 }
-
-// l'enregistrement de nbElecteurs est suivi d'un actuateNbElecteurs et d'un updateBulletinsDisplay
 
 
 // actualisation de données
