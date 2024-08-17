@@ -4,3 +4,10 @@
     vertical-align: -.125em;
     fill: currentcolor;
 }
+
+/* to set to elements of a display:grid container,
+to make the elements stack on top of each other */
+.stacked {
+    grid-column: 1;
+    grid-row: 1;
+}

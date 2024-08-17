@@ -18,7 +18,6 @@ export class Candidat {
 }
 
 export class Bulletin {
-    static kind = null;
     /**
      * @param {number} id
      */
@@ -52,7 +51,7 @@ export class BulletinApprobation extends Bulletin {
 export class BulletinClassement extends Bulletin {
     static kind = VotingMethods.CLASSEMENT;
     /**
-     * @param {number[]} candidatIds
+     * @param {number[]} candidatIds par ordre de préférence décroissant
      */
     constructor(id, candidatIds) {
         super(id);

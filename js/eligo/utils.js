@@ -87,3 +87,10 @@ Object.defineProperty(Map.prototype, 'pop', {
     writable: true,
     configurable: true,
 });
+Object.defineProperty(Map.prototype, 'getOrDefault', {
+    value: function (key, def) {
+        return this.has(key) ? this.get(key) : def;
+    },
+    writable: true,
+    configurable: true,
+});

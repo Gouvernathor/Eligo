@@ -163,7 +163,7 @@ function deleteCandidat(cid) {
     actuateBulletins();
 }
 
-// l'enregistrement de nbElecteurs est suivi d'un actuateNbElecteurs
+// l'enregistrement de nbElecteurs est suivi d'un actuateNbElecteurs et d'un updateBulletinsDisplay
 
 
 // actualisation de données
@@ -244,18 +244,147 @@ function actuateBulletins() {
  * actualisation de l'affichage des bulletins dans le DOM
  */
 function updateBulletinsDisplay() {
-    // TODO
+    const bulletinsContainer = document.getElementById("bulletinsContainer");
+
+    while (bulletinsContainer.hasChildNodes())
+        bulletinsContainer.removeChild(bulletinsContainer.firstChild);
+
+    if (votingMethod === null)
+        return;
+
+    const authorizeDelete = votingMethod !== VotingMethods.UNIQUE;
+    const progressbase = Math.max(1, computeNbElecteurs()); // avoid division by zero
+    for (const bulletin of bulletins.values()) {
+        if (bulletin.kind !== votingMethod)
+            continue;
+
+        const percent = `${(votes.get(bulletin.id) / progressbase * 100).toFixed(2)}%`;
+
+        const bulletincard = bulletinsContainer.appendChild(document.createElement("div"));
+        bulletincard.className = "card";
+        bulletincard.id = `bulletinCard_${bulletin.id}`;
+        bulletincard.style.display = "grid";
+
+        const bulletinprogress = bulletincard.appendChild(document.createElement("div"));
+        bulletinprogress.className = "progress h-auto stacked";
+
+        const bulletinprogressbar = bulletinprogress.appendChild(document.createElement("div"));
+        bulletinprogressbar.className = "progress-bar";
+        bulletinprogressbar.style.width = percent;
+
+        const bulletincardbody = bulletincard.appendChild(document.createElement("div"));
+        bulletincardbody.className = "card-body stacked row gap-3";
+
+        // TODO ajuster les col-x en fonction de la taille des éléments
+        // p-ê donner une largeur fixe à certains éléments comme les boutons + et -
+
+        const bulletincontentdiv = bulletincardbody.appendChild(document.createElement("div"));
+        bulletincontentdiv.className = "col";
+        const bulletincontent = bulletincontentdiv.appendChild(document.createElement("span"));
+        bulletincontent.className = "text-bg-secondary rounded px-2 py-1";
+        // texte rempli plus loin
+
+        const bulletinpercent = bulletincardbody.appendChild(document.createElement("span"));
+        bulletinpercent.className = "col-1 text-end text-bg-success rounded px-2 py-1";
+        bulletinpercent.innerText = percent;
+
+        const bulletinminus = bulletincardbody.appendChild(document.createElement("button"));
+        bulletinminus.className = "col-1 h3 btn btn-outline-warning";
+        bulletinminus.innerText = "-";
+        bulletinminus.disabled = votes.get(bulletin.id) <= 1;
+        bulletinminus.onclick = () => {
+            votes.set(bulletin.id, votes.get(bulletin.id) - 1);
+            actuateNbElecteurs();
+            updateBulletinsDisplay();
+        };
+
+        const bulletinplus = bulletincardbody.appendChild(document.createElement("button"));
+        bulletinplus.className = "col-1 h3 btn btn-outline-success";
+        bulletinplus.innerText = "+";
+        bulletinplus.onclick = () => {
+            votes.set(bulletin.id, votes.get(bulletin.id) + 1);
+            actuateNbElecteurs();
+            updateBulletinsDisplay();
+        };
+
+        if (authorizeDelete) {
+            const bulletindelete = bulletincardbody.appendChild(document.createElement("button"));
+            bulletindelete.className = "col-3 btn btn-outline-danger";
+            bulletindelete.innerText = "Supprimer";
+            bulletindelete.onclick = () => {
+                bulletins.delete(bulletin.id);
+                votes.delete(bulletin.id);
+                actuateNbElecteurs();
+                updateBulletinsDisplay();
+            };
+        }
+
+        let progresscolor = null;
+        switch (votingMethod) {
+            case VotingMethods.UNIQUE: {
+                const candidat = candidats.get(bulletin.candidatId);
+                progresscolor = candidat.color;
+                bulletincontent.innerText = candidat.name;
+            }
+                break;
+            case VotingMethods.APPROBATION: {
+                const candidats = Array.from(bulletin.candidatIds)
+                    .map(cid => candidats.get(cid)).sort();
+
+                if (candidats.length === 0) {
+                    bulletincontent.innerText = "Aucun candidat";
+                } else {
+                    if (candidats.length === 1) {
+                        progresscolor = candidats[0].color;
+                    }
+                    bulletincontent.innerText = candidats.map(c => c.name).join(", ");
+                }
+            }
+                break;
+            case VotingMethods.CLASSEMENT: {
+                const candidats = bulletin.candidatIds.map(cid => candidats.get(cid));
+
+                if (candidats.length === 0) {
+                    bulletincontent.innerText = "Aucun candidat";
+                } else {
+                    if (candidats.length === 1) {
+                        progresscolor = candidats[0].color;
+                    }
+                    bulletincontent.innerText = candidats.map(c => c.name).join(" > ");
+                }
+            }
+                break;
+            case VotingMethods.NOTES: {
+                let text = [];
+                for (const candidat of candidats.values()) {
+                    const note = bulletin.notes.getOrDefault(candidat.id, 0);
+                    text.push(`${candidat.name} : ${note}`);
+                }
+                bulletincontent.innerText = text.join(", ");
+            }
+                break;
+            default:
+                throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
+        }
+        if (progresscolor === null) {
+            // couleur déterministe en fonction de l'id du bulletin
+            progresscolor = getRandomColor(bulletin.id);
+        }
+        bulletinprogressbar.style.backgroundColor = progresscolor;
+    }
 }
 
 // des pourcentages et du diagramme sommaire
-// du nombre d'électeurs (changement de bulletins même indirect)
+// du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
     const input = document.getElementById("nbElecteursManuel");
     const nbVotes = computeNbVotes();
     input.min = nbVotes;
     const nbElecteurs = computeNbElecteurs(nbVotes);
     input.value = nbElecteurs;
-    // set du min aussi ? seulement ? à voir en fonction du résultat
+    // TODO quand le nombre de votes diminue,
+    // dans le cas où l'utilisateur ne l'aurait pas modifié lui-même,
+    // il faudrait le diminuer automatiquement
 }
 
 
