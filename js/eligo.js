@@ -259,6 +259,7 @@ function updateBulletinsDisplay() {
             continue;
 
         const percent = `${(votes.get(bulletin.id) / progressbase * 100).toFixed(2)}%`;
+        // TODO mettre à jour le diagramme sommaire avec les pourcentages
 
         const bulletincard = bulletinsContainer.appendChild(document.createElement("div"));
         bulletincard.className = "card";
@@ -284,12 +285,14 @@ function updateBulletinsDisplay() {
         bulletincontent.className = "text-bg-secondary rounded px-2 py-1";
         // texte rempli plus loin
 
-        const bulletinpercent = bulletincardbody.appendChild(document.createElement("span"));
-        bulletinpercent.className = "col-1 text-end text-bg-success rounded px-2 py-1";
+        const bulletinpercentdiv = bulletincardbody.appendChild(document.createElement("div"));
+        bulletinpercentdiv.className = "col-1 d-flex justify-content-end";
+        const bulletinpercent = bulletinpercentdiv.appendChild(document.createElement("span"));
+        bulletinpercent.className = "text-end text-bg-primary rounded px-2 py-1";
         bulletinpercent.innerText = percent;
 
         const bulletinminus = bulletincardbody.appendChild(document.createElement("button"));
-        bulletinminus.className = "col-1 h3 btn btn-outline-warning";
+        bulletinminus.className = "col-1 fw-bold btn btn-outline-warning";
         bulletinminus.innerText = "-";
         bulletinminus.disabled = votes.get(bulletin.id) <= 1;
         bulletinminus.onclick = () => {
@@ -299,7 +302,7 @@ function updateBulletinsDisplay() {
         };
 
         const bulletinplus = bulletincardbody.appendChild(document.createElement("button"));
-        bulletinplus.className = "col-1 h3 btn btn-outline-success";
+        bulletinplus.className = "col-1 fw-bold btn btn-outline-success";
         bulletinplus.innerText = "+";
         bulletinplus.onclick = () => {
             votes.set(bulletin.id, votes.get(bulletin.id) + 1);
@@ -374,7 +377,6 @@ function updateBulletinsDisplay() {
     }
 }
 
-// des pourcentages et du diagramme sommaire
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
     const input = document.getElementById("nbElecteursManuel");
