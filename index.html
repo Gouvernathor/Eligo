@@ -200,9 +200,32 @@
 
                         <div id="bulletinsContainer" class="card card-body mt-3 gap-2"></div>
 
-                        <button id="bulletinFormButton" class="btn btn-success mt-2" style="display: none;">
+                        <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;">
                             Ajouter un bulletin
                         </button>
+
+                        <div id="bulletinFormModal" class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-labelledby="bulletinFormModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 id="bulletinFormModalLabel" class="modal-title fs-5">
+                                            Nouveau bulletin
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div id="bulletinFormInputContainer" class="modal-body">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Annuler
+                                        </button>
+                                        <button id="bulletinFormFinish" type="button" class="btn btn-primary">
+                                            Ajouter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

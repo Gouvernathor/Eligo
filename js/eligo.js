@@ -11,6 +11,7 @@ const candidats = new Map(); // candidat id -> Candidat
 const bulletins = new Map(); // bulletin id -> Bulletin
 const votes = new Map(); // bulletin id -> nombre de votes
 let nbElecteursManuel = null; // dernière valeur choisie par l'utilisateur
+let nNotes = 5; // nombre de notes pour la méthode de vote par notes
 
 
 // utils de lecture des données
@@ -56,6 +57,103 @@ function toggleElecteursManuel() {
 function changeNbElecteursManuel() {
     nbElecteursManuel = document.getElementById("nbElecteursManuel").value;
     updateBulletinsDisplay();
+}
+function resetModalBulletinForm() {
+    // vidange du container
+    const container = document.getElementById("bulletinFormInputContainer");
+    while (container.hasChildNodes())
+        container.removeChild(container.firstChild);
+
+    switch (votingMethod) {
+        case VotingMethods.UNIQUE:
+            throw new Error("Impossible de créer des nouveaux bulletins pour le vote unique");
+
+        case VotingMethods.APPROBATION:
+            // checkbox pour chacun des candidats
+            for (const candidat of candidats.values()) {
+                const formcheck = container.appendChild(document.createElement("div"));
+                formcheck.className = "form-check";
+
+                const input = formcheck.appendChild(document.createElement("input"));
+                input.className = "form-check-input";
+                input.type = "checkbox";
+                input.id = `bulletinFormInput_${candidat.id}`;
+
+                const label = formcheck.appendChild(document.createElement("label"));
+                label.className = "form-check-label";
+                label.htmlFor = input.id;
+                label.textContent = candidat.name;
+            }
+            break;
+        case VotingMethods.CLASSEMENT:
+            // drag-and-drop pour ordonner les candidats
+            throw new Error("TODO");
+            break;
+        case VotingMethods.NOTES:
+            // input number pour l'intervalle de notes,
+            // le min étant le max des notes sur tous les bulletins
+            // valeur par défaut = max(min, 5)
+            const labelNNotes = container.appendChild(document.createElement("label"));
+            labelNNotes.htmlFor = "bulletinFormNGradesInput";
+            labelNNotes.className = "form-label";
+            labelNNotes.textContent = "Nombre de notes";
+            const minNGrades = Math.max(1, ...Array.from(bulletins.values())
+                .filter(b => b.kind === VotingMethods.NOTES)
+                .flatMap(b => b.notes.values()));
+            const inputNNotes = container.appendChild(document.createElement("input"));
+            inputNNotes.id = "bulletinFormNGradesInput";
+            inputNNotes.className = "form-control";
+            inputNNotes.type = "number";
+            inputNNotes.setAttribute("aria-describedby", "bulletinFormNGradesHelp");
+            inputNNotes.min = minNGrades;
+            inputNNotes.value = Math.max(minNGrades, nNotes);
+            const helpNNotes = container.appendChild(document.createElement("div"));
+            helpNNotes.id = "bulletinFormNGradesHelp";
+            helpNNotes.className = "form-text";
+            helpNNotes.textContent = "Ce nombre s'appliquera à tous les bulletins pendant le dépouillement, il ne peut pas être supérieur à la plus grande note déjà attribuée.";
+
+            const ranges = [];
+            // chaque update de l'input met à jour le max de chaque range
+            inputNNotes.onchange = () => {
+                for (const range of ranges) {
+                    range.max = inputNNotes.value;
+                    range.value = Math.min(range.value, inputNNotes.value);
+                }
+            };
+
+            // range pour chaque candidat entre 0 et la valeur de l'input
+            for (const candidat of candidats.values()) {
+                const labelRange = container.appendChild(document.createElement("label"));
+                labelRange.htmlFor = `bulletinFormInput_${candidat.id}`;
+                labelRange.className = "form-label";
+                labelRange.textContent = candidat.name;
+
+                const range = container.appendChild(document.createElement("input"));
+                range.id = labelRange.htmlFor;
+                range.className = "form-range";
+                range.type = "range";
+                range.min = 0;
+                range.max = inputNNotes.value;
+                range.value = 0;
+                ranges.push(range);
+                // chaque update d'un range met à jour le min de l'input
+                range.onchange = () => {
+                    inputNNotes.min = Math.max(minNGrades, ...ranges.map(r => r.value));
+                };
+            }
+            break;
+
+        case null:
+        default:
+            throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
+    }
+}
+function validerBulletinForm() {
+    // TODO
+    // construire le Bulletin correspondant, en fonction de votingMethod
+    // si un bulletin de bulletins.values() est égal, afficher une erreur
+    // sinon, si tout va bien, ajouter le bulletin à bulletins et votes
+    // dans le cas de NOTES, mise à jour de nNotes (seulement si tout va bien)
 }
 
 
@@ -506,5 +604,6 @@ $(document).ready(function () {
     document.getElementById("nbElecteursManuel").onchange = changeNbElecteursManuel;
     document.getElementById("toggleElecteursManuel").onclick = toggleElecteursManuel;
 
-    // bulletinFormButton
+    document.getElementById("bulletinFormButton").onclick = resetModalBulletinForm;
+    document.getElementById("bulletinFormFinish").onclick = validerBulletinForm;
 });

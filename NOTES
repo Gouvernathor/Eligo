@@ -13,6 +13,7 @@ liste des candidats en présence
     avec le style des sièges de chaque candidat (pour parliamentarch)
 spécification du mode de scrutin
     type de vote
+        input du nombre de notes, pour le vote par notes (à retirer du formulaire des bulletins)
     type d'attribution
 liste des différents bulletins
     nombre d'électeurs
@@ -23,6 +24,7 @@ liste des différents bulletins
     pré-peuplé avec un bulletin par candidat pour un vote simple
     jauge de nombre de votes pour chaque bulletin
     bouton pour en ajouter, et en retirer
+        en faire un button group ?
     hors cas du vote simple :
         bouton pour supprimer le bulletin
         pop-up formulaire pour ajouter un nouveau bulletin
