@@ -43,4 +43,9 @@ Page de résultats
 affichage de l'hémicycle
 possible d'en faire un pop-up, ou un cadre dans un coin avec un bouton pour actualiser
 
+réorganiser les parties de la page principale dans la largeur de l'écran
+en attendant, ne pas se soucier de gacher de la place en largeur et d'empiler verticalement
+
+aligner le thème sombre de jscolor sur le thème de la page
+
 py -m http.server 9000
