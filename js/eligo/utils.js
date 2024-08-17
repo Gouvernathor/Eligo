@@ -94,3 +94,18 @@ Object.defineProperty(Map.prototype, 'getOrDefault', {
     writable: true,
     configurable: true,
 });
+
+export function sum(ar, start = 0) {
+    return (Array.isArray(ar) ? ar : [...ar])
+        .reduce((a, b) => a + b, start);
+}
+
+/**
+ * @param {number} n number of colors to generate
+ * @param {string} alpha
+ * @param {number} maxhue in degrees
+ */
+export function* generate_rainbow(n, alpha = "100%", maxhue = 300) {
+    for (let i = 0; i < n; i++)
+        yield `hsla(${maxhue * i / (n-1)}deg, 100%, 50%, ${alpha})`;
+}

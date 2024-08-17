@@ -1,6 +1,6 @@
 import { VotingMethods } from "./eligo/constants.js";
 import { Candidat, Bulletin, BulletinSimple, BulletinApprobation, BulletinClassement, BulletinNotes } from "./eligo/classes.js";
-import { newRandomValue, getRandomColor, sortMap } from "./eligo/utils.js";
+import { newRandomValue, getRandomColor, sortMap, sum, generate_rainbow } from "./eligo/utils.js";
 
 
 // définition des données : candidats, bulletins, votes
@@ -524,7 +524,7 @@ function writeChartSommaire() {
     canvas.height = "50";
 
     switch (votingMethod) {
-        case VotingMethods.UNIQUE:
+        case VotingMethods.UNIQUE: {
             const labels = []; // noms des candidats dans l'ordre des candidats
             const data = []; // nombre de votes pour le bulletin de chaque candidat
             const backgroundColor = []; // couleurs des candidats dans l'ordre des candidats
@@ -532,13 +532,14 @@ function writeChartSommaire() {
             const borderColor = []; // couleurs des bordures des candidats dans l'ordre des candidats
             for (const candidat of candidats.values()) {
                 labels.push(candidat.name);
-                const bulletin = Array.from(bulletins.values()).find(b => b.candidatId === candidat.id);
+                const bulletin = Array.from(bulletins.values())
+                    .find(b => b.candidatId === candidat.id);
                 data.push(votes.getOrDefault(bulletin.id, 0));
                 backgroundColor.push(candidat.color);
                 borderWidth.push(candidat.borderWidth);
                 borderColor.push(candidat.borderColor);
             }
-            // if abstention, ajouter une zone transparente
+            // TODO if abstention, ajouter une zone transparente
 
             new Chart(canvas, {
                 type: "pie",
@@ -556,13 +557,113 @@ function writeChartSommaire() {
                     animation: {
                         animateRotate: false,
                     },
-                    // plugins: {
-                    //     legend: {
-                    //         display: false,
+                },
+            });
+        }
+            break;
+
+        case VotingMethods.APPROBATION: {
+            const bulletinsApprobation = Array.from(bulletins.values())
+                .filter(b => b.kind === VotingMethods.APPROBATION);
+            const total = sum(bulletinsApprobation
+                .map(b => votes.getOrDefault(b.id, 0)));
+
+            const labels = []; // noms des candidats dans l'ordre des candidats
+            const data = []; // nombre de votes pour le bulletin de chaque candidat
+            const backgroundColor = []; // couleurs des candidats dans l'ordre des candidats
+            const borderWidth = []; // bordures des candidats dans l'ordre des candidats
+            const borderColor = []; // couleurs des bordures des candidats dans l'ordre des candidats
+            for (const candidat of candidats.values()) {
+                labels.push(candidat.name);
+                data.push(sum(bulletinsApprobation
+                    .filter(b => b.candidatIds.has(candidat.id))
+                    .map(b => votes.getOrDefault(b.id, 0))));
+                backgroundColor.push(candidat.color);
+                borderWidth.push(candidat.borderWidth);
+                borderColor.push(candidat.borderColor);
+            }
+
+            new Chart(canvas, {
+                type: "polarArea",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Nombre d'approbations",
+                        data: data,
+                        backgroundColor: backgroundColor,
+                        borderWidth: borderWidth,
+                        borderColor: borderColor,
+                    }],
+                },
+                options: {
+                    animation: {
+                        animateRotate: false,
+                    },
+                    scales: {
+                        r: {
+                            max: total,
+                        },
+                    },
+                },
+            });
+        }
+            break;
+
+        case VotingMethods.NOTES: {
+            const bulletinsNotes = Array.from(bulletins.values())
+                .filter(b => b.kind === VotingMethods.NOTES);
+
+            const labels = []; // noms des candidats dans l'ordre des candidats
+            const datasets = []; // un par note, de manière cumulée
+
+            const rainbowgen = generate_rainbow(nNotes);
+            for (let note = 0; note < nNotes; note++) {
+                const color = rainbowgen.next().value;
+                datasets.push({
+                    label: `Notes inférieures ou égales à ${note}`,
+                    data: [],
+                    fill: true,
+                    backgroundColor: color,
+                    borderWidth: 0,
+                    pointBackgroundColor: color,
+                    pointBorderColor: "#fff",
+                    pointRadius: 5,
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: color,
+                    pointHoverRadius: 7,
+                });
+            }
+
+            for (const candidat of candidats.values()) {
+                labels.push(candidat.name);
+                for (let note = 0; note < nNotes; note++) {
+                    let ofthisnote = 0;
+                    for (const bulletin of bulletinsNotes) {
+                        if (bulletin.notes.getOrDefault(candidat.id, 0) <= note)
+                            ofthisnote += votes.getOrDefault(bulletin.id, 0);
+                    }
+                    datasets[note].data.push(ofthisnote);
+                }
+            }
+
+            new Chart(canvas, {
+                type: "radar",
+                data: {
+                    labels: labels,
+                    datasets: datasets,
+                },
+                options: {
+                    animation: {
+                        animateRotate: false,
+                    },
+                    // elements: {
+                    //     lines: {
+                    //         tension: 1, // pour rendre les lignes moins droites
                     //     },
                     // },
                 },
             });
+        }
             break;
 
         default:
