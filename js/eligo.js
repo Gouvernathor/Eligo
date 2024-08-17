@@ -45,119 +45,122 @@ function addCandidat() {
     const cid = newRandomValue(candidats.keys());
     const candidat = new Candidat(cid, "Nouveau parti", getRandomColor(), 0, "#000000");
     candidats.set(cid, candidat);
-    updateCandidatsDisplay(); // TODO append a new card to the end instead
+
+    // append a new card to the end
+    const partycard = document.getElementById("candidatsContainer").appendChild(document.createElement("div"));
+    partycard.className = "card mb-3";
+    partycard.id = `candidatCard_${candidat.id}`;
+    const partycardbody = partycard.appendChild(document.createElement("div"));
+    partycardbody.className = "card-body";
+
+    // ligne du nom et de la couleur principale
+    const firstRow = partycardbody.appendChild(document.createElement("div"));
+    firstRow.className = "row g-3 mb-3";
+
+    // nom
+    const nameCol = firstRow.appendChild(document.createElement("div"));
+    nameCol.className = "col-auto";
+    const nameDiv = nameCol.appendChild(document.createElement("div"));
+    nameDiv.className = "form-floating";
+    const nameInput = nameDiv.appendChild(document.createElement("input"));
+    nameInput.type = "text";
+    nameInput.className = "form-control";
+    nameInput.id = `candidatName_${candidat.id}`;
+    nameInput.value = candidat.name;
+    nameInput.onchange = () => {
+        candidat.name = nameInput.value;
+        updateBulletinsDisplay();
+    };
+    const nameLabel = nameDiv.appendChild(document.createElement("label"));
+    nameLabel.htmlFor = nameInput.id;
+    nameLabel.textContent = "Nom du parti";
+
+    // couleur principale
+    const colorCol = firstRow.appendChild(document.createElement("div"));
+    colorCol.className = "col-auto";
+    const colorDiv = colorCol.appendChild(document.createElement("div"));
+    colorDiv.className = "form-floating";
+    const colorInput = colorDiv.appendChild(document.createElement("input"));
+    colorInput.className = "form-control";
+    colorInput.setAttribute("data-jscolor", "");
+    colorInput.id = `candidatColor_${candidat.id}`;
+    colorInput.value = candidat.color;
+    colorInput.onchange = () => {
+        candidat.color = colorInput.value;
+        updateBulletinsDisplay();
+    };
+    const colorLabel = colorDiv.appendChild(document.createElement("label"));
+    colorLabel.htmlFor = colorInput.id;
+    colorLabel.textContent = "Couleur du parti";
+
+    // ligne de la bordure
+    const secondRow = partycardbody.appendChild(document.createElement("div"));
+    secondRow.className = "row g-3 mb-3";
+
+    // épaisseur de bordure
+    const borderWidthCol = secondRow.appendChild(document.createElement("div"));
+    borderWidthCol.className = "col-auto";
+    const borderWidthDiv = borderWidthCol.appendChild(document.createElement("div"));
+    borderWidthDiv.className = "form-floating";
+    const borderWidthInput = borderWidthDiv.appendChild(document.createElement("input"));
+    borderWidthInput.type = "number";
+    borderWidthInput.className = "form-control";
+    borderWidthInput.id = `candidatBorderWidth_${candidat.id}`;
+    borderWidthInput.value = candidat.borderWidth;
+    borderWidthInput.onchange = () => {
+        candidat.borderWidth = borderWidthInput.value;
+        updateBulletinsDisplay();
+    };
+    const borderWidthLabel = borderWidthDiv.appendChild(document.createElement("label"));
+    borderWidthLabel.htmlFor = borderWidthInput.id;
+    borderWidthLabel.textContent = "Épaisseur de la bordure";
+
+    // couleur de bordure
+    const borderColorCol = secondRow.appendChild(document.createElement("div"));
+    borderColorCol.className = "col-auto";
+    const borderColorDiv = borderColorCol.appendChild(document.createElement("div"));
+    borderColorDiv.className = "form-floating";
+    const borderColorInput = borderColorDiv.appendChild(document.createElement("input"));
+    borderColorInput.className = "form-control";
+    borderColorInput.setAttribute("data-jscolor", "");
+    borderColorInput.id = `candidatBorderColor_${candidat.id}`;
+    borderColorInput.value = candidat.borderColor;
+    borderColorInput.onchange = () => {
+        candidat.borderColor = borderColorInput.value;
+        updateBulletinsDisplay();
+    };
+    const borderColorLabel = borderColorDiv.appendChild(document.createElement("label"));
+    borderColorLabel.htmlFor = borderColorInput.id;
+    borderColorLabel.textContent = "Couleur de la bordure";
+
+    // bouton delete
+    const deleteButton = partycardbody.appendChild(document.createElement("button"));
+    deleteButton.type = "button";
+    deleteButton.className = "btn btn-outline-danger d-inline-block";
+    deleteButton.id = `deleteCandidat_${candidat.id}`;
+    deleteButton.textContent = "Supprimer";
+    deleteButton.onclick = () => {
+        deleteCandidat(candidat.id);
+    };
+
+    jscolor.install(partycard);
+
     actuateBulletins();
 }
 function deleteCandidat(cid) {
     candidats.delete(cid);
-    updateCandidatsDisplay(); // TODO seek-and-destroy the candidatCard instead
-    actuateBulletins();
-}
-function updateCandidatsDisplay() {
+
+    const partycardid = `candidatCard_${cid}`;
+    // seek-and-destroy the candidatCard
     const candidatsContainer = document.getElementById("candidatsContainer");
-
-    while (candidatsContainer.hasChildNodes())
-        candidatsContainer.removeChild(candidatsContainer.firstChild);
-
-    for (const candidat of candidats.values()) {
-        const partycard = candidatsContainer.appendChild(document.createElement("div"));
-        partycard.className = "card mb-3";
-        partycard.id = `candidatCard_${candidat.id}`;
-        const partycardbody = partycard.appendChild(document.createElement("div"));
-        partycardbody.className = "card-body";
-
-        // ligne du nom et de la couleur principale
-        const firstRow = partycardbody.appendChild(document.createElement("div"));
-        firstRow.className = "row g-3 mb-3";
-
-        // nom
-        const nameCol = firstRow.appendChild(document.createElement("div"));
-        nameCol.className = "col-auto";
-        const nameDiv = nameCol.appendChild(document.createElement("div"));
-        nameDiv.className = "form-floating";
-        const nameInput = nameDiv.appendChild(document.createElement("input"));
-        nameInput.type = "text";
-        nameInput.className = "form-control";
-        nameInput.id = `candidatName_${candidat.id}`;
-        nameInput.value = candidat.name;
-        nameInput.onchange = () => {
-            candidat.name = nameInput.value;
-            updateBulletinsDisplay();
-        };
-        const nameLabel = nameDiv.appendChild(document.createElement("label"));
-        nameLabel.htmlFor = nameInput.id;
-        nameLabel.textContent = "Nom du parti";
-
-        // couleur principale
-        const colorCol = firstRow.appendChild(document.createElement("div"));
-        colorCol.className = "col-auto";
-        const colorDiv = colorCol.appendChild(document.createElement("div"));
-        colorDiv.className = "form-floating";
-        const colorInput = colorDiv.appendChild(document.createElement("input"));
-        colorInput.className = "form-control";
-        colorInput.setAttribute("data-jscolor", "");
-        colorInput.id = `candidatColor_${candidat.id}`;
-        colorInput.value = candidat.color;
-        colorInput.onchange = () => {
-            candidat.color = colorInput.value;
-            updateBulletinsDisplay();
-        };
-        const colorLabel = colorDiv.appendChild(document.createElement("label"));
-        colorLabel.htmlFor = colorInput.id;
-        colorLabel.textContent = "Couleur du parti";
-
-        // ligne de la bordure
-        const secondRow = partycardbody.appendChild(document.createElement("div"));
-        secondRow.className = "row g-3 mb-3";
-
-        // épaisseur de bordure
-        const borderWidthCol = secondRow.appendChild(document.createElement("div"));
-        borderWidthCol.className = "col-auto";
-        const borderWidthDiv = borderWidthCol.appendChild(document.createElement("div"));
-        borderWidthDiv.className = "form-floating";
-        const borderWidthInput = borderWidthDiv.appendChild(document.createElement("input"));
-        borderWidthInput.type = "number";
-        borderWidthInput.className = "form-control";
-        borderWidthInput.id = `candidatBorderWidth_${candidat.id}`;
-        borderWidthInput.value = candidat.borderWidth;
-        borderWidthInput.onchange = () => {
-            candidat.borderWidth = borderWidthInput.value;
-            updateBulletinsDisplay();
-        };
-        const borderWidthLabel = borderWidthDiv.appendChild(document.createElement("label"));
-        borderWidthLabel.htmlFor = borderWidthInput.id;
-        borderWidthLabel.textContent = "Épaisseur de la bordure";
-
-        // couleur de bordure
-        const borderColorCol = secondRow.appendChild(document.createElement("div"));
-        borderColorCol.className = "col-auto";
-        const borderColorDiv = borderColorCol.appendChild(document.createElement("div"));
-        borderColorDiv.className = "form-floating";
-        const borderColorInput = borderColorDiv.appendChild(document.createElement("input"));
-        borderColorInput.className = "form-control";
-        borderColorInput.setAttribute("data-jscolor", "");
-        borderColorInput.id = `candidatBorderColor_${candidat.id}`;
-        borderColorInput.value = candidat.borderColor;
-        borderColorInput.onchange = () => {
-            candidat.borderColor = borderColorInput.value;
-            updateBulletinsDisplay();
-        };
-        const borderColorLabel = borderColorDiv.appendChild(document.createElement("label"));
-        borderColorLabel.htmlFor = borderColorInput.id;
-        borderColorLabel.textContent = "Couleur de la bordure";
-
-        // bouton delete
-        const deleteButton = partycardbody.appendChild(document.createElement("button"));
-        deleteButton.type = "button";
-        deleteButton.className = "btn btn-outline-danger d-inline-block";
-        deleteButton.id = `deleteCandidat_${candidat.id}`;
-        deleteButton.textContent = "Supprimer";
-        deleteButton.onclick = () => {
-            deleteCandidat(candidat.id);
-        };
+    for (const partycard of candidatsContainer.childNodes) {
+        if (partycard.id === partycardid) {
+            candidatsContainer.removeChild(partycard);
+            break;
+        }
     }
 
-    jscolor.install(document);
+    actuateBulletins();
 }
 
 // l'enregistrement de nbElecteurs est suivi d'un actuateNbElecteurs
@@ -282,4 +285,6 @@ $(document).ready(function () {
         label.htmlFor = input.id;
         label.textContent = method.desc;
     }
+
+    // bulletinFormButton
 });
