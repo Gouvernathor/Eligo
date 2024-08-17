@@ -20,10 +20,10 @@ liste des différents bulletins
         mais spécialement utile pour le vote par approbation
         bouton pour reset
         info que mettre une valeur active la prise en compte de l'abstention
-    pré-peuplé avec un bulletin par candidat pour un vote simple, pareil pour le vote par approbation
+    pré-peuplé avec un bulletin par candidat pour un vote simple
     jauge de nombre de votes pour chaque bulletin
     bouton pour en ajouter, et en retirer
-    hors cas du vote simple ou par approbation :
+    hors cas du vote simple :
         bouton pour supprimer le bulletin
         pop-up formulaire pour ajouter un nouveau bulletin
 graphique du résultat des votes
