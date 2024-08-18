@@ -462,7 +462,7 @@ function updateBulletinsDisplay() {
         const bulletinminus = bulletincardbody.appendChild(document.createElement("button"));
         bulletinminus.className = "col-1 fw-bold btn btn-outline-warning";
         bulletinminus.innerText = "-";
-        bulletinminus.disabled = votes.get(bulletin.id) <= 1;
+        bulletinminus.disabled = votes.get(bulletin.id) <= 0;
         bulletinminus.onclick = () => {
             votes.set(bulletin.id, votes.get(bulletin.id) - 1);
             actuateNbElecteurs();
