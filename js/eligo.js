@@ -606,9 +606,6 @@ function writeChartSommaire() {
                     }],
                 },
                 options: {
-                    animation: {
-                        animateRotate: false,
-                    },
                 },
             });
         }
@@ -648,9 +645,6 @@ function writeChartSommaire() {
                     }],
                 },
                 options: {
-                    animation: {
-                        animateRotate: false,
-                    },
                     scales: {
                         r: {
                             max: total,
