@@ -95,9 +95,9 @@ function resetModalBulletinForm() {
             labelNNotes.htmlFor = "bulletinFormNGradesInput";
             labelNNotes.className = "form-label";
             labelNNotes.textContent = "Nombre de notes";
-            const minNNotes = Math.max(1, ...Array.from(bulletins.values())
+            const minNNotes = 1 + Math.max(1, ...Array.from(bulletins.values())
                 .filter(b => b.kind === VotingMethods.NOTES)
-                .flatMap(b => b.notes.values()));
+                .flatMap(b => Array.from(b.notes.values())));
             const inputNNotes = container.appendChild(document.createElement("input"));
             inputNNotes.id = "bulletinFormNGradesInput";
             inputNNotes.className = "form-control";
@@ -108,14 +108,14 @@ function resetModalBulletinForm() {
             const helpNNotes = container.appendChild(document.createElement("div"));
             helpNNotes.id = "bulletinFormNGradesHelp";
             helpNNotes.className = "form-text";
-            helpNNotes.textContent = "Ce nombre s'appliquera à tous les bulletins pendant le dépouillement, il ne peut pas être supérieur à la plus grande note déjà attribuée.";
+            helpNNotes.textContent = "Ce nombre s'appliquera à tous les bulletins pendant le dépouillement, il ne peut pas être supérieur à ce qui a été indiqué dans les bulletins existants.";
 
             const ranges = [];
             // chaque update de l'input met à jour le max de chaque range
             inputNNotes.onchange = () => {
                 for (const range of ranges) {
-                    range.max = inputNNotes.value;
-                    range.value = Math.min(range.value, inputNNotes.value);
+                    range.max = inputNNotes.value-1;
+                    range.value = Math.min(range.value, range.max);
                 }
             };
 
@@ -131,12 +131,12 @@ function resetModalBulletinForm() {
                 range.className = "form-range modal-bulletin-form-input";
                 range.type = "range";
                 range.min = 0;
-                range.max = inputNNotes.value;
+                range.max = inputNNotes.value - 1;
                 range.value = 0;
                 ranges.push(range);
                 // chaque update d'un range met à jour le min de l'input
                 range.onchange = () => {
-                    inputNNotes.min = Math.max(minNNotes, ...ranges.map(r => r.value));
+                    inputNNotes.min = Math.max(minNNotes, ...ranges.map(r => parseInt(r.value) + 1));
                 };
             }
             break;
