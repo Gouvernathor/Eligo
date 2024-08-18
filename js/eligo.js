@@ -499,29 +499,29 @@ function updateBulletinsDisplay() {
             }
                 break;
             case VotingMethods.APPROBATION: {
-                const candidats = Array.from(bulletin.candidatIds)
+                const candidatsIci = Array.from(bulletin.candidatIds)
                     .map(cid => candidats.get(cid)).sort();
 
-                if (candidats.length === 0) {
+                if (candidatsIci.length === 0) {
                     bulletincontent.innerText = "Aucun candidat (bulletin blanc)";
                 } else {
-                    if (candidats.length === 1) {
-                        progresscolor = candidats[0].color;
+                    if (candidatsIci.length === 1) {
+                        progresscolor = candidatsIci[0].color;
                     }
-                    bulletincontent.innerText = candidats.map(c => c.name).join(", ");
+                    bulletincontent.innerText = candidatsIci.map(c => c.name).join(", ");
                 }
             }
                 break;
             case VotingMethods.CLASSEMENT: {
-                const candidats = bulletin.candidatIds.map(cid => candidats.get(cid));
+                const candidatsIci = bulletin.candidatIds.map(cid => candidats.get(cid));
 
-                if (candidats.length === 0) {
+                if (candidatsIci.length === 0) {
                     bulletincontent.innerText = "Aucun candidat (bulletin blanc)";
                 } else {
-                    if (candidats.length === 1) {
-                        progresscolor = candidats[0].color;
+                    if (candidatsIci.length === 1) {
+                        progresscolor = candidatsIci[0].color;
                     }
-                    bulletincontent.innerText = candidats.map(c => c.name).join(" > ");
+                    bulletincontent.innerText = candidatsIci.map(c => c.name).join(" > ");
                 }
             }
                 break;
