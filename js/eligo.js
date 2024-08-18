@@ -199,6 +199,10 @@ function validerBulletinForm() {
         nNotes = parseInt(document.getElementById("bulletinFormNGradesInput").value);
     }
 
+    // actualisations
+    // actuateNbElecteurs(); // seulement si on leur donne un nombre de votes par défaut
+    updateBulletinsDisplay();
+
     // dismiss du modal
     $("#bulletinFormModal").modal("hide");
 }
