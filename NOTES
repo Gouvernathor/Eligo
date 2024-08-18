@@ -23,11 +23,13 @@ liste des différents bulletins
         info que mettre une valeur active la prise en compte de l'abstention
     pré-peuplé avec un bulletin par candidat pour un vote simple
     jauge de nombre de votes pour chaque bulletin
+    ajouter le nombre absolu, en plus du pourcentage
     bouton pour en ajouter, et en retirer
         en faire un button group ?
     hors cas du vote simple :
         bouton pour supprimer le bulletin
         pop-up formulaire pour ajouter un nouveau bulletin
+            désactiver le bouton si la liste de candidats est vide
 graphique du résultat des votes
     attention, dans un format de résultats (3 types) et pas de bulletins (4 types)
     pie chart pour visualiser les votes en mode vote simple
@@ -47,6 +49,9 @@ possible d'en faire un pop-up, ou un cadre dans un coin avec un bouton pour actu
 
 réorganiser les parties de la page principale dans la largeur de l'écran
 en attendant, ne pas se soucier de gacher de la place en largeur et d'empiler verticalement
+
+fragmenter updateBulletinsDisplay
+    ne mettre à jour que le progress quand on change le nombre de votes d'un bulletin
 
 aligner le thème sombre de jscolor sur le thème de la page
 
