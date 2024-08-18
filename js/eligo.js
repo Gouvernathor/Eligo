@@ -632,6 +632,8 @@ function writeChartSommaire() {
                 borderColor.push(candidat.borderColor);
             }
 
+            // TODO ajouter un cercle de majorité ? (comment ?)
+
             new Chart(canvas, {
                 type: "polarArea",
                 data: {
@@ -662,13 +664,17 @@ function writeChartSommaire() {
             const labels = []; // noms des candidats dans l'ordre des candidats
             const datasets = []; // un par note, de manière cumulée
 
-            const rainbowgen = generate_rainbow(nNotes);
+            const rainbowgen = generate_rainbow(nNotes, "100%", 120);
+            const alpharainbowgen = generate_rainbow(nNotes, "50%", 120);
             for (let note = 0; note < nNotes; note++) {
                 const color = rainbowgen.next().value;
+                const alphacolor = alpharainbowgen.next().value;
                 datasets.push({
                     label: `Notes inférieures ou égales à ${note}`,
                     data: [],
                     fill: true,
+                    // backgroundColor: alphacolor,
+                    // borderColor: color,
                     backgroundColor: color,
                     borderWidth: 0,
                     pointBackgroundColor: color,
@@ -692,6 +698,16 @@ function writeChartSommaire() {
                 }
             }
 
+            // cercle en pointillés
+            datasets.unshift({
+                label: "Médiane",
+                data: Array(candidats.size).fill(computeNbVotes() / 2),
+                fill: false,
+                borderColor: "#888",
+                borderDash: [10, 5],
+                pointRadius: 0,
+            });
+
             new Chart(canvas, {
                 type: "radar",
                 data: {
@@ -699,12 +715,14 @@ function writeChartSommaire() {
                     datasets: datasets,
                 },
                 options: {
-                    animation: {
-                        animateRotate: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                        },
                     },
                     // elements: {
-                    //     lines: {
-                    //         tension: 1, // pour rendre les lignes moins droites
+                    //     line: {
+                    //         tension: .1, // pour rendre les lignes moins droites
                     //     },
                     // },
                 },
