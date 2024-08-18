@@ -566,7 +566,8 @@ function writeChartSommaire() {
     while (container.hasChildNodes())
         container.removeChild(container.firstChild);
 
-    if (votingMethod === null)
+    const nbVotes = computeNbVotes();
+    if (votingMethod === null || nbVotes === 0)
         return;
 
     const canvas = container.appendChild(document.createElement("canvas"));
