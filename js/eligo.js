@@ -396,8 +396,11 @@ function actuateBulletins() {
             // pas de création de bulletins
             // pas d'ordre particulier des bulletins
 
+            const bulletinFormButton = document.getElementById("bulletinFormButton");
             // rendre visible le bouton de formulaire de bulletins
-            $("#bulletinFormButton").show();
+            $(bulletinFormButton).show();
+            // le rendre sensible ssi il y a des candidats
+            bulletinFormButton.disabled = candidats.size === 0;
 
             break;
 
