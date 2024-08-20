@@ -381,16 +381,28 @@ function actuateBulletins() {
             const bulletinsConcernes = Array.from(bulletins.values())
                 .filter(b => b.kind === votingMethod);
 
-            // nettoyage des bulletins obsolètes
-            const candidateIdsIterator = votingMethod === VotingMethods.NOTES ?
-                b => b.notes.keys() :
-                b => b.candidatIds;
-            for (const bulletin of bulletinsConcernes) {
-                // si y'a des candidats inconnus
-                if ([...candidateIdsIterator(bulletin)].some(cid => !candidats.has(cid))) {
-                    bulletins.delete(bulletin.id);
-                    votes.delete(bulletin.id);
-                    bulletinsConcernes.delete(bulletin);
+            const setCandidatIds = new Set(candidats.keys());
+            if (votingMethod === VotingMethods.CLASSEMENT) {
+                for (const bulletin of bulletinsConcernes) {
+                    // si la liste n'est pas exactement celle des candidats
+                    if (!(new Set(bulletin.candidatIds).equals(setCandidatIds))) {
+                        bulletins.delete(bulletin.id);
+                        votes.delete(bulletin.id);
+                        bulletinsConcernes.delete(bulletin);
+                    }
+                }
+            } else {
+                // nettoyage des bulletins obsolètes
+                const testCandidatIds = votingMethod === VotingMethods.APPROBATION ?
+                    b => setCandidatIds.isSuperSetOf(b.candidatIds) :
+                    b => setCandidatIds.isSuperSetOf(b.notes);
+                for (const bulletin of bulletinsConcernes) {
+                    // si y'a des candidats inconnus
+                    if (!testCandidatIds(bulletin)) {
+                        bulletins.delete(bulletin.id);
+                        votes.delete(bulletin.id);
+                        bulletinsConcernes.delete(bulletin);
+                    }
                 }
             }
             // pas de création de bulletins
