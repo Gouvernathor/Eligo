@@ -17,14 +17,44 @@ let nNotes = 5; // nombre de notes pour la méthode de vote par notes
 // utils de lecture des données
 
 /**
+ * filtrage des bulletins valables
+ */
+function getRelevantBulletins(method = null) {
+    if (method === null)
+        method = votingMethod;
+
+    if (method === null)
+        return null;
+
+    const setCandidatIds = new Set(candidats.keys());
+    let isRelevant;
+    switch (method) {
+        case VotingMethods.UNIQUE:
+            isRelevant = b => setCandidatIds.has(b.candidatId);
+            break;
+
+        case VotingMethods.APPROBATION:
+            isRelevant = b => setCandidatIds.isSuperSetOf(b.candidatIds);
+            break;
+
+        case VotingMethods.CLASSEMENT:
+            isRelevant = b => setCandidatIds.equals(new Set(b.candidatIds));
+            break;
+
+        case VotingMethods.NOTES:
+            isRelevant = b => setCandidatIds.isSuperSetOf(b.notes);
+            break;
+    }
+    return Array.from(bulletins.values())
+        .filter(b => b.kind === method && isRelevant(b));
+}
+/**
  * calcul de la somme du nombre de votes sur les bulletins du mode de vote actuel
  */
 function computeNbVotes() {
     let value = 0;
-    if (votingMethod)
-        for (const [bid, nvotes] of votes.entries())
-            if (bulletins.get(bid).kind === votingMethod)
-                value += nvotes;
+    for (const bulletin of getRelevantBulletins())
+        value += votes.getOrDefault(bulletin.id, 0);
     return value;
 }
 /**
@@ -95,8 +125,7 @@ function resetModalBulletinForm() {
             labelNNotes.htmlFor = "bulletinFormNGradesInput";
             labelNNotes.className = "form-label";
             labelNNotes.textContent = "Nombre de notes";
-            const minNNotes = 1 + Math.max(1, ...Array.from(bulletins.values())
-                .filter(b => b.kind === VotingMethods.NOTES)
+            const minNNotes = 1 + Math.max(1, ...getRelevantBulletins()
                 .flatMap(b => Array.from(b.notes.values())));
             const inputNNotes = container.appendChild(document.createElement("input"));
             inputNNotes.id = "bulletinFormNGradesInput";
@@ -114,7 +143,7 @@ function resetModalBulletinForm() {
             // chaque update de l'input met à jour le max de chaque range
             inputNNotes.onchange = () => {
                 for (const range of ranges) {
-                    range.max = inputNNotes.value-1;
+                    range.max = inputNNotes.value - 1;
                     range.value = Math.min(range.value, range.max);
                 }
             };
@@ -159,7 +188,7 @@ function validerBulletinForm() {
                 if (input.checked)
                     candidatIds.add(parseInt(input.id.split("_")[1]));
 
-            if (![...bulletins.values()].some(b => b.kind === votingMethod && b.candidatIds.equals(candidatIds)))
+            if (!getRelevantBulletins().some(b => b.candidatIds.equals(candidatIds)))
                 // aucun doublon détecté
                 bulletin = new BulletinApprobation(newRandomValue(bulletins.keys()), candidatIds);
         }
@@ -175,7 +204,7 @@ function validerBulletinForm() {
             for (const range of ranges)
                 notes.set(parseInt(range.id.split("_")[1]), parseInt(range.value));
 
-            if (![...bulletins.values()].some(b => b.kind === votingMethod && b.notes.equals(notes)))
+            if (!getRelevantBulletins().some(b => b.notes.equals(notes)))
                 // aucun doublon détecté
                 bulletin = new BulletinNotes(newRandomValue(bulletins.keys()), notes);
         }
@@ -343,6 +372,7 @@ function actuateBulletins() {
         case null:
             break;
 
+        // pas d'utilisation de getRelevantBulletins() ici
         case VotingMethods.UNIQUE:
             const bulletinByCandidatId = new Map(
                 Array.from(bulletins.values())
@@ -382,27 +412,18 @@ function actuateBulletins() {
                 .filter(b => b.kind === votingMethod);
 
             const setCandidatIds = new Set(candidats.keys());
-            if (votingMethod === VotingMethods.CLASSEMENT) {
-                for (const bulletin of bulletinsConcernes) {
-                    // si la liste n'est pas exactement celle des candidats
-                    if (!(new Set(bulletin.candidatIds).equals(setCandidatIds))) {
-                        bulletins.delete(bulletin.id);
-                        votes.delete(bulletin.id);
-                        bulletinsConcernes.delete(bulletin);
-                    }
-                }
-            } else {
-                // nettoyage des bulletins obsolètes
-                const testCandidatIds = votingMethod === VotingMethods.APPROBATION ?
-                    b => setCandidatIds.isSuperSetOf(b.candidatIds) :
+            // nettoyage des bulletins obsolètes
+            const testCandidatIds = votingMethod === VotingMethods.APPROBATION ?
+                b => setCandidatIds.isSuperSetOf(b.candidatIds) :
+                votingMethod === VotingMethods.CLASSEMENT ?
+                    b => setCandidatIds.isSuperSetOf(new Set(b.candidatIds)) :
                     b => setCandidatIds.isSuperSetOf(b.notes);
-                for (const bulletin of bulletinsConcernes) {
-                    // si y'a des candidats inconnus
-                    if (!testCandidatIds(bulletin)) {
-                        bulletins.delete(bulletin.id);
-                        votes.delete(bulletin.id);
-                        bulletinsConcernes.delete(bulletin);
-                    }
+            for (const bulletin of bulletinsConcernes) {
+                // si y'a des candidats qui ont été supprimés
+                if (!testCandidatIds(bulletin)) {
+                    bulletins.delete(bulletin.id);
+                    votes.delete(bulletin.id);
+                    bulletinsConcernes.delete(bulletin);
                 }
             }
             // pas de création de bulletins
@@ -437,10 +458,7 @@ function updateBulletinsDisplay() {
 
     const authorizeDelete = votingMethod !== VotingMethods.UNIQUE;
     const progressbase = Math.max(1, computeNbElecteurs()); // avoid division by zero
-    for (const bulletin of bulletins.values()) {
-        if (bulletin.kind !== votingMethod)
-            continue;
-
+    for (const bulletin of getRelevantBulletins()) {
         const percent = `${(votes.get(bulletin.id) / progressbase * 100).toFixed(2)}%`;
         // TODO mettre à jour le diagramme sommaire avec les pourcentages
 
@@ -627,8 +645,7 @@ function writeChartSommaire() {
             break;
 
         case VotingMethods.APPROBATION: {
-            const bulletinsApprobation = Array.from(bulletins.values())
-                .filter(b => b.kind === VotingMethods.APPROBATION);
+            const bulletinsApprobation = getRelevantBulletins();
             const total = sum(bulletinsApprobation
                 .map(b => votes.getOrDefault(b.id, 0)));
 
@@ -673,8 +690,7 @@ function writeChartSommaire() {
             break;
 
         case VotingMethods.NOTES: {
-            const bulletinsNotes = Array.from(bulletins.values())
-                .filter(b => b.kind === VotingMethods.NOTES);
+            const bulletinsNotes = getRelevantBulletins();
 
             const labels = []; // noms des candidats dans l'ordre des candidats
             const datasets = []; // un par note, de manière cumulée
