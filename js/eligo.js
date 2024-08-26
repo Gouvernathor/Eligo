@@ -1,6 +1,10 @@
 import { VotingMethods } from "./eligo/constants.js";
 import { Candidat, Bulletin, BulletinSimple, BulletinApprobation, BulletinClassement, BulletinNotes } from "./eligo/classes.js";
-import { newRandomValue, getRandomColor, sortMap, sum, generate_rainbow } from "./eligo/utils.js";
+import { newRandomValue, getRandomColor, sortMap, sum, generate_rainbow, makeEventWithData as makeEvent } from "./eligo/utils.js";
+
+// alias
+const dispatchEvent = window.dispatchEvent.bind(window);
+const addEventListener = window.addEventListener.bind(window);
 
 
 // définition des données : candidats, bulletins, votes

@@ -119,7 +119,7 @@ export function sum(ar, start = 0) {
  */
 export function* generate_rainbow(n, alpha = "100%", maxhue = 300) {
     for (let i = 0; i < n; i++)
-        yield `hsla(${maxhue * i / (n-1)}deg, 100%, 50%, ${alpha})`;
+        yield `hsla(${maxhue * i / (n - 1)}deg, 100%, 50%, ${alpha})`;
 }
 
 Object.defineProperty(Set.prototype, 'equals', {
@@ -129,3 +129,13 @@ Object.defineProperty(Set.prototype, 'equals', {
     writable: true,
     configurable: true,
 });
+
+/**
+ * @param {string} eventName
+ * @param {any} data
+ */
+export function makeEventWithData(eventName, data = undefined) {
+    return data === undefined ?
+    new Event(eventName) :
+    new CustomEvent(eventName, { detail: data });
+}
