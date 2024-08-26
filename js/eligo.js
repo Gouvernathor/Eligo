@@ -94,9 +94,14 @@ function decrementVote(bid) {
     actuateNbElecteurs();
     updateBulletinsDisplay();
 }
+function setNbElecteursManuel(value) {
+    nbElecteursManuel = value;
+    updateBulletinsDisplay();
+}
 
 
-// application des actions de clic aux boutons du formulaire
+// ordres plus complexes reçus du formulaire
+
 function toggleElecteursManuel() {
     const nbElecteursManuelInput = document.getElementById("nbElecteursManuel");
     const nbVotes = computeNbVotes();
@@ -110,10 +115,6 @@ function toggleElecteursManuel() {
         nbElecteursManuelInput.value = nbVotes;
         nbElecteursManuel = null;
     }
-    updateBulletinsDisplay();
-}
-function changeNbElecteursManuel() {
-    nbElecteursManuel = document.getElementById("nbElecteursManuel").value;
     updateBulletinsDisplay();
 }
 function resetModalBulletinForm() {
@@ -263,10 +264,6 @@ function validerBulletinForm() {
     // dismiss du modal
     $("#bulletinFormModal").modal("hide");
 }
-
-
-// application des ordres du formulaire aux données
-
 function addCandidat() {
     const cid = newRandomValue(candidats.keys());
     const candidat = new Candidat(cid, "", getRandomColor(), 0, "#000000");
@@ -796,7 +793,8 @@ $(document).ready(function () {
         label.textContent = method.desc;
     }
 
-    document.getElementById("nbElecteursManuel").onchange = changeNbElecteursManuel;
+    const nbElecteursManuelInput = document.getElementById("nbElecteursManuel");
+    nbElecteursManuelInput.onchange = () => setNbElecteursManuel(parseInt(nbElecteursManuelInput.value));
     document.getElementById("toggleElecteursManuel").onclick = toggleElecteursManuel;
 
     document.getElementById("bulletinFormButton").onclick = resetModalBulletinForm;
