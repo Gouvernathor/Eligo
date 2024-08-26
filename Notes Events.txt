@@ -70,7 +70,7 @@ candidats:
         updateBulletinsDisplay
         writeChartSommaire
         actuateNbElecteurs (via getRelevantBulletins)
-"candidatCreated"
+v "candidatCreated"
     actuateBulletins
     updateBulletinsDisplay
     actuateNbElecteurs
@@ -81,7 +81,7 @@ candidats:
 "candidatsReordered"
     updateBulletinsDisplay
     writeChartSommaire
-"candidatRemoved"
+v "candidatRemoved"
     actuateBulletins
     updateBulletinsDisplay
     actuateNbElecteurs

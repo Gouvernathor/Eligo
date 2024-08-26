@@ -366,9 +366,10 @@ function addCandidat() {
 
     jscolor.install(partycard);
 
-    actuateBulletins();
+    dispatchEvent(makeEvent("candidatCreated", { candidat: candidat }));
 }
 function deleteCandidat(cid) {
+    const event = makeEvent("candidatRemoved", { candidat: candidats.get(cid) });
     candidats.delete(cid);
 
     const partycardid = `candidatCard_${cid}`;
@@ -381,7 +382,7 @@ function deleteCandidat(cid) {
         }
     }
 
-    actuateBulletins();
+    dispatchEvent(event);
 }
 
 
@@ -470,6 +471,8 @@ function actuateBulletins() {
     }
 }
 addEventListener("votingMethodChanged", (e) => actuateBulletins());
+addEventListener("candidatCreated", (e) => actuateBulletins());
+addEventListener("candidatRemoved", (e) => actuateBulletins());
 /**
  * actualisation de l'affichage des bulletins dans le DOM
  */
@@ -590,10 +593,13 @@ function updateBulletinsDisplay() {
         bulletinprogressbar.style.backgroundColor = progresscolor;
     }
 
+    // TODO : remove when event system is finalized
     writeChartSommaire();
 }
 addEventListener("nbElecteursManuelUpdated", (e) => updateBulletinsDisplay());
 addEventListener("votingMethodChanged", (e) => updateBulletinsDisplay());
+addEventListener("candidatCreated", (e) => updateBulletinsDisplay());
+addEventListener("candidatRemoved", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
@@ -608,6 +614,8 @@ function actuateNbElecteurs() {
 }
 addEventListener("nbElecteursManuelUpdated", (e) => actuateNbElecteurs());
 addEventListener("votingMethodChanged", (e) => actuateNbElecteurs());
+addEventListener("candidatCreated", (e) => actuateNbElecteurs());
+addEventListener("candidatRemoved", (e) => actuateNbElecteurs());
 
 
 // gestion du diagramme sommaire
@@ -784,6 +792,8 @@ function writeChartSommaire() {
     }
 }
 addEventListener("votingMethodChanged", (e) => writeChartSommaire());
+addEventListener("candidatCreated", (e) => writeChartSommaire());
+addEventListener("candidatRemoved", (e) => writeChartSommaire());
 
 
 // création du diagramme parliamentarch
