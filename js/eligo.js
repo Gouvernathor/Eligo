@@ -99,27 +99,33 @@ function decrementVote(bid) {
     updateBulletinsDisplay();
 }
 function setNbElecteursManuel(value) {
+    const event = makeEvent("nbElecteursManuelUpdated", { oldValue: nbElecteursManuel });
     nbElecteursManuel = value;
-    updateBulletinsDisplay();
+    dispatchEvent(event);
 }
 
 
 // ordres plus complexes reçus du formulaire
 
 function toggleElecteursManuel() {
+    let event = null;
     const nbElecteursManuelInput = document.getElementById("nbElecteursManuel");
     const nbVotes = computeNbVotes();
     if (document.getElementById("toggleElecteursManuel").checked) {
         nbElecteursManuelInput.disabled = false;
-        if (nbElecteursManuel === null)
+        if (nbElecteursManuel === null) {
+            event = makeEvent("nbElecteursManuelUpdated", { oldValue: nbElecteursManuel });
             nbElecteursManuel = nbVotes;
+        }
         nbElecteursManuelInput.value = Math.max(nbElecteursManuel, nbVotes);
     } else {
         nbElecteursManuelInput.disabled = true;
         nbElecteursManuelInput.value = nbVotes;
+        event = makeEvent("nbElecteursManuelUpdated", { oldValue: nbElecteursManuel });
         nbElecteursManuel = null;
     }
-    updateBulletinsDisplay();
+    if (event !== null)
+        dispatchEvent(event);
 }
 function resetModalBulletinForm() {
     // vidange du container
@@ -583,6 +589,7 @@ function updateBulletinsDisplay() {
 
     writeChartSommaire();
 }
+addEventListener("nbElecteursManuelUpdated", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
@@ -595,6 +602,7 @@ function actuateNbElecteurs() {
     // dans le cas où l'utilisateur ne l'aurait pas modifié lui-même,
     // il faudrait le diminuer automatiquement
 }
+addEventListener("nbElecteursManuelUpdated", (e) => actuateNbElecteurs());
 
 
 // gestion du diagramme sommaire

@@ -156,7 +156,7 @@ nbElecteursManuel:
         (setter) toggleElecteursManuel
         updateBulletinsDisplay (via computeNbElecteurs)
         actuateNbElecteurs (via computeNbElecteurs)
-"nbElecteursManuelUpdated"
+v "nbElecteursManuelUpdated"
     updateBulletinsDisplay
     actuateNbElecteurs
 
