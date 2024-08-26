@@ -1,0 +1,170 @@
+Dépendances aux fonctions computatives (des getters sophistiqués):
+getRelevantBulletins dépend de votingMethod et des ids/clés de candidats
+    donc des events votingMethodChanged, candidatCreated, candidatRemoved (pas candidatDataUpdated)
+getRelevantBulletins est utilisée par:
+    computeNbVotes
+    resetModalBulletinForm et validerBulletinForm (non concernés)
+    updateBulletinsDisplay
+    writeChartSommaire
+computeNbVotes est utilisée par:
+    computeNbElecteurs (sans arguments)
+    toggleElecteursManuel (non concerné)
+    actuateNbElecteurs
+    writeChartSommaire
+computeNbElecteurs (sans arguments) est utilisée par:
+    updateBulletinsDisplay
+computeNbElecteurs (avec arguments) est utilisée par:
+    actuateNbElecteurs
+un trigger de getRelevantBulletins doit être remplacé par un trigger de:
+    updateBulletinsDisplay
+    actuateNbElecteurs
+    writeChartSommaire
+un trigger de computeNbVotes doit être remplacé par un trigger de:
+    updateBulletinsDisplay
+    actuateNbElecteurs
+    writeChartSommaire
+un trigger de computeNbElecteurs doit être remplacé par un trigger de:
+    updateBulletinsDisplay
+    actuateNbElecteurs
+
+Dépendance de chaque fonction aux données enregistrées:
+chaque setter doit trigger un event
+chaque getter doit trigger sur les events des setter, sauf:
+  - les fonctions computatives : ce sont leur dépendeurs qui sont trigger
+  - les setters
+  - les fonctions non-concernées car liées à un modal
+(le modal bloque toute mise à jour des données et n'a donc pas besoin d'être mis à jour)
+
+votingMethod:
+    set in: (event "votingMethodChanged")
+        setVotingMethod
+    read in:
+        (comp) getRelevantBulletins
+        (modal) resetModalBulletinForm et validerBulletinForm
+        actuateBulletins
+        updateBulletinsDisplay
+        writeChartSommaire
+        actuateNbElecteurs (via getRelevantBulletins)
+"votingMethodChanged"
+    actuateBulletins
+    updateBulletinsDisplay
+    writeChartSommaire
+    actuateNbElecteurs
+
+attributionMethod: not implemented
+
+candidats:
+    set in:
+        add element: (event "candidatCreated")
+            addCandidat
+        mutate element: (event "candidatDataUpdated")
+            setCandidatData
+        sorted: (event "candidatsReordered") never
+        remove element: (event "candidatRemoved")
+            deleteCandidat
+    read in:
+        (comp) getRelevantBulletins (keys/ids only)
+        (modal) resetModalBulletinForm
+        (setter) addCandidat (keys/ids only)
+        actuateBulletins (keys/ids only)
+        updateBulletinsDisplay
+        writeChartSommaire
+        actuateNbElecteurs (via getRelevantBulletins)
+"candidatCreated"
+    actuateBulletins
+    updateBulletinsDisplay
+    writeChartSommaire
+    actuateNbElecteurs
+"candidatDataUpdated"
+    updateBulletinsDisplay
+    writeChartSommaire
+"candidatReordered"
+    updateBulletinsDisplay
+    writeChartSommaire
+"candidatRemoved"
+    actuateBulletins
+    updateBulletinsDisplay
+    writeChartSommaire
+    actuateNbElecteurs
+
+bulletins:
+    set in:
+        add element: (event "bulletinCreated")
+            validerBulletinForm
+            actuateBulletins (unique mode only)
+        mutate element: never
+        sorted: (event "bulletinsReordered")
+            actuateBulletins (unique mode only)
+        remove element: (event "bulletinRemoved")
+            actuateBulletins
+            deleteBulletin
+    read in:
+        (comp) getRelevantBulletins
+        (setter) validerBulletinForm (keys/ids only)
+        (setter) actuateBulletins
+        writeChartSommaire (via getRelevantBulletins)
+        updateBulletinsDisplay (via getRelevantBulletins)
+        actuateNbElecteurs (via getRelevantBulletins)
+"bulletinCreated"
+    writeChartSommaire
+    updateBulletinsDisplay
+    actuateNbElecteurs
+"bulletinsReordered"
+    x writeChartSommaire
+    updateBulletinsDisplay
+    x actuateNbElecteurs
+"bulletinRemoved"
+    writeChartSommaire
+    updateBulletinsDisplay
+    actuateNbElecteurs
+
+votes:
+    set in:
+        add element: (event "voteAdded"? covered by "bulletinCreated")
+            validerBulletinForm
+            actuateBulletins (unique mode only)
+        change value: (event "votesChanged")
+            incrementVote and decrementVote
+        remove element: (event "voteRemoved"? covered by "bulletinRemoved")
+            actuateBulletins
+            deleteBulletin
+    read in:
+        (comp) computeNbVotes
+        updateBulletinsDisplay
+        (setter) incrementVote and decrementVote
+        writeChartSommaire
+        actuateNbElecteurs (via computeNbVotes)
+x "voteAdded"
+    updateBulletinsDisplay
+    writeChartSommaire
+    actuateNbElecteurs
+"votesChanged"
+    updateBulletinsDisplay
+    writeChartSommaire
+    actuateNbElecteurs
+x "voteRemoved"
+    updateBulletinsDisplay
+    writeChartSommaire
+    actuateNbElecteurs
+
+nbElecteursManuel:
+    set in: (event "nbElecteursManuelUpdated")
+        toggleElecteursManuel
+        setNbElecteursManuel
+    read in:
+        (comp) computeNbElecteurs (avec ou sans arguments)
+        (setter) toggleElecteursManuel
+        updateBulletinsDisplay (via computeNbElecteurs)
+        actuateNbElecteurs (via computeNbElecteurs)
+"nbElecteursManuelUpdated"
+    updateBulletinsDisplay
+    actuateNbElecteurs
+
+nNotes:
+    set in: (event "nNotesUpdated")
+        validerBulletinForm
+    read in:
+        (modal) resetModalBulletinForm
+        writeChartSommaire
+"nNotesUpdated"
+    writeChartSommaire
