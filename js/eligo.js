@@ -14,7 +14,7 @@ let nbElecteursManuel = null; // dernière valeur choisie par l'utilisateur
 let nNotes = 5; // nombre de notes pour la méthode de vote par notes
 
 
-// utils de lecture des données
+// utils de lecture des données - fonctions computatives (getters sophistiqués)
 
 /**
  * filtrage des bulletins valables
@@ -65,6 +65,34 @@ function computeNbElecteurs(nbVotes = null) {
     if (nbVotes === null)
         nbVotes = computeNbVotes();
     return Math.max(nbVotes, nbElecteursManuel || 0);
+}
+
+
+// setters des données
+
+function setVotingMethod(method) {
+    votingMethod = method;
+    actuateBulletins();
+}
+function setCandidatData(candidat, field, value) {
+    candidat[field] = value;
+    updateBulletinsDisplay();
+}
+function deleteBulletin(bid) {
+    bulletins.delete(bid);
+    votes.delete(bid);
+    actuateNbElecteurs();
+    updateBulletinsDisplay();
+}
+function incrementVote(bid) {
+    votes.set(bid, votes.get(bid) + 1);
+    actuateNbElecteurs();
+    updateBulletinsDisplay();
+}
+function decrementVote(bid) {
+    votes.set(bid, votes.get(bid) - 1);
+    actuateNbElecteurs();
+    updateBulletinsDisplay();
 }
 
 
@@ -266,10 +294,7 @@ function addCandidat() {
     nameInput.id = `candidatName_${candidat.id}`;
     nameInput.value = candidat.name;
     nameInput.placeholder = "Nom du parti";
-    nameInput.onchange = () => {
-        candidat.name = nameInput.value;
-        updateBulletinsDisplay();
-    };
+    nameInput.onchange = () => setCandidatData(candidat, "name", nameInput.value);
     const nameLabel = nameDiv.appendChild(document.createElement("label"));
     nameLabel.htmlFor = nameInput.id;
     nameLabel.textContent = "Nom du parti";
@@ -284,10 +309,7 @@ function addCandidat() {
     colorInput.setAttribute("data-jscolor", "");
     colorInput.id = `candidatColor_${candidat.id}`;
     colorInput.value = candidat.color;
-    colorInput.onchange = () => {
-        candidat.color = colorInput.value;
-        updateBulletinsDisplay();
-    };
+    colorInput.onchange = () => setCandidatData(candidat, "color", colorInput.value);
     const colorLabel = colorDiv.appendChild(document.createElement("label"));
     colorLabel.htmlFor = colorInput.id;
     colorLabel.textContent = "Couleur du parti";
@@ -306,10 +328,7 @@ function addCandidat() {
     borderWidthInput.className = "form-control";
     borderWidthInput.id = `candidatBorderWidth_${candidat.id}`;
     borderWidthInput.value = candidat.borderWidth;
-    borderWidthInput.onchange = () => {
-        candidat.borderWidth = borderWidthInput.value;
-        updateBulletinsDisplay();
-    };
+    borderWidthInput.onchange = () => setCandidatData(candidat, "borderWidth", borderWidthInput.value);
     const borderWidthLabel = borderWidthDiv.appendChild(document.createElement("label"));
     borderWidthLabel.htmlFor = borderWidthInput.id;
     borderWidthLabel.textContent = "Épaisseur de la bordure";
@@ -324,10 +343,7 @@ function addCandidat() {
     borderColorInput.setAttribute("data-jscolor", "");
     borderColorInput.id = `candidatBorderColor_${candidat.id}`;
     borderColorInput.value = candidat.borderColor;
-    borderColorInput.onchange = () => {
-        candidat.borderColor = borderColorInput.value;
-        updateBulletinsDisplay();
-    };
+    borderColorInput.onchange = () => setCandidatData(candidat, "borderColor", borderColorInput.value);
     const borderColorLabel = borderColorDiv.appendChild(document.createElement("label"));
     borderColorLabel.htmlFor = borderColorInput.id;
     borderColorLabel.textContent = "Couleur de la bordure";
@@ -338,9 +354,7 @@ function addCandidat() {
     deleteButton.className = "btn btn-outline-danger d-inline-block";
     deleteButton.id = `deleteCandidat_${candidat.id}`;
     deleteButton.textContent = "Supprimer";
-    deleteButton.onclick = () => {
-        deleteCandidat(candidat.id);
-    };
+    deleteButton.onclick = () => deleteCandidat(candidat.id);
 
     jscolor.install(partycard);
 
@@ -496,31 +510,18 @@ function updateBulletinsDisplay() {
         bulletinminus.className = "col-1 fw-bold btn btn-outline-warning";
         bulletinminus.innerText = "-";
         bulletinminus.disabled = votes.get(bulletin.id) <= 0;
-        bulletinminus.onclick = () => {
-            votes.set(bulletin.id, votes.get(bulletin.id) - 1);
-            actuateNbElecteurs();
-            updateBulletinsDisplay();
-        };
+        bulletinminus.onclick = () => decrementVote(bulletin.id);
 
         const bulletinplus = bulletincardbody.appendChild(document.createElement("button"));
         bulletinplus.className = "col-1 fw-bold btn btn-outline-success";
         bulletinplus.innerText = "+";
-        bulletinplus.onclick = () => {
-            votes.set(bulletin.id, votes.get(bulletin.id) + 1);
-            actuateNbElecteurs();
-            updateBulletinsDisplay();
-        };
+        bulletinplus.onclick = () => incrementVote(bulletin.id);
 
         if (authorizeDelete) {
             const bulletindelete = bulletincardbody.appendChild(document.createElement("button"));
             bulletindelete.className = "col-3 btn btn-outline-danger";
             bulletindelete.innerText = "Supprimer";
-            bulletindelete.onclick = () => {
-                bulletins.delete(bulletin.id);
-                votes.delete(bulletin.id);
-                actuateNbElecteurs();
-                updateBulletinsDisplay();
-            };
+            bulletindelete.onclick = () => deleteBulletin(bulletin.id);
         }
 
         let progresscolor = null;
@@ -787,10 +788,7 @@ $(document).ready(function () {
         input.name = "votingMethod";
         input.value = method.id;
         input.id = `votingMethod_${method.id}`;
-        input.onclick = () => {
-            votingMethod = method;
-            actuateBulletins();
-        };
+        input.onclick = () => setVotingMethod(method);
 
         const label = li.appendChild(document.createElement("label"));
         label.className = "form-check-label stretched-link";
