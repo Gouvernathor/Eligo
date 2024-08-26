@@ -85,10 +85,10 @@ function setCandidatData(candidat, field, value) {
     dispatchEvent(event);
 }
 function deleteBulletin(bid) {
+    const event = makeEvent("bulletinsVotesRemoved", { bulletinsToOldVotes: new Map([[bulletins.get(bid), votes.get(bid)]]) });
     bulletins.delete(bid);
     votes.delete(bid);
-    actuateNbElecteurs();
-    updateBulletinsDisplay();
+    dispatchEvent(event);
 }
 function incrementVote(bid) {
     votes.set(bid, votes.get(bid) + 1);
@@ -405,9 +405,11 @@ function actuateBulletins() {
                     .map(b => [b.candidatId, b]));
 
             // nettoyage des bulletins obsolètes
+            const removedBulletinsUnique = new Map();
             for (const [cid, b] of bulletinByCandidatId.entries()) {
                 if (!candidats.has(cid)) {
                     bulletins.delete(b.id);
+                    removedBulletinsUnique.set(b, votes.get(b.id));
                     votes.delete(b.id);
                     bulletinByCandidatId.delete(cid);
                 }
@@ -427,7 +429,10 @@ function actuateBulletins() {
             // ordre des bulletins suivant l'ordre des candidats
             sortMap(bulletins, [...candidats.keys()].map(cid => bulletinByCandidatId.get(cid).id));
 
-            events.push(makeEvent("bulletinsVotesCreated", { bulletins: newBulletins }));
+            if (removedBulletinsUnique.size > 0)
+                events.push(makeEvent("bulletinsVotesRemoved", { bulletinsToOldVotes: removedBulletinsUnique }));
+            if (newBulletins.length > 0)
+                events.push(makeEvent("bulletinsVotesCreated", { bulletins: newBulletins }));
 
             // rendre invisible le bouton de formulaire de bulletins
             $("#bulletinFormButton").hide();
@@ -447,16 +452,21 @@ function actuateBulletins() {
                 votingMethod === VotingMethods.CLASSEMENT ?
                     b => setCandidatIds.isSuperSetOf(new Set(b.candidatIds)) :
                     b => setCandidatIds.isSuperSetOf(b.notes);
+            const removedBulletins = new Map();
             for (const bulletin of bulletinsConcernes) {
                 // si y'a des candidats qui ont été supprimés
                 if (!testCandidatIds(bulletin)) {
                     bulletins.delete(bulletin.id);
+                    removedBulletins.set(bulletin, votes.get(bulletin.id));
                     votes.delete(bulletin.id);
                     bulletinsConcernes.delete(bulletin);
                 }
             }
             // pas de création de bulletins
             // pas d'ordre particulier des bulletins
+
+            if (removedBulletins.size > 0)
+                events.push(makeEvent("bulletinsVotesRemoved", { bulletinsToOldVotes: removedBulletins }));
 
             const bulletinFormButton = document.getElementById("bulletinFormButton");
             // rendre visible le bouton de formulaire de bulletins
@@ -611,6 +621,7 @@ addEventListener("candidatRemoved", (e) => updateBulletinsDisplay());
 addEventListener("candidatDataUpdated", (e) => updateBulletinsDisplay());
 addEventListener("candidatsReordered", (e) => updateBulletinsDisplay());
 addEventListener("bulletinsVotesCreated", (e) => updateBulletinsDisplay());
+addEventListener("bulletinsVotesRemoved", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
@@ -628,6 +639,7 @@ addEventListener("votingMethodChanged", (e) => actuateNbElecteurs());
 addEventListener("candidatCreated", (e) => actuateNbElecteurs());
 addEventListener("candidatRemoved", (e) => actuateNbElecteurs());
 addEventListener("bulletinsVotesCreated", (e) => actuateNbElecteurs());
+addEventListener("bulletinsVotesRemoved", (e) => actuateNbElecteurs());
 
 
 // gestion du diagramme sommaire
@@ -809,6 +821,7 @@ addEventListener("candidatRemoved", (e) => writeChartSommaire());
 addEventListener("candidatDataUpdated", (e) => writeChartSommaire());
 addEventListener("candidatsReordered", (e) => writeChartSommaire());
 addEventListener("bulletinsVotesCreated", (e) => writeChartSommaire());
+addEventListener("bulletinsVotesRemoved", (e) => writeChartSommaire());
 
 
 // création du diagramme parliamentarch

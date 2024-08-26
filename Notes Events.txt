@@ -95,9 +95,9 @@ bulletins:
         mutate element: never
         sorted: (event "bulletinsReordered")
             actuateBulletins (unique mode only)
-        remove element: (event "bulletinVoteRemoved")
-            actuateBulletins
+        remove element: (event "bulletinsVotesRemoved")
             deleteBulletin
+            actuateBulletins
     read in:
         (comp) getRelevantBulletins
         (setter) validerBulletinForm (keys/ids only)
@@ -113,7 +113,7 @@ v "bulletinsVotesCreated"
     updateBulletinsDisplay
     x actuateNbElecteurs
     x writeChartSommaire
-"bulletinVoteRemoved"
+v "bulletinsVotesRemoved"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
@@ -125,9 +125,9 @@ votes:
             actuateBulletins (unique mode only)
         change value: (event "votesChanged")
             incrementVote and decrementVote
-        remove element: (event "bulletinVoteRemoved")
-            actuateBulletins
+        remove element: (event "bulletinsVotesRemoved")
             deleteBulletin
+            actuateBulletins
     read in:
         (comp) computeNbVotes
         updateBulletinsDisplay
@@ -142,7 +142,7 @@ v "bulletinsVotesCreated"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
-"bulletinVoteRemoved"
+v "bulletinsVotesRemoved"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
