@@ -48,8 +48,8 @@ votingMethod:
 v "votingMethodChanged"
     actuateBulletins
     updateBulletinsDisplay
-    writeChartSommaire
     actuateNbElecteurs
+    writeChartSommaire
 
 attributionMethod: not implemented
 
@@ -73,19 +73,19 @@ candidats:
 "candidatCreated"
     actuateBulletins
     updateBulletinsDisplay
-    writeChartSommaire
     actuateNbElecteurs
+    writeChartSommaire
 "candidatDataUpdated"
     updateBulletinsDisplay
     writeChartSommaire
-"candidatReordered"
+"candidatsReordered"
     updateBulletinsDisplay
     writeChartSommaire
 "candidatRemoved"
     actuateBulletins
     updateBulletinsDisplay
-    writeChartSommaire
     actuateNbElecteurs
+    writeChartSommaire
 
 bulletins:
     set in:
@@ -106,17 +106,17 @@ bulletins:
         updateBulletinsDisplay (via getRelevantBulletins)
         actuateNbElecteurs (via getRelevantBulletins)
 "bulletinCreated"
-    writeChartSommaire
     updateBulletinsDisplay
     actuateNbElecteurs
+    writeChartSommaire
 "bulletinsReordered"
-    x writeChartSommaire
     updateBulletinsDisplay
     x actuateNbElecteurs
+    x writeChartSommaire
 "bulletinRemoved"
-    writeChartSommaire
     updateBulletinsDisplay
     actuateNbElecteurs
+    writeChartSommaire
 
 votes:
     set in:
@@ -136,16 +136,16 @@ votes:
         actuateNbElecteurs (via computeNbVotes)
 x "voteAdded"
     updateBulletinsDisplay
-    writeChartSommaire
     actuateNbElecteurs
+    writeChartSommaire
 "votesChanged"
     updateBulletinsDisplay
-    writeChartSommaire
     actuateNbElecteurs
+    writeChartSommaire
 x "voteRemoved"
     updateBulletinsDisplay
-    writeChartSommaire
     actuateNbElecteurs
+    writeChartSommaire
 
 nbElecteursManuel:
     set in: (event "nbElecteursManuelUpdated")
