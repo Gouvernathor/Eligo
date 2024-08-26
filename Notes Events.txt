@@ -89,7 +89,7 @@ v "candidatRemoved"
 
 bulletins:
     set in:
-        add element: (event "bulletinVoteCreated")
+        add element: (event "bulletinsVotesCreated")
             validerBulletinForm
             actuateBulletins (unique mode only)
         mutate element: never
@@ -105,7 +105,7 @@ bulletins:
         writeChartSommaire (via getRelevantBulletins)
         updateBulletinsDisplay (via getRelevantBulletins)
         actuateNbElecteurs (via getRelevantBulletins)
-"bulletinVoteCreated"
+v "bulletinsVotesCreated"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
@@ -120,7 +120,7 @@ bulletins:
 
 votes:
     set in:
-        add element: (event "bulletinVoteCreated")
+        add element: (event "bulletinsVotesCreated")
             validerBulletinForm
             actuateBulletins (unique mode only)
         change value: (event "votesChanged")
@@ -134,7 +134,7 @@ votes:
         (setter) incrementVote and decrementVote
         writeChartSommaire
         actuateNbElecteurs (via computeNbVotes)
-"bulletinVoteCreated"
+v "bulletinsVotesCreated"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire

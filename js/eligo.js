@@ -270,8 +270,7 @@ function validerBulletinForm() {
     }
 
     // actualisations
-    // actuateNbElecteurs(); // seulement si on leur donne un nombre de votes par défaut
-    updateBulletinsDisplay();
+    dispatchEvent(makeEvent("bulletinsVotesCreated", { bulletins: [bulletin] }));
 
     // dismiss du modal
     $("#bulletinFormModal").modal("hide");
@@ -392,6 +391,8 @@ function deleteCandidat(cid) {
 // de la liste des méthodes d'attribution (changement de méthode de vote)
 // des bulletins (changement de méthode de vote/attribution, changement de candidats)
 function actuateBulletins() {
+    const events = [];
+
     switch (votingMethod) {
         case null:
             break;
@@ -412,6 +413,7 @@ function actuateBulletins() {
                 }
             }
             // création des bulletins manquants
+            const newBulletins = [];
             for (const cid of candidats.keys()) {
                 if (!bulletinByCandidatId.has(cid)) {
                     const bid = newRandomValue(bulletins.keys());
@@ -419,10 +421,13 @@ function actuateBulletins() {
                     bulletins.set(bid, bulletin);
                     votes.set(bid, 1);
                     bulletinByCandidatId.set(cid, bulletin);
+                    newBulletins.push(bulletin);
                 }
             }
             // ordre des bulletins suivant l'ordre des candidats
             sortMap(bulletins, [...candidats.keys()].map(cid => bulletinByCandidatId.get(cid).id));
+
+            events.push(makeEvent("bulletinsVotesCreated", { bulletins: newBulletins }));
 
             // rendre invisible le bouton de formulaire de bulletins
             $("#bulletinFormButton").hide();
@@ -464,6 +469,8 @@ function actuateBulletins() {
         default:
             throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
     }
+
+    events.map(e => dispatchEvent(e));
 
     // TODO : remove when event system is finalized
     if (votingMethod !== null) {
@@ -603,6 +610,7 @@ addEventListener("candidatCreated", (e) => updateBulletinsDisplay());
 addEventListener("candidatRemoved", (e) => updateBulletinsDisplay());
 addEventListener("candidatDataUpdated", (e) => updateBulletinsDisplay());
 addEventListener("candidatsReordered", (e) => updateBulletinsDisplay());
+addEventListener("bulletinsVotesCreated", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
@@ -619,6 +627,7 @@ addEventListener("nbElecteursManuelUpdated", (e) => actuateNbElecteurs());
 addEventListener("votingMethodChanged", (e) => actuateNbElecteurs());
 addEventListener("candidatCreated", (e) => actuateNbElecteurs());
 addEventListener("candidatRemoved", (e) => actuateNbElecteurs());
+addEventListener("bulletinsVotesCreated", (e) => actuateNbElecteurs());
 
 
 // gestion du diagramme sommaire
@@ -799,6 +808,7 @@ addEventListener("candidatCreated", (e) => writeChartSommaire());
 addEventListener("candidatRemoved", (e) => writeChartSommaire());
 addEventListener("candidatDataUpdated", (e) => writeChartSommaire());
 addEventListener("candidatsReordered", (e) => writeChartSommaire());
+addEventListener("bulletinsVotesCreated", (e) => writeChartSommaire());
 
 
 // création du diagramme parliamentarch
