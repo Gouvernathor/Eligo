@@ -610,6 +610,8 @@ function writeChartSommaire() {
 
     switch (votingMethod) {
         case VotingMethods.UNIQUE: {
+            const bulletinsUnique = getRelevantBulletins();
+
             const labels = []; // noms des candidats dans l'ordre des candidats
             const data = []; // nombre de votes pour le bulletin de chaque candidat
             const backgroundColor = []; // couleurs des candidats dans l'ordre des candidats
@@ -617,8 +619,7 @@ function writeChartSommaire() {
             const borderColor = []; // couleurs des bordures des candidats dans l'ordre des candidats
             for (const candidat of candidats.values()) {
                 labels.push(candidat.name);
-                const bulletin = Array.from(bulletins.values())
-                    .find(b => b.candidatId === candidat.id);
+                const bulletin = bulletinsUnique.find(b => b.candidatId === candidat.id);
                 data.push(votes.getOrDefault(bulletin.id, 0));
                 backgroundColor.push(candidat.color);
                 borderWidth.push(candidat.borderWidth);
