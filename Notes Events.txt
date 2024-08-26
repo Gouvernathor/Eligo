@@ -75,10 +75,10 @@ v "candidatCreated"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
-"candidatDataUpdated"
+v "candidatDataUpdated"
     updateBulletinsDisplay
     writeChartSommaire
-"candidatsReordered"
+v "candidatsReordered"
     updateBulletinsDisplay
     writeChartSommaire
 v "candidatRemoved"

@@ -80,8 +80,9 @@ function setVotingMethod(method) {
     dispatchEvent(event);
 }
 function setCandidatData(candidat, field, value) {
+    const event = makeEvent("candidatDataUpdated", { candidat: candidat, field: field, oldValue: candidat[field] });
     candidat[field] = value;
-    updateBulletinsDisplay();
+    dispatchEvent(event);
 }
 function deleteBulletin(bid) {
     bulletins.delete(bid);
@@ -600,6 +601,8 @@ addEventListener("nbElecteursManuelUpdated", (e) => updateBulletinsDisplay());
 addEventListener("votingMethodChanged", (e) => updateBulletinsDisplay());
 addEventListener("candidatCreated", (e) => updateBulletinsDisplay());
 addEventListener("candidatRemoved", (e) => updateBulletinsDisplay());
+addEventListener("candidatDataUpdated", (e) => updateBulletinsDisplay());
+addEventListener("candidatsReordered", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
@@ -794,6 +797,8 @@ function writeChartSommaire() {
 addEventListener("votingMethodChanged", (e) => writeChartSommaire());
 addEventListener("candidatCreated", (e) => writeChartSommaire());
 addEventListener("candidatRemoved", (e) => writeChartSommaire());
+addEventListener("candidatDataUpdated", (e) => writeChartSommaire());
+addEventListener("candidatsReordered", (e) => writeChartSommaire());
 
 
 // création du diagramme parliamentarch
