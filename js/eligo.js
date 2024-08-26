@@ -34,7 +34,7 @@ function getRelevantBulletins(method = null) {
             break;
 
         case VotingMethods.APPROBATION:
-            isRelevant = b => setCandidatIds.isSuperSetOf(b.candidatIds);
+            isRelevant = b => setCandidatIds.isSupersetOf(b.candidatIds);
             break;
 
         case VotingMethods.CLASSEMENT:
@@ -42,7 +42,7 @@ function getRelevantBulletins(method = null) {
             break;
 
         case VotingMethods.NOTES:
-            isRelevant = b => setCandidatIds.isSuperSetOf(b.notes);
+            isRelevant = b => setCandidatIds.isSupersetOf(b.notes);
             break;
     }
     return Array.from(bulletins.values())
