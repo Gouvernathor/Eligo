@@ -433,6 +433,7 @@ function actuateBulletins() {
                 events.push(makeEvent("bulletinsVotesRemoved", { bulletinsToOldVotes: removedBulletinsUnique }));
             if (newBulletins.length > 0)
                 events.push(makeEvent("bulletinsVotesCreated", { bulletins: newBulletins }));
+            events.push(makeEvent("bulletinsReordered"));
 
             // rendre invisible le bouton de formulaire de bulletins
             $("#bulletinFormButton").hide();
@@ -622,6 +623,7 @@ addEventListener("candidatDataUpdated", (e) => updateBulletinsDisplay());
 addEventListener("candidatsReordered", (e) => updateBulletinsDisplay());
 addEventListener("bulletinsVotesCreated", (e) => updateBulletinsDisplay());
 addEventListener("bulletinsVotesRemoved", (e) => updateBulletinsDisplay());
+addEventListener("bulletinsReordered", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {

@@ -109,7 +109,7 @@ v "bulletinsVotesCreated"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
-"bulletinsReordered"
+v "bulletinsReordered"
     updateBulletinsDisplay
     x actuateNbElecteurs
     x writeChartSommaire
