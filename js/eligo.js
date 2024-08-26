@@ -482,12 +482,6 @@ function actuateBulletins() {
     }
 
     events.map(e => dispatchEvent(e));
-
-    // TODO : remove when event system is finalized
-    if (votingMethod !== null) {
-        actuateNbElecteurs();
-        updateBulletinsDisplay();
-    }
 }
 addEventListener("votingMethodChanged", (e) => actuateBulletins());
 addEventListener("candidatCreated", (e) => actuateBulletins());
@@ -611,9 +605,6 @@ function updateBulletinsDisplay() {
         }
         bulletinprogressbar.style.backgroundColor = progresscolor;
     }
-
-    // TODO : remove when event system is finalized
-    writeChartSommaire();
 }
 addEventListener("nbElecteursManuelUpdated", (e) => updateBulletinsDisplay());
 addEventListener("votingMethodChanged", (e) => updateBulletinsDisplay());
