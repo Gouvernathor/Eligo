@@ -91,14 +91,14 @@ function deleteBulletin(bid) {
     dispatchEvent(event);
 }
 function incrementVote(bid) {
-    votes.set(bid, votes.get(bid) + 1);
-    actuateNbElecteurs();
-    updateBulletinsDisplay();
+    const oldValue = votes.get(bid);
+    votes.set(bid, oldValue + 1);
+    dispatchEvent(makeEvent("votesChanged", { bid: bid, oldValue: oldValue }));
 }
 function decrementVote(bid) {
-    votes.set(bid, votes.get(bid) - 1);
-    actuateNbElecteurs();
-    updateBulletinsDisplay();
+    const oldValue = votes.get(bid);
+    votes.set(bid, oldValue - 1);
+    dispatchEvent(makeEvent("votesChanged", { bid: bid, oldValue: oldValue }));
 }
 function setNbElecteursManuel(value) {
     const event = makeEvent("nbElecteursManuelUpdated", { oldValue: nbElecteursManuel });
@@ -624,6 +624,7 @@ addEventListener("candidatsReordered", (e) => updateBulletinsDisplay());
 addEventListener("bulletinsVotesCreated", (e) => updateBulletinsDisplay());
 addEventListener("bulletinsVotesRemoved", (e) => updateBulletinsDisplay());
 addEventListener("bulletinsReordered", (e) => updateBulletinsDisplay());
+addEventListener("votesChanged", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
@@ -642,6 +643,7 @@ addEventListener("candidatCreated", (e) => actuateNbElecteurs());
 addEventListener("candidatRemoved", (e) => actuateNbElecteurs());
 addEventListener("bulletinsVotesCreated", (e) => actuateNbElecteurs());
 addEventListener("bulletinsVotesRemoved", (e) => actuateNbElecteurs());
+addEventListener("votesChanged", (e) => actuateNbElecteurs());
 
 
 // gestion du diagramme sommaire
@@ -824,6 +826,7 @@ addEventListener("candidatDataUpdated", (e) => writeChartSommaire());
 addEventListener("candidatsReordered", (e) => writeChartSommaire());
 addEventListener("bulletinsVotesCreated", (e) => writeChartSommaire());
 addEventListener("bulletinsVotesRemoved", (e) => writeChartSommaire());
+addEventListener("votesChanged", (e) => writeChartSommaire());
 
 
 // création du diagramme parliamentarch
