@@ -52,6 +52,8 @@ en attendant, ne pas se soucier de gacher de la place en largeur et d'empiler ve
 
 fragmenter updateBulletinsDisplay
     ne mettre à jour que le progress quand on change le nombre de votes d'un bulletin
+faire une fonction createBulletin unique, où on met le nombre initial de votes
+    faire plus généralement des fonctions standard d'écriture sur les données
 
 aligner le thème sombre de jscolor sur le thème de la page
 
