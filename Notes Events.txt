@@ -89,13 +89,13 @@ v "candidatRemoved"
 
 bulletins:
     set in:
-        add element: (event "bulletinCreated")
+        add element: (event "bulletinVoteCreated")
             validerBulletinForm
             actuateBulletins (unique mode only)
         mutate element: never
         sorted: (event "bulletinsReordered")
             actuateBulletins (unique mode only)
-        remove element: (event "bulletinRemoved")
+        remove element: (event "bulletinVoteRemoved")
             actuateBulletins
             deleteBulletin
     read in:
@@ -105,7 +105,7 @@ bulletins:
         writeChartSommaire (via getRelevantBulletins)
         updateBulletinsDisplay (via getRelevantBulletins)
         actuateNbElecteurs (via getRelevantBulletins)
-"bulletinCreated"
+"bulletinVoteCreated"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
@@ -113,19 +113,19 @@ bulletins:
     updateBulletinsDisplay
     x actuateNbElecteurs
     x writeChartSommaire
-"bulletinRemoved"
+"bulletinVoteRemoved"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
 
 votes:
     set in:
-        add element: (event "voteAdded"? covered by "bulletinCreated")
+        add element: (event "bulletinVoteCreated")
             validerBulletinForm
             actuateBulletins (unique mode only)
         change value: (event "votesChanged")
             incrementVote and decrementVote
-        remove element: (event "voteRemoved"? covered by "bulletinRemoved")
+        remove element: (event "bulletinVoteRemoved")
             actuateBulletins
             deleteBulletin
     read in:
@@ -134,7 +134,7 @@ votes:
         (setter) incrementVote and decrementVote
         writeChartSommaire
         actuateNbElecteurs (via computeNbVotes)
-x "voteAdded"
+"bulletinVoteCreated"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
@@ -142,7 +142,7 @@ x "voteAdded"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
-x "voteRemoved"
+"bulletinVoteRemoved"
     updateBulletinsDisplay
     actuateNbElecteurs
     writeChartSommaire
