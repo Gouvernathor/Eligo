@@ -732,7 +732,7 @@ function writeChartSommaire() {
             // cercle en pointillés
             datasets.unshift({
                 label: "Médiane",
-                data: Array(candidats.size).fill(computeNbVotes() / 2),
+                data: Array(candidats.size).fill(nbVotes / 2),
                 fill: false,
                 borderColor: "#888",
                 borderDash: [10, 5],
