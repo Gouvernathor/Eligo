@@ -75,8 +75,9 @@ function computeNbElecteurs(nbVotes = null) {
 // setters des données
 
 function setVotingMethod(method) {
+    const event = makeEvent("votingMethodChanged", { oldValue: votingMethod });
     votingMethod = method;
-    actuateBulletins();
+    dispatchEvent(event);
 }
 function setCandidatData(candidat, field, value) {
     candidat[field] = value;
@@ -462,11 +463,13 @@ function actuateBulletins() {
             throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
     }
 
+    // TODO : remove when event system is finalized
     if (votingMethod !== null) {
         actuateNbElecteurs();
         updateBulletinsDisplay();
     }
 }
+addEventListener("votingMethodChanged", (e) => actuateBulletins());
 /**
  * actualisation de l'affichage des bulletins dans le DOM
  */
@@ -590,6 +593,7 @@ function updateBulletinsDisplay() {
     writeChartSommaire();
 }
 addEventListener("nbElecteursManuelUpdated", (e) => updateBulletinsDisplay());
+addEventListener("votingMethodChanged", (e) => updateBulletinsDisplay());
 
 // du nombre d'électeurs (changement de votes même indirect)
 function actuateNbElecteurs() {
@@ -603,6 +607,7 @@ function actuateNbElecteurs() {
     // il faudrait le diminuer automatiquement
 }
 addEventListener("nbElecteursManuelUpdated", (e) => actuateNbElecteurs());
+addEventListener("votingMethodChanged", (e) => actuateNbElecteurs());
 
 
 // gestion du diagramme sommaire
@@ -778,6 +783,7 @@ function writeChartSommaire() {
             throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
     }
 }
+addEventListener("votingMethodChanged", (e) => writeChartSommaire());
 
 
 // création du diagramme parliamentarch

@@ -45,7 +45,7 @@ votingMethod:
         updateBulletinsDisplay
         writeChartSommaire
         actuateNbElecteurs (via getRelevantBulletins)
-"votingMethodChanged"
+v "votingMethodChanged"
     actuateBulletins
     updateBulletinsDisplay
     writeChartSommaire
