@@ -452,8 +452,10 @@ function actuateBulletins() {
             throw new Error(`Méthode de vote inconnue ou non implémentée : ${votingMethod}`);
     }
 
-    actuateNbElecteurs();
-    updateBulletinsDisplay();
+    if (votingMethod !== null) {
+        actuateNbElecteurs();
+        updateBulletinsDisplay();
+    }
 }
 /**
  * actualisation de l'affichage des bulletins dans le DOM
