@@ -12,6 +12,7 @@ declare global {
 
     interface ReadonlySet<T> {
         equals(other: ReadonlySet<any>): boolean;
+        isSuperSetOf(other: Iterable<any>): boolean;
     }
     interface Set<T> extends ReadonlySet<T> {}
 }
@@ -47,4 +48,8 @@ Set.prototype.equals = function(this: ReadonlySet<any>, other: ReadonlySet<any>)
     // return this.symmetricDifference(other).size === 0;
     return Array.from(this).every(e => other.has(e))
         && Array.from(other).every(e => this.has(e));
+}
+Set.prototype.isSuperSetOf = function(this: ReadonlySet<any>, other: Iterable<any>) {
+    // TODO set proper language level
+    return Array.from(other).every(e => this.has(e));
 }

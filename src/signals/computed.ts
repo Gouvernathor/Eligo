@@ -20,7 +20,7 @@ function getRelevantBulletins(method: VotingMethod|null = null): Bulletin[]|null
             break;
 
         case VotingMethod.APPROBATION:
-            isRelevant = (b: BulletinApprobation) => setCandidatIds.isSuperSetOf(b.candidatIds);
+            isRelevant = (b: BulletinApprobation) => setCandidatIds.isSuperSetOf(b.candidatIds.keys());
             break;
 
         case VotingMethod.CLASSEMENT:
