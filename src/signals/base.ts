@@ -40,7 +40,12 @@ export function setCandidat(cid: number, candidat: Candidat) {
     candidatsValue.set(cid, candidat);
     candidats.set(candidatsValue);
 }
-// TODO setCandidatData
+export function deleteCandidat(cid: number) {
+    const candidatsValue = candidats();
+    if (candidatsValue.delete(cid)) {
+        candidats.set(candidatsValue);
+    }
+}
 export function deleteBulletin(bid: id) {
     const bulletinsValue = bulletins();
     const votesValue = votes();

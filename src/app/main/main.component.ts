@@ -31,6 +31,14 @@ export class MainComponent {
     // jscolor.install(partycard)
   }
 
+  onSetCandidatData(candidat: Candidat, key: string, event: Event) {
+    // TODO (make Candidat mutable, except the id ?)
+  }
+
+  onDeleteCandidat(cid: number) {
+    baseSignals.deleteCandidat(cid);
+  }
+
   onSetVotingMethod(method: VotingMethod) {
     baseSignals.setVotingMethod(method);
   }
