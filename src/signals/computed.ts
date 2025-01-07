@@ -4,10 +4,8 @@ import { VotingMethod } from "../datamodel/constants";
 import { bulletins, candidats, nbElecteursManuel, votes, votingMethod } from "./base";
 import { sum } from "../utils/utils";
 
-function getRelevantBulletins(method: VotingMethod|null = null): Bulletin[] {
-    if (method === null) {
-        method = votingMethod();
-    }
+export const relevantBulletins: Signal<ReadonlyArray<Bulletin>> = computed(() => {
+    const method = votingMethod();
     if (method === null) {
         return [];
     }
@@ -33,9 +31,7 @@ function getRelevantBulletins(method: VotingMethod|null = null): Bulletin[] {
     }
     return Array.from(bulletins().values())
         .filter(b => b.kind === method && isRelevant(b));
-}
-
-export const relevantBulletins: Signal<ReadonlyArray<Bulletin>> = computed(getRelevantBulletins);
+});
 
 export const nbVotes: Signal<number> = computed(() => {
     return sum(relevantBulletins()
