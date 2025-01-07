@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div id="candidatsContainer" class="mb-2"></div>
 
-                <button id="addCandidatButton" class="btn btn-success">
+                <button id="addCandidatButton" (click)="addCandidat()" class="btn btn-success">
                     Ajouter un candidat
                 </button>
             </div>
@@ -28,7 +28,14 @@
             <div class="card-body">
                 <div class="mb-1">Type de vote</div>
                 <!-- liste simple avec checkbox rondes, ou menu déroulant -->
-                <ul id="votingMethodContainer" class="list-group mb-2 w-25"></ul>
+                <ul id="votingMethodContainer" class="list-group mb-2 w-25">
+                    @for (method of VotingMethod.values(); track method.id) {
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="votingMethod" [value]="method.id" [id]="'votingMethod_'+method.id" (click)="setVotingMethod(method)"/>
+                            <label class="form-check-label stretched-link" [htmlFor]="'votingMethod_'+method.id">{{method.desc}}</label>
+                        </li>
+                    }
+                </ul>
 
                 <div class="mb-1">Type d'attribution</div>
                 <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
@@ -44,8 +51,8 @@
             <div class="card-body">
                 <label for="nbElecteursManuel" class="form-label">Nombre d'électeurs</label>
                 <div class="input-group">
-                    <input id="nbElecteursManuel" class="w-auto form-control" aria-describedby="nbElecteursManuelHelp" type="number" value="0" min="0" autocomplete="off" disabled/>
-                    <input type="checkbox" class="btn-check" id="toggleElecteursManuel" autocomplete="off"/>
+                    <input id="nbElecteursManuel" class="w-auto form-control" aria-describedby="nbElecteursManuelHelp" type="number" value="0" min="0" autocomplete="off" disabled (change)="onChangeNbElecteursManuel($event)"/>
+                    <input type="checkbox" class="btn-check" id="toggleElecteursManuel" autocomplete="off" (click)="toggleElecteursManuel()"/>
                     <label for="toggleElecteursManuel" class="btn btn-outline-primary">
                         Entrer manuellement le nombre d'électeurs
                     </label>
@@ -56,7 +63,7 @@
 
                 <div id="bulletinsContainer" class="card card-body mt-3 gap-2"></div>
 
-                <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;">
+                <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;" (click)="resetModalBulletinForm()">
                     Ajouter un bulletin
                 </button>
 
@@ -75,7 +82,7 @@
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                     Annuler
                                 </button>
-                                <button id="bulletinFormFinish" type="button" class="btn btn-primary">
+                                <button id="bulletinFormFinish" type="button" class="btn btn-primary" (click)="validerBulletinForm()">
                                     Ajouter
                                 </button>
                             </div>
