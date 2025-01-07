@@ -8,9 +8,9 @@ type id = number;
 // base, internal versions
 const votingMethod: WritableSignal<VotingMethod|null> = signal(null);
 const attributionMethod: WritableSignal<null> = signal(null);
-const candidats: WritableSignal<Map<id, Candidat>> = signal(new Map());
-const bulletins: WritableSignal<Map<id, Bulletin>> = signal(new Map());
-const votes: WritableSignal<Map<id, number>> = signal(new Map());
+const candidats: WritableSignal<Map<id, Candidat>> = signal(new Map(), {equal: Map.prototype.equals});
+const bulletins: WritableSignal<Map<id, Bulletin>> = signal(new Map(), {equal: Map.prototype.equals});
+const votes: WritableSignal<Map<id, number>> = signal(new Map(), {equal: Map.prototype.equals});
 const nbElecteursManuel: WritableSignal<number|null> = signal(null);
 const nNotes: WritableSignal<number> = signal(5);
 

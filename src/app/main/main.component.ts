@@ -1,9 +1,9 @@
-import { Component, computed, effect } from '@angular/core';
+import { Component, computed, effect, untracked } from '@angular/core';
 import { VotingMethod } from '../../datamodel/constants';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
 import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, BulletinSimple, Candidat } from '../../datamodel/classes';
-import { getRandomColor, newRandomValue, sortMap } from '../../utils/utils';
+import { getRandomColor, newRandomValue } from '../../utils/utils';
 
 @Component({
   selector: 'app-main',
@@ -79,10 +79,13 @@ export class MainComponent {
    * and apply changes to bulletins and (sometimes) votes accordingly.
    * No signal other than these 4 should be read,
    * no signal other than bulletins and votes should be written to.
+   *
    * TODO: use linkedSignal for bulletins and votes when linkedSignal is stable.
+   * With bulletins depending on votingMethod and candidats,
+   * and votes depending on bulletins.
    */
   actuateBulletinsEffect = effect(function actuateBulletins() {
-    const bulletins = baseSignals.bulletins();
+    const bulletins = untracked(baseSignals.bulletins);
     const votingMethod = baseSignals.votingMethod();
     switch (votingMethod) {
       case null:
