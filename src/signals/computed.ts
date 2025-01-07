@@ -5,7 +5,7 @@ import { bulletins, candidats, nbElecteursManuel, votes, votingMethod } from "./
 import { sum } from "../utils/utils";
 
 function getRelevantBulletins(method: VotingMethod|null = null): Bulletin[] {
-    if (method === undefined) {
+    if (method === null) {
         method = votingMethod();
     }
     if (method === null) {
