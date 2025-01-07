@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { VotingMethod } from '../../datamodel/constants';
 import * as baseSignals from '../../signals/base';
+import * as computedSignals from '../../signals/computed';
 
 @Component({
   selector: 'app-main',
@@ -11,6 +12,14 @@ import * as baseSignals from '../../signals/base';
 export class MainComponent {
   VotingMethod = VotingMethod;
   baseSignals = baseSignals;
+  computedSignals = computedSignals;
+
+  nbElecteursManuelVisible = computed(() => {
+    const val = baseSignals.nbElecteursManuel();
+    return val === null ?
+      computedSignals.nbVotes() :
+      Math.max(val, computedSignals.nbVotes());
+  });
 
   onAddCandidat() {
     // TODO
@@ -24,8 +33,12 @@ export class MainComponent {
     baseSignals.setNbElecteursManuel(parseInt((event.target as HTMLInputElement).value));
   }
 
-  onToggleElecteursManuel() {
-    // TODO
+  onToggleElecteursManuel(event: Event) {
+    if ((event.target as HTMLInputElement).checked) {
+      baseSignals.setNbElecteursManuel(this.nbElecteursManuelVisible());
+    } else {
+      baseSignals.setNbElecteursManuel(null);
+    }
   }
 
   onResetModalBulletinForm() {
