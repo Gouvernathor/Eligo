@@ -26,7 +26,7 @@ export class MainComponent {
   onAddCandidat() {
     const cid = newRandomValue(baseSignals.candidats().keys());
     const candidat = new Candidat(cid, "", getRandomColor(), 0, "#000000");
-    baseSignals.addCandidat(cid, candidat);
+    baseSignals.setCandidat(cid, candidat);
 
     // jscolor.install(partycard)
   }
