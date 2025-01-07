@@ -12,6 +12,7 @@ import { getRandomColor, newRandomValue } from '../../utils/utils';
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
+  Math = Math;
   VotingMethod = VotingMethod;
   baseSignals = baseSignals;
   computedSignals = computedSignals;
@@ -65,12 +66,81 @@ export class MainComponent {
     }
   }
 
+  onDecrementVote(bid: number) {
+    baseSignals.decrementVote(bid);
+  }
+
+  onIncrementVote(bid: number) {
+    baseSignals.incrementVote(bid);
+  }
+
+  onDeleteBulletin(bid: number) {
+    baseSignals.deleteBulletin(bid);
+  }
+
   onResetModalBulletinForm() {
     // TODO
   }
 
   onValiderBulletinForm() {
     // TODO
+  }
+
+
+  getBulletinProgressColorAndText(bulletin: Bulletin): { progressColor: string, text: string } {
+    let progressColor, text;
+    switch (baseSignals.votingMethod()) {
+      case VotingMethod.UNIQUE:
+        const candidat = baseSignals.candidats().get((bulletin as BulletinSimple).candidatId)!;
+        progressColor = candidat.color();
+        text = candidat.name();
+        break;
+
+      case VotingMethod.APPROBATION:
+        const candidatsApprouves = Array.from((bulletin as BulletinApprobation).candidatIds)
+          .sort()
+          .map(cid => baseSignals.candidats().get(cid)!);
+
+        if (candidatsApprouves.length === 0) {
+          text = "Aucun candidat (bulletin blanc)";
+        } else {
+          if (candidatsApprouves.length === 1) {
+            progressColor = candidatsApprouves[0].color();
+          }
+          text = candidatsApprouves.map(c => c.name()).join(", ");
+        }
+        break;
+
+      case VotingMethod.CLASSEMENT:
+        const candidatsClasses = (bulletin as BulletinClassement).candidatIds
+          .map(cid => baseSignals.candidats().get(cid)!);
+
+        if (candidatsClasses.length === 0) {
+          text = "Aucun candidat (bulletin blanc)";
+        } else {
+          if (candidatsClasses.length === 1) {
+            progressColor = candidatsClasses[0].color();
+          }
+          text = candidatsClasses.map(c => c.name()).join(" > ");
+        }
+        break;
+
+      case VotingMethod.NOTES:
+        text = Array.from(baseSignals.candidats().values(), candidat =>
+          `${candidat.name()} : ${(bulletin as BulletinNotes).notes.getOrDefault(candidat.id, 0)}`)
+          .join(", ");
+        break;
+
+      default:
+        throw new Error(`unhandled or unknown voting method : ${baseSignals.votingMethod()}`);
+    }
+
+    if (progressColor === undefined) {
+      // deterministic color based on the bulletin id
+      progressColor = getRandomColor(bulletin.id);
+    }
+
+    return { progressColor, text };
   }
 
 

@@ -97,7 +97,49 @@
                     Pris en compte pour le calcul de l'abstention
                 </div>
 
-                <div id="bulletinsContainer" class="card card-body mt-3 gap-2"></div>
+                <div id="bulletinsContainer" class="card card-body mt-3 gap-2">
+                    @if (baseSignals.votingMethod() !== null) {
+                        @let authorizeDelete = baseSignals.votingMethod() !== VotingMethod.UNIQUE;
+                        @let progressBase = Math.max(1, computedSignals.nbElecteurs());
+                        @for (bulletin of computedSignals.relevantBulletins(); track bulletin.id) {
+                            @let percent = (baseSignals.votes().get(bulletin.id)! / progressBase * 100).toFixed(2) + "%";
+                            <!-- TODO mettre à jour le diagramme sommaire avec les pourcentages (?) -->
+
+                            <div class="card" id="bulletinCard_{{bulletin.id}}" style="display: grid;">
+                                @let progressColorAndText = getBulletinProgressColorAndText(bulletin);
+                                <div class="progress h-auto stacked">
+                                    <div class="progress-bar" [style.width]="percent" [style.backgroundColor]="progressColorAndText.progressColor"></div>
+                                </div>
+                                <div class="card-body stacked row gap-3"> <!-- bulletincardbody -->
+                                    <!-- TODO ajuster les col-x en fonction de la taille des éléments -->
+                                    <!-- pê donner une largeur fixe à certains éléments comme les boutons + et - -->
+                                    <div class="col">
+                                        <span class="text-bg-secondary rounded px-2 py-1">
+                                            {{progressColorAndText.text}}
+                                        </span>
+                                    </div>
+                                    <div class="col-1 d-flex justify-content-end">
+                                        <span class="text-end text-bg-primary rounded px-2 py-1">
+                                            {{percent}}
+                                        </span>
+                                    </div>
+                                    <button class="col-1 fw-bold btn btn-outline-warning" [disabled]="baseSignals.votes().get(bulletin.id)! <= 0" (click)="onDecrementVote(bulletin.id)">
+                                        -
+                                    </button>
+                                    <button class="col-1 fw-bold btn btn-outline-success" (click)="onIncrementVote(bulletin.id)">
+                                        +
+                                    </button>
+
+                                    @if (authorizeDelete) {
+                                        <button class="col-3 btn btn-outline-danger" (click)="onDeleteBulletin(bulletin.id)">
+                                            Supprimer
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
 
                 @if ([VotingMethod.APPROBATION, VotingMethod.CLASSEMENT, VotingMethod.NOTES].includes(baseSignals.votingMethod()!)) {
                     <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;" (click)="onResetModalBulletinForm()" [disabled]="baseSignals.candidats().size === 0">
