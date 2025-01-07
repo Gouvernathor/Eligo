@@ -35,6 +35,11 @@ export {
 export function setVotingMethod(method: VotingMethod) {
     votingMethod.set(method);
 }
+export function addCandidat(cid: number, candidat: Candidat) {
+    const candidatsValue = candidats();
+    candidatsValue.set(cid, candidat);
+    candidats.set(candidatsValue);
+}
 // TODO setCandidatData
 export function deleteBulletin(bid: id) {
     const bulletinsValue = bulletins();

@@ -1,7 +1,7 @@
 import RNG from "./RNG";
 import "./extensions";
 
-export function newRandomValue(blacklist: number[] = []): number {
+export function newRandomValue(blacklist: Iterable<number> = []): number {
     const blackset = new Set(blacklist);
     if (!blackset.size) {
         return window.crypto.getRandomValues(new Uint32Array(1))[0];

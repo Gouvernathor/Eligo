@@ -2,6 +2,8 @@ import { Component, computed } from '@angular/core';
 import { VotingMethod } from '../../datamodel/constants';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
+import { Candidat } from '../../datamodel/classes';
+import { getRandomColor, newRandomValue } from '../../utils/utils';
 
 @Component({
   selector: 'app-main',
@@ -22,7 +24,11 @@ export class MainComponent {
   });
 
   onAddCandidat() {
-    // TODO
+    const cid = newRandomValue(baseSignals.candidats().keys());
+    const candidat = new Candidat(cid, "", getRandomColor(), 0, "#000000");
+    baseSignals.addCandidat(cid, candidat);
+
+    // jscolor.install(partycard)
   }
 
   onSetVotingMethod(method: VotingMethod) {
