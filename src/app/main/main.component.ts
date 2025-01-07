@@ -10,32 +10,33 @@ import { VotingMethod } from '../../datamodel/constants';
 export class MainComponent {
   VotingMethod = VotingMethod;
 
-  addCandidat() {
+  onAddCandidat() {
     // TODO
   }
 
-  setVotingMethod(method: VotingMethod) {
+  onSetVotingMethod(method: VotingMethod) {
     // TODO
   }
 
-  onChangeNbElecteursManuel(event: Event) {
+  onSetNbElecteursManuel(event: Event) {
     this.setNbElecteursManuel(parseInt((event.target as HTMLInputElement).value));
     // TODO
   }
 
   setNbElecteursManuel(nb: number) {
+    // déplacer en service
     // TODO
   }
 
-  toggleElecteursManuel() {
+  onToggleElecteursManuel() {
     // TODO
   }
 
-  resetModalBulletinForm() {
+  onResetModalBulletinForm() {
     // TODO
   }
 
-  validerBulletinForm() {
+  onValiderBulletinForm() {
     // TODO
   }
 }
