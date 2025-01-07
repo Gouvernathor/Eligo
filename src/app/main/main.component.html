@@ -4,9 +4,130 @@
 
 <main>
     <div class="container-fluid px-4">
-        <p>main works!</p>
+        <h1 class="my-4">Page principale</h1>
 
+        <!-- Création des votes -->
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Candidats
+            </div>
+            <div class="card-body">
+                <div id="candidatsContainer" class="mb-2"></div>
+
+                <button id="addCandidatButton" class="btn btn-success">
+                    Ajouter un candidat
+                </button>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Mode de scrutin
+            </div>
+            <div class="card-body">
+                <div class="mb-1">Type de vote</div>
+                <!-- liste simple avec checkbox rondes, ou menu déroulant -->
+                <ul id="votingMethodContainer" class="list-group mb-2 w-25"></ul>
+
+                <div class="mb-1">Type d'attribution</div>
+                <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
+                <!-- liste d'options pour cette attribution -->
+                <div id="attributionMethodContainer" class="mb-2"></div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Bulletins
+            </div>
+            <div class="card-body">
+                <label for="nbElecteursManuel" class="form-label">Nombre d'électeurs</label>
+                <div class="input-group">
+                    <input id="nbElecteursManuel" class="w-auto form-control" aria-describedby="nbElecteursManuelHelp" type="number" value="0" min="0" autocomplete="off" disabled/>
+                    <input type="checkbox" class="btn-check" id="toggleElecteursManuel" autocomplete="off"/>
+                    <label for="toggleElecteursManuel" class="btn btn-outline-primary">
+                        Entrer manuellement le nombre d'électeurs
+                    </label>
+                </div>
+                <div id="nbElecteursManuelHelp" class="form-text">
+                    Pris en compte pour le calcul de l'abstention
+                </div>
+
+                <div id="bulletinsContainer" class="card card-body mt-3 gap-2"></div>
+
+                <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;">
+                    Ajouter un bulletin
+                </button>
+
+                <div id="bulletinFormModal" class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-labelledby="bulletinFormModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 id="bulletinFormModalLabel" class="modal-title fs-5">
+                                    Nouveau bulletin
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div id="bulletinFormInputContainer" class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Annuler
+                                </button>
+                                <button id="bulletinFormFinish" type="button" class="btn btn-primary">
+                                    Ajouter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Diagramme sommaire
+            </div>
+            <div class="card-body" id="chartSommaireContainer"></div>
+        </div>
+
+        <hr/>
+
+        <!-- Spécification de la Chambre -->
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Chambre
+            </div>
+            <div class="card-body">
+                <p>
+                    Nombre de sièges
+                </p>
+                <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#parliamentarchCollapsable">
+                    Options avancées
+                </button>
+                <div id="parliamentarchCollapsable" class="collapse">
+                    <div class="card card-body">
+                        Contenu
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- gros bouton de validation -->
     </div>
 </main>
 
-<!-- footer -->
+<footer class="py-4 bg-secondary mt-auto">
+    <div class="container-fluid px-4">
+        <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; Gouvernathor 2024</div>
+            <div>
+                <a href="https://github.com/Gouvernathor/Eligo">Code source</a>
+                &middot;
+                <a href="https://github.com/Gouvernathor/Eligo/issues/new">Signaler un problème</a>
+            </div>
+        </div>
+    </div>
+</footer>
