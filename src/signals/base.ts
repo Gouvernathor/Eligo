@@ -1,6 +1,7 @@
 import { Signal, signal, WritableSignal } from "@angular/core";
 import { VotingMethod } from "../datamodel/constants";
 import { Bulletin, Candidat } from "../datamodel/classes";
+import { sortMap } from "../utils/utils";
 
 type id = number;
 
@@ -44,6 +45,23 @@ export function deleteCandidat(cid: number) {
     const candidatsValue = candidats();
     if (candidatsValue.delete(cid)) {
         candidats.set(candidatsValue);
+    }
+}
+export function setBulletin(bid: id, bulletin: Bulletin) {
+    const bulletinsValue = bulletins();
+    bulletinsValue.set(bid, bulletin);
+    bulletins.set(bulletinsValue);
+}
+export function setVote(bid: id, nVotes: number) {
+    const votesValue = votes();
+    votesValue.set(bid, nVotes);
+    votes.set(votesValue);
+}
+export function sortBulletins(orderedIds: Iterable<id>, update = false) {
+    sortMap(bulletins(), orderedIds);
+    // TODO: trace what needs to be refreshed on bulletinsReordered and what doesn't
+    if (update) {
+        bulletins.set(bulletins());
     }
 }
 export function deleteBulletin(bid: id) {

@@ -99,9 +99,11 @@
 
                 <div id="bulletinsContainer" class="card card-body mt-3 gap-2"></div>
 
-                <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;" (click)="onResetModalBulletinForm()">
-                    Ajouter un bulletin
-                </button>
+                @if ([VotingMethod.APPROBATION, VotingMethod.CLASSEMENT, VotingMethod.NOTES].includes(baseSignals.votingMethod()!)) {
+                    <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;" (click)="onResetModalBulletinForm()" [disabled]="baseSignals.candidats().size === 0">
+                        Ajouter un bulletin
+                    </button>
+                }
 
                 <div id="bulletinFormModal" class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-labelledby="bulletinFormModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
