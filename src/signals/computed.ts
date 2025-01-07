@@ -4,12 +4,12 @@ import { VotingMethod } from "../datamodel/constants";
 import { bulletins, candidats, nbElecteursManuel, votes, votingMethod } from "./base";
 import { sum } from "../utils/utils";
 
-function getRelevantBulletins(method: VotingMethod|null = null): Bulletin[]|null {
+function getRelevantBulletins(method: VotingMethod|null = null): Bulletin[] {
     if (method === undefined) {
         method = votingMethod();
     }
     if (method === null) {
-        return null;
+        return [];
     }
 
     const setCandidatIds = new Set(candidats().keys());
@@ -29,16 +29,16 @@ function getRelevantBulletins(method: VotingMethod|null = null): Bulletin[]|null
 
         case VotingMethod.NOTES:
             isRelevant = (b: BulletinNotes) => setCandidatIds.isSuperSetOf(b.notes);
+            break;
     }
     return Array.from(bulletins().values())
         .filter(b => b.kind === method && isRelevant(b));
 }
 
-// FIXME manage null in getRelevantBulletins
-export const relevantBulletins: Signal<ReadonlyArray<Bulletin>|null> = computed(getRelevantBulletins);
+export const relevantBulletins: Signal<ReadonlyArray<Bulletin>> = computed(getRelevantBulletins);
 
 export const nbVotes: Signal<number> = computed(() => {
-    return sum(relevantBulletins()! // FIXME
+    return sum(relevantBulletins()
         .map((bulletin) => votes().getOrDefault(bulletin.id, 0)));
 });
 
