@@ -34,8 +34,9 @@ export class MainComponent {
   }
 
   onToggleElecteursManuel(event: Event) {
+    // TODO retravailler les règles d'affichage du nb manuel d'électeurs
     if ((event.target as HTMLInputElement).checked) {
-      baseSignals.setNbElecteursManuel(this.nbElecteursManuelVisible());
+      baseSignals.setNbElecteursManuel(computedSignals.nbVotes());
     } else {
       baseSignals.setNbElecteursManuel(null);
     }
