@@ -12,7 +12,7 @@ export class Candidat {
     ) {}
 }
 
-export class Bulletin {
+export abstract class Bulletin {
     static kind: VotingMethod;
 
     constructor(
@@ -24,7 +24,7 @@ export class Bulletin {
     }
 }
 export class BulletinSimple extends Bulletin {
-    static kind = VotingMethod.UNIQUE;
+    static override kind = VotingMethod.UNIQUE;
 
     constructor(
         id: number,
@@ -34,7 +34,7 @@ export class BulletinSimple extends Bulletin {
     }
 }
 export class BulletinApprobation extends Bulletin {
-    static kind = VotingMethod.APPROBATION;
+    static override kind = VotingMethod.APPROBATION;
 
     constructor(
         id: number,
@@ -44,7 +44,7 @@ export class BulletinApprobation extends Bulletin {
     }
 }
 export class BulletinClassement extends Bulletin {
-    static kind = VotingMethod.CLASSEMENT;
+    static override kind = VotingMethod.CLASSEMENT;
 
     constructor(
         id: number,
@@ -54,7 +54,7 @@ export class BulletinClassement extends Bulletin {
     }
 }
 export class BulletinNotes extends Bulletin {
-    static kind = VotingMethod.NOTES;
+    static override kind = VotingMethod.NOTES;
 
     constructor(
         id: number,

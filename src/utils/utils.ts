@@ -1,5 +1,5 @@
-import RNG from "./utils/RNG";
-import "./utils/extensions";
+import RNG from "./RNG";
+import "./extensions";
 
 export function newRandomValue(blacklist: number[] = []): number {
     const blackset = new Set(blacklist);
