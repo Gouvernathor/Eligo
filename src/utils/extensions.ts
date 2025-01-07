@@ -4,10 +4,10 @@ export default null;
 declare global {
     interface ReadonlyMap<K, V> {
         equals(other: ReadonlyMap<any, any>): boolean;
+        getOrDefault(key: K, def: V): V;
     }
     interface Map<K, V> extends ReadonlyMap<K, V> {
         pop(key: K, def?: V): V;
-        getOrDefault(key: K, def: V): V;
     }
 
     interface ReadonlySet<T> {
@@ -27,6 +27,9 @@ Map.prototype.equals = function(this: ReadonlyMap<any, any>, other: ReadonlyMap<
     }
     return true;
 }
+Map.prototype.getOrDefault = function<K, V>(this: Map<K, V>, key: K, def: V) {
+    return this.has(key) ? this.get(key) as V : def;
+}
 Map.prototype.pop = function<K, V>(this: Map<K, V>, key: K, def?: V) {
     if (this.has(key)) {
         const value = this.get(key);
@@ -37,9 +40,6 @@ Map.prototype.pop = function<K, V>(this: Map<K, V>, key: K, def?: V) {
         throw new Error(`Key ${key} not found`);
     }
     return def;
-}
-Map.prototype.getOrDefault = function<K, V>(this: Map<K, V>, key: K, def: V) {
-    return this.has(key) ? this.get(key) as V : def;
 }
 
 Set.prototype.equals = function(this: ReadonlySet<any>, other: ReadonlySet<any>) {
