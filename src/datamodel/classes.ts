@@ -1,16 +1,27 @@
+import { signal, WritableSignal } from "@angular/core";
 import { VotingMethod } from "./constants";
 
-// readonly until and unless mutation is needed
-
 export class Candidat {
+    public readonly name: WritableSignal<string>;
+    public readonly color: WritableSignal<string>;
+    public readonly borderWidth: WritableSignal<number>;
+    public readonly borderColor: WritableSignal<string>;
+
     constructor(
         public readonly id: number,
-        public readonly name: string,
-        public readonly color: string,
-        public readonly borderWidth: number,
-        public readonly borderColor: string,
-    ) {}
+        name: string,
+        color: string,
+        borderWidth: number,
+        borderColor: string,
+    ) {
+        this.name = signal(name);
+        this.color = signal(color);
+        this.borderWidth = signal(borderWidth);
+        this.borderColor = signal(borderColor);
+    }
 }
+
+// readonly until and unless mutation is needed
 
 export abstract class Bulletin {
     static kind: VotingMethod;

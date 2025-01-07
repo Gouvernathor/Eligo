@@ -20,13 +20,13 @@
                                 <div class="row g-3 mb-3"> <!-- first row -->
                                     <div class="col-auto"> <!-- namecol -->
                                         <div class="form-floating"> <!-- namediv -->
-                                            <input type="text" class="form-control" id="candidatName_{{candidat.id}}" value="{{candidat.name}}" placeholder="Nom du parti" (change)="onSetCandidatData(candidat, 'name', $event)"/>
+                                            <input type="text" class="form-control" id="candidatName_{{candidat.id}}" value="{{candidat.name()}}" placeholder="Nom du parti" (change)="onSetCandidatData(candidat, 'name', $event)"/>
                                             <label for="candidatName_{{candidat.id}}">Nom du parti</label>
                                         </div>
                                     </div>
                                     <div class="col-auto"> <!-- colorcol -->
                                         <div class="form-floating"> <!-- colordiv -->
-                                            <input class="form-control" data-jscolor="" id="candidatColor_{{candidat.id}}" value="{{candidat.color}}" (change)="onSetCandidatData(candidat, 'color', $event)"/>
+                                            <input class="form-control" data-jscolor="" id="candidatColor_{{candidat.id}}" value="{{candidat.color()}}" (change)="onSetCandidatData(candidat, 'color', $event)"/>
                                             <label for="candidatColor_{{candidat.id}}">Couleur du parti</label>
                                         </div>
                                     </div>
@@ -34,13 +34,13 @@
                                 <div class="row g-3 mb-3"> <!-- secondrow -->
                                     <div class="col-auto"> <!-- borderWidthCol -->
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="candidatBorderWidth_{{candidat.id}}" value="{{candidat.borderWidth}}" (change)="onSetCandidatData(candidat, 'borderWidth', $event)"/>
+                                            <input type="number" class="form-control" id="candidatBorderWidth_{{candidat.id}}" value="{{candidat.borderWidth()}}" (change)="onSetCandidatData(candidat, 'borderWidth', $event)"/>
                                             <label for="candidatBorderWidth_{{candidat.id}}">Épaisseur de la bordure</label>
                                         </div>
                                     </div>
                                     <div class="col-auto">
                                         <div class="form-floating">
-                                            <input class="form-control" data-jscolor="" id="candidatBorderColor_{{candidat.id}}" value="{{candidat.borderColor}}" (change)="onSetCandidatData(candidat, 'borderColor', $event)"/>
+                                            <input class="form-control" data-jscolor="" id="candidatBorderColor_{{candidat.id}}" value="{{candidat.borderColor()}}" (change)="onSetCandidatData(candidat, 'borderColor', $event)"/>
                                             <label id="candidatBorderColor_{{candidat.id}}">Couleur de la bordure</label>
                                         </div>
                                     </div>
