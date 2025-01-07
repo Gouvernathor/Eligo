@@ -1,5 +1,5 @@
 // make this a module
-export default null;
+export {};
 
 declare global {
     interface ReadonlyMap<K, V> {
