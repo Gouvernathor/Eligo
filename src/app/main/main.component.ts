@@ -31,8 +31,17 @@ export class MainComponent {
     // jscolor.install(partycard)
   }
 
-  onSetCandidatData(candidat: Candidat, key: string, event: Event) {
-    // TODO (make Candidat mutable, except the id ?)
+  onSetCandidatName(candidat: Candidat, event: Event) {
+    candidat.name.set((event.target as HTMLInputElement).value);
+  }
+  onSetCandidatColor(candidat: Candidat, event: Event) {
+    candidat.color.set((event.target as HTMLInputElement).value);
+  }
+  onSetCandidatBorderWidth(candidat: Candidat, event: Event) {
+    candidat.borderWidth.set(Number((event.target as HTMLInputElement).value));
+  }
+  onSetCandidatBorderColor(candidat: Candidat, event: Event) {
+    candidat.borderColor.set((event.target as HTMLInputElement).value);
   }
 
   onDeleteCandidat(cid: number) {
