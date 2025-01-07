@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { VotingMethod } from '../../datamodel/constants';
+import * as baseSignals from '../../signals/base';
 
 @Component({
   selector: 'app-main',
@@ -9,23 +10,18 @@ import { VotingMethod } from '../../datamodel/constants';
 })
 export class MainComponent {
   VotingMethod = VotingMethod;
+  baseSignals = baseSignals;
 
   onAddCandidat() {
     // TODO
   }
 
   onSetVotingMethod(method: VotingMethod) {
-    // TODO
+    baseSignals.setVotingMethod(method);
   }
 
   onSetNbElecteursManuel(event: Event) {
-    this.setNbElecteursManuel(parseInt((event.target as HTMLInputElement).value));
-    // TODO
-  }
-
-  setNbElecteursManuel(nb: number) {
-    // déplacer en service
-    // TODO
+    baseSignals.setNbElecteursManuel(parseInt((event.target as HTMLInputElement).value));
   }
 
   onToggleElecteursManuel() {
