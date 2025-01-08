@@ -8,152 +8,160 @@
 
         <!-- Création des votes -->
 
-        <div class="card mb-4">
-            <div class="card-header">
-                Candidats
-            </div>
-            <div class="card-body">
-                <div id="candidatsContainer" class="mb-2">
-                    @for (candidat of baseSignals.candidats().values(); track candidat.id) {
-                        <div class="card mb-3" [id]="'candidatCard_'+candidat.id"> <!-- partycard -->
-                            <div class="card-body"> <!-- partycardbody -->
-                                <div class="row g-3 mb-3"> <!-- first row -->
-                                    <div class="col-auto"> <!-- namecol -->
-                                        <div class="form-floating"> <!-- namediv -->
-                                            <input type="text" class="form-control" id="candidatName_{{candidat.id}}" [value]="candidat.name()" placeholder="Nom du parti" (change)="onSetCandidatName(candidat, $event)"/>
-                                            <label for="candidatName_{{candidat.id}}">Nom du parti</label>
+        <div class="row content">
+            <!-- colonne de gauche -->
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Candidats
+                    </div>
+                    <div class="card-body">
+                        <div id="candidatsContainer" class="mb-2">
+                            @for (candidat of baseSignals.candidats().values(); track candidat.id) {
+                                <div class="card mb-3" [id]="'candidatCard_'+candidat.id"> <!-- partycard -->
+                                    <div class="card-body"> <!-- partycardbody -->
+                                        <div class="row g-3 mb-3"> <!-- first row -->
+                                            <div class="col-auto"> <!-- namecol -->
+                                                <div class="form-floating"> <!-- namediv -->
+                                                    <input type="text" class="form-control" id="candidatName_{{candidat.id}}" [value]="candidat.name()" placeholder="Nom du parti" (change)="onSetCandidatName(candidat, $event)"/>
+                                                    <label for="candidatName_{{candidat.id}}">Nom du parti</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto"> <!-- colorcol -->
+                                                <div class="form-floating"> <!-- colordiv -->
+                                                    <input class="form-control" data-jscolor="" id="candidatColor_{{candidat.id}}" [value]="candidat.color()" (change)="onSetCandidatColor(candidat, $event)"/>
+                                                    <label for="candidatColor_{{candidat.id}}">Couleur du parti</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-auto"> <!-- colorcol -->
-                                        <div class="form-floating"> <!-- colordiv -->
-                                            <input class="form-control" data-jscolor="" id="candidatColor_{{candidat.id}}" [value]="candidat.color()" (change)="onSetCandidatColor(candidat, $event)"/>
-                                            <label for="candidatColor_{{candidat.id}}">Couleur du parti</label>
+                                        <div class="row g-3 mb-3"> <!-- secondrow -->
+                                            <div class="col-auto"> <!-- borderWidthCol -->
+                                                <div class="form-floating">
+                                                    <input type="number" class="form-control" id="candidatBorderWidth_{{candidat.id}}" [value]="candidat.borderWidth()" (change)="onSetCandidatBorderWidth(candidat, $event)"/>
+                                                    <label for="candidatBorderWidth_{{candidat.id}}">Épaisseur de la bordure</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="form-floating">
+                                                    <input class="form-control" data-jscolor="" id="candidatBorderColor_{{candidat.id}}" [value]="candidat.borderColor()" (change)="onSetCandidatBorderColor(candidat, $event)"/>
+                                                    <label id="candidatBorderColor_{{candidat.id}}">Couleur de la bordure</label>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <button type="button" class="btn btn-outline-danger d-inline-block" id="deleteCandidat_{{candidat.id}}" (click)="onDeleteCandidat(candidat.id)">Supprimer</button>
                                     </div>
                                 </div>
-                                <div class="row g-3 mb-3"> <!-- secondrow -->
-                                    <div class="col-auto"> <!-- borderWidthCol -->
-                                        <div class="form-floating">
-                                            <input type="number" class="form-control" id="candidatBorderWidth_{{candidat.id}}" [value]="candidat.borderWidth()" (change)="onSetCandidatBorderWidth(candidat, $event)"/>
-                                            <label for="candidatBorderWidth_{{candidat.id}}">Épaisseur de la bordure</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="form-floating">
-                                            <input class="form-control" data-jscolor="" id="candidatBorderColor_{{candidat.id}}" [value]="candidat.borderColor()" (change)="onSetCandidatBorderColor(candidat, $event)"/>
-                                            <label id="candidatBorderColor_{{candidat.id}}">Couleur de la bordure</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-outline-danger d-inline-block" id="deleteCandidat_{{candidat.id}}" (click)="onDeleteCandidat(candidat.id)">Supprimer</button>
-                            </div>
+                            }
                         </div>
-                    }
+
+                        <button id="addCandidatButton" (click)="onAddCandidat()" class="btn btn-success">
+                            Ajouter un candidat
+                        </button>
+                    </div>
                 </div>
 
-                <button id="addCandidatButton" (click)="onAddCandidat()" class="btn btn-success">
-                    Ajouter un candidat
-                </button>
-            </div>
-        </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Mode de scrutin
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-1">Type de vote</div>
+                        <!-- liste simple avec checkbox rondes, ou menu déroulant -->
+                        <ul id="votingMethodContainer" class="list-group mb-2 w-25">
+                            @for (method of VotingMethod.values(); track method.id) {
+                                <li class="list-group-item">
+                                    <input class="form-check-input me-1" type="radio" name="votingMethod" [value]="method.id" [id]="'votingMethod_'+method.id" (click)="onSetVotingMethod(method)"/>
+                                    <label class="form-check-label stretched-link" [htmlFor]="'votingMethod_'+method.id">{{method.desc}}</label>
+                                </li>
+                            }
+                        </ul>
 
-        <div class="card mb-4">
-            <div class="card-header">
-                Mode de scrutin
-            </div>
-            <div class="card-body">
-                <div class="mb-1">Type de vote</div>
-                <!-- liste simple avec checkbox rondes, ou menu déroulant -->
-                <ul id="votingMethodContainer" class="list-group mb-2 w-25">
-                    @for (method of VotingMethod.values(); track method.id) {
-                        <li class="list-group-item">
-                            <input class="form-check-input me-1" type="radio" name="votingMethod" [value]="method.id" [id]="'votingMethod_'+method.id" (click)="onSetVotingMethod(method)"/>
-                            <label class="form-check-label stretched-link" [htmlFor]="'votingMethod_'+method.id">{{method.desc}}</label>
-                        </li>
-                    }
-                </ul>
-
-                <div class="mb-1">Type d'attribution</div>
-                <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
-                <!-- liste d'options pour cette attribution -->
-                <div id="attributionMethodContainer" class="mb-2"></div>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                Bulletins
-            </div>
-            <div class="card-body">
-                <label for="nbElecteursManuel" class="form-label">Nombre d'électeurs</label>
-                <div class="input-group">
-                    <input id="nbElecteursManuel" class="w-auto form-control" aria-describedby="nbElecteursManuelHelp" type="number" [value]="nbElecteursManuelVisible()" [min]="computedSignals.nbVotes()" autocomplete="off" [disabled]="baseSignals.nbElecteursManuel() === null" (change)="onSetNbElecteursManuel($event)"/>
-                    <input type="checkbox" class="btn-check" id="toggleElecteursManuel" autocomplete="off" (click)="onToggleElecteursManuel($event)"/>
-                    <label for="toggleElecteursManuel" class="btn btn-outline-primary">
-                        Entrer manuellement le nombre d'électeurs
-                    </label>
+                        <div class="mb-1">Type d'attribution</div>
+                        <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
+                        <!-- liste d'options pour cette attribution -->
+                        <div id="attributionMethodContainer" class="mb-2"></div>
+                    </div>
                 </div>
-                <div id="nbElecteursManuelHelp" class="form-text">
-                    Pris en compte pour le calcul de l'abstention
-                </div>
+            </div>
 
-                <div id="bulletinsContainer" class="card card-body mt-3 gap-2">
-                    @if (baseSignals.votingMethod() !== null) {
-                        @let authorizeDelete = baseSignals.votingMethod() !== VotingMethod.UNIQUE;
-                        @let progressBase = Math.max(1, computedSignals.nbElecteurs());
-                        @for (bulletin of computedSignals.relevantBulletins(); track bulletin.id) {
-                            @let percent = (baseSignals.votes().get(bulletin.id)! / progressBase * 100).toFixed(2) + "%";
-                            <!-- TODO mettre à jour le diagramme sommaire avec les pourcentages (?) -->
+            <!-- colonne de droite -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Bulletins
+                    </div>
+                    <div class="card-body">
+                        <label for="nbElecteursManuel" class="form-label">Nombre d'électeurs</label>
+                        <div class="input-group">
+                            <input id="nbElecteursManuel" class="form-control" aria-describedby="nbElecteursManuelHelp" type="number" [value]="nbElecteursManuelVisible()" [min]="computedSignals.nbVotes()" autocomplete="off" [disabled]="baseSignals.nbElecteursManuel() === null" (change)="onSetNbElecteursManuel($event)"/>
+                            <input type="checkbox" class="btn-check" id="toggleElecteursManuel" autocomplete="off" (click)="onToggleElecteursManuel($event)"/>
+                            <label for="toggleElecteursManuel" class="btn btn-outline-primary">
+                                Entrer manuellement
+                            </label>
+                        </div>
+                        <div id="nbElecteursManuelHelp" class="form-text">
+                            Pris en compte pour le calcul de l'abstention
+                        </div>
 
-                            <div class="card" id="bulletinCard_{{bulletin.id}}" style="display: grid;">
-                                @let progressColorAndText = getBulletinProgressColorAndText(bulletin);
-                                <div class="progress h-auto stacked">
-                                    <div class="progress-bar" [style.width]="percent" [style.backgroundColor]="progressColorAndText.progressColor"></div>
-                                </div>
-                                <div class="card-body stacked row gap-3"> <!-- bulletincardbody -->
-                                    <!-- TODO ajuster les col-x en fonction de la taille des éléments -->
-                                    <!-- pê donner une largeur fixe à certains éléments comme les boutons + et - -->
-                                    <div class="col">
-                                        <span class="text-bg-secondary rounded px-2 py-1">
-                                            {{progressColorAndText.text}}
-                                        </span>
+                        <div id="bulletinsContainer" class="card card-body mt-3 gap-2">
+                            @if (baseSignals.votingMethod() !== null) {
+                                @let authorizeDelete = baseSignals.votingMethod() !== VotingMethod.UNIQUE;
+                                @let progressBase = Math.max(1, computedSignals.nbElecteurs());
+                                @for (bulletin of computedSignals.relevantBulletins(); track bulletin.id) {
+                                    @let percent = (baseSignals.votes().get(bulletin.id)! / progressBase * 100).toFixed(2) + "%";
+                                    <!-- TODO mettre à jour le diagramme sommaire avec les pourcentages (?) -->
+
+                                    <div class="card" id="bulletinCard_{{bulletin.id}}" style="display: grid;">
+                                        @let progressColorAndText = getBulletinProgressColorAndText(bulletin);
+                                        <div class="progress h-auto stacked">
+                                            <div class="progress-bar" [style.width]="percent" [style.backgroundColor]="progressColorAndText.progressColor"></div>
+                                        </div>
+                                        <div class="card-body stacked row gap-3"> <!-- bulletincardbody -->
+                                            <!-- TODO ajuster les col-x en fonction de la taille des éléments -->
+                                            <!-- pê donner une largeur fixe à certains éléments comme les boutons + et - -->
+                                            <div class="col">
+                                                <span class="text-bg-secondary rounded px-2 py-1">
+                                                    {{progressColorAndText.text}}
+                                                </span>
+                                            </div>
+                                            <div class="col-1 d-flex justify-content-end">
+                                                <span class="text-end text-bg-primary rounded px-2 py-1">
+                                                    {{percent}}
+                                                </span>
+                                            </div>
+                                            <button class="col-1 fw-bold btn btn-outline-warning" [disabled]="baseSignals.votes().get(bulletin.id)! <= 0" (click)="onDecrementVote(bulletin.id)">
+                                                -
+                                            </button>
+                                            <button class="col-1 fw-bold btn btn-outline-success" (click)="onIncrementVote(bulletin.id)">
+                                                +
+                                            </button>
+
+                                            @if (authorizeDelete) {
+                                                <button class="col-3 btn btn-outline-danger" (click)="onDeleteBulletin(bulletin.id)">
+                                                    Supprimer
+                                                </button>
+                                            }
+                                        </div>
                                     </div>
-                                    <div class="col-1 d-flex justify-content-end">
-                                        <span class="text-end text-bg-primary rounded px-2 py-1">
-                                            {{percent}}
-                                        </span>
-                                    </div>
-                                    <button class="col-1 fw-bold btn btn-outline-warning" [disabled]="baseSignals.votes().get(bulletin.id)! <= 0" (click)="onDecrementVote(bulletin.id)">
-                                        -
-                                    </button>
-                                    <button class="col-1 fw-bold btn btn-outline-success" (click)="onIncrementVote(bulletin.id)">
-                                        +
-                                    </button>
+                                }
+                            }
+                        </div>
 
-                                    @if (authorizeDelete) {
-                                        <button class="col-3 btn btn-outline-danger" (click)="onDeleteBulletin(bulletin.id)">
-                                            Supprimer
-                                        </button>
-                                    }
-                                </div>
-                            </div>
+                        @if ([VotingMethod.APPROBATION, VotingMethod.CLASSEMENT, VotingMethod.NOTES].includes(baseSignals.votingMethod()!)) {
+                            <button id="bulletinFormButton" class="btn btn-success mt-2" (click)="openModalBulletinForm()" [disabled]="baseSignals.candidats().size === 0">
+                                Ajouter un bulletin
+                            </button>
                         }
-                    }
+                    </div>
                 </div>
 
-                @if ([VotingMethod.APPROBATION, VotingMethod.CLASSEMENT, VotingMethod.NOTES].includes(baseSignals.votingMethod()!)) {
-                    <button id="bulletinFormButton" class="btn btn-success mt-2" (click)="openModalBulletinForm()" [disabled]="baseSignals.candidats().size === 0">
-                        Ajouter un bulletin
-                    </button>
-                }
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Diagramme sommaire
+                    </div>
+                    <app-diagramme/>
+                </div>
             </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                Diagramme sommaire
-            </div>
-            <app-diagramme/>
         </div>
 
         <hr/>
