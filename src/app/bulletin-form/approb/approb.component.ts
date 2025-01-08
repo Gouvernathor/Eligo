@@ -28,7 +28,7 @@ export class ApprobComponent {
    * returns it,
    * otherwise creates a new bulletin.
    */
-  generate(): BulletinApprobation|undefined {
+  generate(): BulletinApprobation {
     return (computedSignals.relevantBulletins() as BulletinApprobation[]).find(b => {
       const bcids = (b as BulletinApprobation).candidatIds;
       const has = Array.isArray(bcids) ?
