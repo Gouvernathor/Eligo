@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, untracked } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { VotingMethod } from '../../datamodel/constants';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
@@ -115,6 +115,7 @@ export class MainComponent {
           .map(cid => baseSignals.candidats().get(cid)!);
 
         if (candidatsApprouves.length === 0) {
+          progressColor = "white";
           text = "Aucun candidat (bulletin blanc)";
         } else {
           if (candidatsApprouves.length === 1) {
@@ -129,6 +130,7 @@ export class MainComponent {
           .map(cid => baseSignals.candidats().get(cid)!);
 
         if (candidatsClasses.length === 0) {
+          progressColor = "white";
           text = "Aucun candidat (bulletin blanc)";
         } else {
           if (candidatsClasses.length === 1) {
