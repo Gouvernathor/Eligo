@@ -50,6 +50,7 @@ export class BulletinApprobation extends Bulletin {
     constructor(
         id: number,
         public readonly candidatIds: ReadonlySet<number>|ReadonlyArray<number>,
+        // TODO retype as ReadonlySet
     ) {
         super(id);
     }
