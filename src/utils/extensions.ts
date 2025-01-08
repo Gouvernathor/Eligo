@@ -45,7 +45,7 @@ Map.prototype.pop = function<K, V>(this: Map<K, V>, key: K, def?: V) {
 
 Set.prototype.equals = function(this: ReadonlySet<any>, other: ReadonlySet<any>) {
     // TODO upgrade language level and type dependencies
-    // return this.symmetricDifference(other).size === 0;
+    // return this.isSubsetOf(other) && this.isSuperSetOf(other);
     return Array.from(this).every(e => other.has(e))
         && Array.from(other).every(e => this.has(e));
 }
