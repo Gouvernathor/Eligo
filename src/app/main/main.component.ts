@@ -1,16 +1,18 @@
 import { Component, computed, effect, inject, untracked } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { VotingMethod } from '../../datamodel/constants';
+import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, BulletinSimple, Candidat } from '../../datamodel/classes';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
-import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, BulletinSimple, Candidat } from '../../datamodel/classes';
 import { getRandomColor, newRandomValue } from '../../utils/utils';
 import { BulletinFormComponent } from "../bulletin-form/bulletin-form.component";
+import { DiagrammeComponent } from "../diagramme/diagramme.component";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrl: './main.component.scss'
+  styleUrl: './main.component.scss',
+  imports: [DiagrammeComponent]
 })
 export class MainComponent {
   private modalService = inject(NgbModal);

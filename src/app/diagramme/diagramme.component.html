@@ -1,0 +1,8 @@
+<div class="card-body" id="chartSommaireContainer">
+    @if (baseSignals.votingMethod() !== null && computedSignals.nbVotes() > 0) {
+        @let chrt = chart();
+        @if (chrt) {
+            <canvas id="chartSommaire" width="100%" height="50" baseChart [type]="chrt.type" [data]="chrt.data" [options]="chrt.options"></canvas>
+        }
+    }
+</div>
