@@ -84,11 +84,19 @@ export class MainComponent {
 
   openModalBulletinForm() {
     const modalRef = this.modalService.open(BulletinFormComponent);
-    modalRef.result.then(payload => this.onValiderBulletinForm(payload));
+    (modalRef.componentInstance as BulletinFormComponent).bulletins.subscribe(bulletin => this.onValiderBulletinForm(modalRef, bulletin))
   }
 
-  onValiderBulletinForm(result: Bulletin) {
-    // TODO
+  onValiderBulletinForm(modalRef: NgbModalRef, bulletin: Bulletin) {
+    if (baseSignals.bulletins().has(bulletin.id)) {
+      throw new Error("Un bulletin identique existe déjà");
+      // TODO handle in a way that's normal and visible by the user
+      // (Toast and/or Alert of Angular-Bootstrap)
+    } else {
+      baseSignals.setBulletin(bulletin.id, bulletin);
+      baseSignals.setVote(bulletin.id, 0);
+      modalRef.close();
+    }
   }
 
 

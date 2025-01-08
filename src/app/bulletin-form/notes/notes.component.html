@@ -7,6 +7,7 @@
     Ce nombre s'appliquera à tous les bulletins pendant le dépouillement, il ne peut pas être supérieur à ce qui a été indiqué dans les bulletins existants.
 </div>
 @for (candidat of baseSignals.candidats().values(); track candidat.id) {
+    <!-- TODO also see Angular-Bootstrap's Rating component -->
     <label for="bulletinFormInput_{{candidat.id}}" class="form-label">{{candidat.name()}}</label>
     <input id="bulletinFormInput_{{candidat.id}}" class="form-range modal-bulletin-form-input" type="range" min="0" [max]="inputNNotesValue-1" (change)="onNoteChanged(candidat.id, $event)"/>
     <!-- TODO possibly update the value of the range input when the number of grades changes, so that it stays <= the max value -->

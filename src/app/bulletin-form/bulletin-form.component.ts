@@ -1,10 +1,11 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, computed, inject, output, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { VotingMethod } from '../../datamodel/constants';
 import * as baseSignals from '../../signals/base';
 import { ApprobComponent } from "./approb/approb.component";
 import { NotesComponent } from "./notes/notes.component";
+import { Bulletin } from '../../datamodel/classes';
 
 @Component({
   selector: 'app-bulletin-form',
@@ -19,13 +20,16 @@ export class BulletinFormComponent {
   baseSignals = baseSignals;
   VotingMethod = VotingMethod;
 
-  @ViewChild("subcomponent") subComponent?: ApprobComponent|NotesComponent;
+  private approbComponent = viewChild(ApprobComponent);
+  private notesComponent = viewChild(NotesComponent);
+  subComponent = computed(() => this.approbComponent() || this.notesComponent());
 
-  close() {
-    if (this.subComponent) {
-      this.modal.close(this.subComponent.generate());
+  bulletins = output<Bulletin>();
+
+  emit() {
+    const subComponent = this.subComponent();
+    if (subComponent) {
+      this.bulletins.emit(subComponent.generate());
     }
-    // optionally make use of an Output event, whose payload can be typed
-    // (as opposed to the modal.close promise which can't)
   }
 }
