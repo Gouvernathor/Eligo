@@ -18,7 +18,7 @@ export class NotesComponent {
 
   minNNotes = computed(() => {
     return 1 + Math.max(1,
-      // FIXME a change in notes will not trigger a recompute
+      // FIXME a change in this.notes will not trigger a recompute
       // maybe make notes a signal ?
       ...this.notes.values(),
       ...computedSignals.relevantBulletins()
@@ -41,5 +41,9 @@ export class NotesComponent {
     return (computedSignals.relevantBulletins() as BulletinNotes[]).find(b =>
       b.notes.equals(this.notes)
     ) || new BulletinNotes(newRandomValue(baseSignals.bulletins().keys()), this.notes);
+  }
+
+  ngOnDestroy() {
+    baseSignals.nNotes.set(this.inputNNotesValue);
   }
 }
