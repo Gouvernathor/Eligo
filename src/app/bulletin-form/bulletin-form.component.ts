@@ -2,10 +2,10 @@ import { Component, computed, inject, output, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { VotingMethod } from '../../datamodel/constants';
+import { Bulletin } from '../../datamodel/classes';
 import * as baseSignals from '../../signals/base';
 import { ApprobComponent } from "./approb/approb.component";
 import { NotesComponent } from "./notes/notes.component";
-import { Bulletin } from '../../datamodel/classes';
 
 @Component({
   selector: 'app-bulletin-form',
