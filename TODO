@@ -1,0 +1,40 @@
+- re-add dark theme
+- re-add the header bar
+- consider moving to material angular
+- augment language level to limit extensions
+
+- implement voting methods
+  - use Ecclesia
+  - add selection and customization of the voting methods
+  - move the number of notes there instead of in the bulletin form
+- implement attribution methods
+- rework the layout, split at least in columns
+- show the raw number of votes on each bulletin in addition to the percentage
+- show the percentage on the chart in addition to the numbers of votes
+- make a button group out of the + and - (and delete) buttons on the ballots ?
+- re-add color selector
+  - align color selector theme on page theme
+- implement classement diagram
+- use stars/rating for the notes bulletin ?
+- use polar area for the notes diagram too ?
+- make approval vote colors more transparent ?
+- retype the approbation bulletin's attribute to Set
+- use linkedSignal for bulletins and votes
+  - when linkedSignal is stable
+- handle bulletin doubles visually for the user
+- decide how the number of electors is computed AND displayed
+- display a majority circle on the approbation vote diagram ?
+- add the abstention to the simple vote diagram
+- in the notes bulletin form, update the range value when the number of grades changes
+  - at least take the min of the value and the max, when saving the note
+
+- add a tab/page for house selection
+  - number of seats
+  - all the parliamentarch options
+
+- add a results page
+  - maybe a pop-up / modal
+  - display the arch
+  - optionally add another vote results diagram, but leave one in the vote tab
+  - display a list of the parties and the seat shares (as filled progression bars)
+    - that way people can compare the amount of each bulletin, with the number of votes for each candidate, with the number of seats after the attribution
