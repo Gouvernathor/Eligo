@@ -53,19 +53,19 @@ export class MainComponent {
   }
 
   onSetVotingMethod(method: VotingMethod) {
-    baseSignals.setVotingMethod(method);
+    baseSignals.votingMethod.set(method);
   }
 
   onSetNbElecteursManuel(event: Event) {
-    baseSignals.setNbElecteursManuel(parseInt((event.target as HTMLInputElement).value));
+    baseSignals.nbElecteursManuel.set(parseInt((event.target as HTMLInputElement).value));
   }
 
   onToggleElecteursManuel(event: Event) {
     // TODO retravailler les règles d'affichage du nb manuel d'électeurs
     if ((event.target as HTMLInputElement).checked) {
-      baseSignals.setNbElecteursManuel(computedSignals.nbVotes());
+      baseSignals.nbElecteursManuel.set(computedSignals.nbVotes());
     } else {
-      baseSignals.setNbElecteursManuel(null);
+      baseSignals.nbElecteursManuel.set(null);
     }
   }
 

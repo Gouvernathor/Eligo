@@ -5,7 +5,7 @@ import { sortMap } from "../utils/utils";
 
 type id = number;
 
-// base, internal versions
+// base versions
 const votingMethod: WritableSignal<VotingMethod|null> = signal(null);
 const attributionMethod: WritableSignal<null> = signal(null);
 const candidats: WritableSignal<Map<id, Candidat>> = signal(new Map(), {equal: Map.prototype.equals});
@@ -15,27 +15,20 @@ const nbElecteursManuel: WritableSignal<number|null> = signal(null);
 const nNotes: WritableSignal<number> = signal(5);
 
 // readonly versions, exported under the base name
-const votingMethod_r = votingMethod.asReadonly();
-const attributionMethod_r = attributionMethod.asReadonly();
 const candidats_r = candidats.asReadonly() as Signal<ReadonlyMap<id, Candidat>>;
 const bulletins_r = bulletins.asReadonly() as Signal<ReadonlyMap<id, Bulletin>>;
 const votes_r = votes.asReadonly() as Signal<ReadonlyMap<id, number>>;
-const nbElecteursManuel_r = nbElecteursManuel.asReadonly();
-const nNotes_r = nNotes.asReadonly();
 export {
-    votingMethod_r as votingMethod,
-    attributionMethod_r as attributionMethod,
+    votingMethod,
+    attributionMethod,
     candidats_r as candidats,
     bulletins_r as bulletins,
     votes_r as votes,
-    nbElecteursManuel_r as nbElecteursManuel,
-    nNotes_r as nNotes,
+    nbElecteursManuel,
+    nNotes,
 };
 
-// public setters
-export function setVotingMethod(method: VotingMethod) {
-    votingMethod.set(method);
-}
+// public specific setters (for those that need it)
 export function setCandidat(cid: number, candidat: Candidat) {
     const candidatsValue = candidats();
     candidatsValue.set(cid, candidat);
@@ -87,7 +80,4 @@ export function incrementVote(bid: id) {
 }
 export function decrementVote(bid: id) {
     crementVote(bid, -1);
-}
-export function setNbElecteursManuel(value: number|null) {
-    nbElecteursManuel.set(value);
 }
