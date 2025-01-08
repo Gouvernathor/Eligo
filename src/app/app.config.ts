@@ -6,5 +6,11 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay()), provideCharts(withDefaultRegisterables())]
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideClientHydration(withEventReplay()),
+    provideCharts(withDefaultRegisterables()),
+    // provideCharts({registerables: []}),
+  ]
 };
