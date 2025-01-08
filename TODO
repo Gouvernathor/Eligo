@@ -8,13 +8,9 @@
   - add selection and customization of the voting methods
   - move the number of notes there instead of in the bulletin form
 - implement attribution methods
-- rework the layout, split at least in columns
-  - at the top, have the candidates card on the left (taking the whole width if alone) and the diagram on the right
+- rework the layout
   - hide the whole diagram card instead of just the diagram
   - for the election method card, have the voting method on the left, the attribution method on its right, and possible attribution options on the right
-  - either have:
-    - the candidates card take full width when no diagram, and the bulletins under the election method,
-    - or have the diagram and the bulletins (in either order) share a rightward column
 - show the raw number of votes on each bulletin in addition to the percentage
 - show the percentage on the chart in addition to the numbers of votes
 - make a button group out of the + and - (and delete) buttons on the ballots ?
