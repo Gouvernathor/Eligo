@@ -142,33 +142,10 @@
                 </div>
 
                 @if ([VotingMethod.APPROBATION, VotingMethod.CLASSEMENT, VotingMethod.NOTES].includes(baseSignals.votingMethod()!)) {
-                    <button id="bulletinFormButton" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#bulletinFormModal" style="display: none;" (click)="onResetModalBulletinForm()" [disabled]="baseSignals.candidats().size === 0">
+                    <button id="bulletinFormButton" class="btn btn-success mt-2" (click)="openModalBulletinForm()" [disabled]="baseSignals.candidats().size === 0">
                         Ajouter un bulletin
                     </button>
                 }
-
-                <div id="bulletinFormModal" class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-labelledby="bulletinFormModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 id="bulletinFormModalLabel" class="modal-title fs-5">
-                                    Nouveau bulletin
-                                </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div id="bulletinFormInputContainer" class="modal-body">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                    Annuler
-                                </button>
-                                <button id="bulletinFormFinish" type="button" class="btn btn-primary" (click)="onValiderBulletinForm()">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 

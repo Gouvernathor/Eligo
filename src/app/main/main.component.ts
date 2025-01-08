@@ -1,17 +1,20 @@
-import { Component, computed, effect, untracked } from '@angular/core';
+import { Component, computed, effect, inject, untracked } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VotingMethod } from '../../datamodel/constants';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
 import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, BulletinSimple, Candidat } from '../../datamodel/classes';
 import { getRandomColor, newRandomValue } from '../../utils/utils';
+import { BulletinFormComponent } from "../bulletin-form/bulletin-form.component";
 
 @Component({
   selector: 'app-main',
-  imports: [],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
+  private modalService = inject(NgbModal);
+
   Math = Math;
   VotingMethod = VotingMethod;
   baseSignals = baseSignals;
@@ -78,11 +81,15 @@ export class MainComponent {
     baseSignals.deleteBulletin(bid);
   }
 
-  onResetModalBulletinForm() {
-    // TODO
+
+  openModalBulletinForm() {
+    const modalRef = this.modalService.open(BulletinFormComponent);
+    modalRef.componentInstance.result = (payload: any) => {
+      this.onValiderBulletinForm(payload);
+    };
   }
 
-  onValiderBulletinForm() {
+  onValiderBulletinForm(result: Bulletin) {
     // TODO
   }
 
