@@ -40,6 +40,10 @@ export function sum(ar: Iterable<number>, start = 0): number {
         .reduce((a, b) => a + b, start);
 }
 
+/**
+ * @param n number of colors to generate
+ * @param maxHue in degrees
+ */
 export function* generateRainbow(n: number, alpha = "100%", maxHue = 300) {
     for (let i = 0; i < n; i++) {
         yield `hsla(${maxHue * i / (n - 1)}deg, 100%, 50%, ${alpha})`;
