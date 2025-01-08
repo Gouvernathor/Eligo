@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { VotingMethod } from '../../datamodel/constants';
-import { Bulletin } from '../../datamodel/classes';
 import * as baseSignals from '../../signals/base';
 import { ApprobComponent } from "./approb/approb.component";
 import { NotesComponent } from "./notes/notes.component";
@@ -20,10 +19,12 @@ export class BulletinFormComponent {
   baseSignals = baseSignals;
   VotingMethod = VotingMethod;
 
+  @ViewChild("subcomponent") subComponent?: ApprobComponent|NotesComponent;
+
   close() {
-    const bulletin: Bulletin = null!;
-    // TODO create the Bulletin object and pass it to the result callback
-    this.modal.close(bulletin);
+    if (this.subComponent) {
+      this.modal.close(this.subComponent.generate());
+    }
     // optionally make use of an Output event, whose payload can be typed
     // (as opposed to the modal.close promise which can't)
   }

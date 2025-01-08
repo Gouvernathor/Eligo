@@ -32,7 +32,6 @@ export class NotesComponent {
     this.notes.set(cid, parseInt((event.target as HTMLInputElement).value));
   }
 
-  // TODO use this method somewhere
   /**
    * If a bulletin with the same notations already exists,
    * returns it,

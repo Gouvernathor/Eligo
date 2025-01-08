@@ -10,14 +10,14 @@
             Error: creating new bulletins for Unique voting method is impossible
         }
         @case (VotingMethod.APPROBATION) {
-            <app-bulletin-form-approb/>
+            <app-bulletin-form-approb #subcomponent/>
         }
         @case (VotingMethod.CLASSEMENT) {
             <!-- drag-and-drop to reorder the candidates -->
             Error: not yet implemented
         }
         @case (VotingMethod.NOTES) {
-            <app-bulletin-form-notes/>
+            <app-bulletin-form-notes #subcomponent/>
         }
 
         @default {
@@ -29,7 +29,7 @@
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
         Annuler
     </button>
-    <button id="bulletinFormFinish" type="button" class="btn btn-primary" (click)="close()">
+    <button id="bulletinFormFinish" type="button" class="btn btn-primary" [disabled]="!subComponent" (click)="close()">
         Ajouter
     </button>
 </div>

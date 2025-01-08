@@ -23,7 +23,6 @@ export class ApprobComponent {
     }
   }
 
-  // TODO: appeler cette méthode quelque part
   /**
    * If a bulletin with the same set of candidates already exists,
    * returns it,
