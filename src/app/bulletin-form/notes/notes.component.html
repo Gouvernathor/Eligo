@@ -1,0 +1,13 @@
+<!-- input number for the grades interval -->
+<label for="billetinForNGradesInput" class="form-label">
+    Nombre de notes
+</label>
+<input id="bulletinFormNGradesInput" class="form-control" type="number" aria-describedby="bulletinFormNGradesHelp" [min]="minNNotes()" [(ngModel)]="inputNNotesValue"/>
+<div id="bulletinFormNGradesHelp" class="form-text">
+    Ce nombre s'appliquera à tous les bulletins pendant le dépouillement, il ne peut pas être supérieur à ce qui a été indiqué dans les bulletins existants.
+</div>
+@for (candidat of baseSignals.candidats().values(); track candidat.id) {
+    <label for="bulletinFormInput_{{candidat.id}}" class="form-label">{{candidat.name()}}</label>
+    <input id="bulletinFormInput_{{candidat.id}}" class="form-range modal-bulletin-form-input" type="range" min="0" [max]="inputNNotesValue-1" (change)="onNoteChanged(candidat.id, $event)"/>
+    <!-- TODO possibly update the value of the range input when the number of grades changes, so that it stays <= the max value -->
+}

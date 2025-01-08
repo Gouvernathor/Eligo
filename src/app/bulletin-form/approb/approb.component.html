@@ -1,0 +1,7 @@
+<!-- checkbox for each candidate -->
+@for (candidat of baseSignals.candidats().values(); track candidat.id) {
+    <div class="form-check">
+        <input class="form-check-input modal-bulletin-form-input" type="checkbox" id="bulletinFormInput_{{candidat.id}}" (change)="onCandidatToggled(candidat.id, $event)"/>
+        <label class="form-check-label" for="bulletinFormInput_{{candidat.id}}">{{candidat.name()}}</label>
+    </div>
+}

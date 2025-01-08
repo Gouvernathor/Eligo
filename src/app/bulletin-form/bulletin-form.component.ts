@@ -1,14 +1,15 @@
-import { Component, computed, inject, Input } from '@angular/core';
-import { VotingMethod } from '../../datamodel/constants';
-import { Bulletin, BulletinNotes } from '../../datamodel/classes';
-import * as baseSignals from '../../signals/base';
-import * as computedSignals from '../../signals/computed';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { VotingMethod } from '../../datamodel/constants';
+import { Bulletin } from '../../datamodel/classes';
+import * as baseSignals from '../../signals/base';
+import { ApprobComponent } from "./approb/approb.component";
+import { NotesComponent } from "./notes/notes.component";
 
 @Component({
   selector: 'app-bulletin-form',
-  imports: [FormsModule],
+  imports: [FormsModule, ApprobComponent, NotesComponent],
   templateUrl: './bulletin-form.component.html',
   styleUrl: './bulletin-form.component.scss'
 })
@@ -19,16 +20,11 @@ export class BulletinFormComponent {
   baseSignals = baseSignals;
   VotingMethod = VotingMethod;
 
-  minNNotes = computed(() => {
-    return 1 + Math.max(1, ...computedSignals.relevantBulletins()
-      .flatMap(b => Array.from((b as BulletinNotes).notes.values())));
-  });
-
-  inputNNotesValue = Math.max(this.minNNotes(), baseSignals.nNotes());
-
   close() {
     const bulletin: Bulletin = null!;
     // TODO create the Bulletin object and pass it to the result callback
     this.modal.close(bulletin);
+    // optionally make use of an Output event, whose payload can be typed
+    // (as opposed to the modal.close promise which can't)
   }
 }
