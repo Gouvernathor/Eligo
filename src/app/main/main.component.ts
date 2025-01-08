@@ -84,9 +84,7 @@ export class MainComponent {
 
   openModalBulletinForm() {
     const modalRef = this.modalService.open(BulletinFormComponent);
-    modalRef.componentInstance.result = (payload: any) => {
-      this.onValiderBulletinForm(payload);
-    };
+    modalRef.result.then(payload => this.onValiderBulletinForm(payload));
   }
 
   onValiderBulletinForm(result: Bulletin) {

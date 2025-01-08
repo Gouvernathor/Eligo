@@ -19,8 +19,6 @@ export class BulletinFormComponent {
   baseSignals = baseSignals;
   VotingMethod = VotingMethod;
 
-  @Input() result: (bulletin: Bulletin) => void = () => {};
-
   minNNotes = computed(() => {
     return 1 + Math.max(1, ...computedSignals.relevantBulletins()
       .flatMap(b => Array.from((b as BulletinNotes).notes.values())));
@@ -29,8 +27,8 @@ export class BulletinFormComponent {
   inputNNotesValue = Math.max(this.minNNotes(), baseSignals.nNotes());
 
   close() {
+    const bulletin: Bulletin = null!;
     // TODO create the Bulletin object and pass it to the result callback
+    this.modal.close(bulletin);
   }
-  // @Output ? ou un event emitter plutôt ?
-  // ou prendre une lambda en paramètre ?
 }
