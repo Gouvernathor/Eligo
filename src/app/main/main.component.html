@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <div id="candidatsContainer" class="mb-2">
                             @for (candidat of baseSignals.candidats().values(); track candidat.id) {
-                                <div class="card mb-3" [id]="'candidatCard_'+candidat.id"> <!-- partycard -->
+                                <div class="card mb-3" id="candidatCard_{{candidat.id}}"> <!-- partycard -->
                                     <div class="card-body"> <!-- partycardbody -->
                                         <div class="row g-3 mb-3"> <!-- first row -->
                                             <div class="col-auto"> <!-- namecol -->
@@ -70,8 +70,8 @@
                         <ul id="votingMethodContainer" class="list-group mb-2 w-25">
                             @for (method of VotingMethod.values(); track method.id) {
                                 <li class="list-group-item">
-                                    <input class="form-check-input me-1" type="radio" autocomplete="off" name="votingMethod" [value]="method.id" [id]="'votingMethod_'+method.id" (click)="onSetVotingMethod(method)"/>
-                                    <label class="form-check-label stretched-link" [htmlFor]="'votingMethod_'+method.id">{{method.desc}}</label>
+                                    <input class="form-check-input me-1" type="radio" autocomplete="off" name="votingMethod" [value]="method.id" id="votingMethod_{{method.id}}" (click)="onSetVotingMethod(method)"/>
+                                    <label class="form-check-label stretched-link" for="votingMethod_{{method.id}}">{{method.desc}}</label>
                                 </li>
                             }
                         </ul>
