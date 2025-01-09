@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { BulletinApprobation } from '../../../datamodel/classes';
-import * as baseSignals from '../../../signals/base';
-import * as computedSignals from '../../../signals/computed';
-import { newRandomValue } from '../../../utils/utils';
+import { BulletinApprobation } from '../../../../datamodel/classes';
+import * as baseSignals from '../../../../signals/base';
+import * as computedSignals from '../../../../signals/computed';
+import { newRandomValue } from '../../../../utils/utils';
 
 @Component({
   selector: 'app-bulletin-form-approb',

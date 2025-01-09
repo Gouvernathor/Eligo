@@ -1,9 +1,9 @@
 import { Component, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BulletinNotes } from '../../../datamodel/classes';
-import * as baseSignals from '../../../signals/base';
-import * as computedSignals from '../../../signals/computed';
-import { newRandomValue } from '../../../utils/utils';
+import { BulletinNotes } from '../../../../datamodel/classes';
+import * as baseSignals from '../../../../signals/base';
+import * as computedSignals from '../../../../signals/computed';
+import { newRandomValue } from '../../../../utils/utils';
 
 @Component({
   selector: 'app-bulletin-form-notes',

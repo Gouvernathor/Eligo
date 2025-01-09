@@ -5,7 +5,7 @@ import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, Bulle
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
 import { getRandomColor, newRandomValue } from '../../utils/utils';
-import { BulletinFormComponent } from "../bulletin-form/bulletin-form.component";
+import { BulletinFormComponent } from "../election/bulletin-form/bulletin-form.component";
 import { DiagrammeComponent } from "../diagramme/diagramme.component";
 
 @Component({
