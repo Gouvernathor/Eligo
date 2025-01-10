@@ -15,6 +15,7 @@ const mapequals = Map.prototype.equals ?? (function(m1: Map<any, any>, m2: Map<a
 export interface MapSignal<K, V> extends Signal<ReadonlyMap<K, V>> {
     set(key: K, value: V): void;
     delete(key: K): void;
+    asReadonly(): Signal<ReadonlyMap<K, V>>;
 }
 
 export function mapSignal<K, V>(
@@ -34,6 +35,9 @@ export function mapSignal<K, V>(
             sig.set(sigValue);
         }
     }
+    function asReadonly() {
+        return sig.asReadonly();
+    }
 
-    return Object.assign(sig.asReadonly(), { set: set, delete: del });
+    return Object.assign(sig.asReadonly(), { set, delete: del, asReadonly });
 }
