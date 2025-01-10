@@ -6,15 +6,29 @@
     <div class="container-fluid px-4">
         <h1 class="my-4">Page principale</h1>
 
-        <!-- Création des votes -->
-        <app-election/>
+        <!-- onglets -->
+        <nav ngbNav #nav="ngbNav" class="nav-tabs">
+            <!-- Création des votes -->
+            <ng-container ngbNavItem>
+                <button ngbNavLink>Election</button>
+                <ng-template ngbNavContent>
+                    <app-election/>
+                </ng-template>
+            </ng-container>
 
-        <hr/>
+            <!-- Spécification de la Chambre -->
+            <ng-container ngbNavItem>
+                <button ngbNavLink>Chambre</button>
+                <ng-template ngbNavContent>
+                    <app-house/>
+                </ng-template>
+            </ng-container>
 
-        <!-- Spécification de la Chambre -->
-        <app-house/>
+            <!-- gros bouton de validation -->
+        </nav>
 
-        <!-- gros bouton de validation -->
+        <!-- contenu de l'onglet sélectionné -->
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
     </div>
 </main>
 
