@@ -1,7 +1,7 @@
 import { Signal, signal, WritableSignal } from "@angular/core";
+import { mapSignal } from "mapsignal";
 import { VotingMethod } from "../datamodel/constants";
 import { Bulletin, Candidat } from "../datamodel/classes";
-import { mapSignal } from "../utils/mapSignal";
 import { sortMap } from "../utils/utils";
 
 // base versions

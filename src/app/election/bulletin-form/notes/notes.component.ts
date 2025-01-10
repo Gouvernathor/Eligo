@@ -1,9 +1,9 @@
 import { Component, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { mapSignal } from 'mapsignal';
 import { BulletinNotes } from '../../../../datamodel/classes';
 import * as baseSignals from '../../../../signals/base';
 import * as computedSignals from '../../../../signals/computed';
-import { mapSignal } from '../../../../utils/mapSignal';
 import { newRandomValue } from '../../../../utils/utils';
 
 @Component({
