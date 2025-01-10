@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { BulletinNotes } from '../../../../datamodel/classes';
 import * as baseSignals from '../../../../signals/base';
 import * as computedSignals from '../../../../signals/computed';
+import { mapSignal } from '../../../../utils/mapSignal';
 import { newRandomValue } from '../../../../utils/utils';
 
 @Component({
@@ -14,13 +15,11 @@ import { newRandomValue } from '../../../../utils/utils';
 export class NotesComponent {
   baseSignals = baseSignals;
 
-  notes: Map<number, number> = new Map();
+  notes = mapSignal(new Map<number, number>(), {equal: () => false});
 
   minNNotes = computed(() => {
     return 1 + Math.max(1,
-      // FIXME a change in this.notes will not trigger a recompute
-      // maybe make notes a signal ?
-      ...this.notes.values(),
+      ...this.notes().values(),
       ...computedSignals.relevantBulletins()
         .flatMap(b => Array.from((b as BulletinNotes).notes.values())),
     );
@@ -38,9 +37,10 @@ export class NotesComponent {
    * otherwise creates a new bulletin.
    */
   generate(): BulletinNotes {
+    const notes = this.notes();
     return (computedSignals.relevantBulletins() as BulletinNotes[]).find(b =>
-      b.notes.equals(this.notes)
-    ) || new BulletinNotes(newRandomValue(baseSignals.bulletins().keys()), this.notes);
+      b.notes.equals(notes)
+    ) || new BulletinNotes(newRandomValue(baseSignals.bulletins().keys()), notes);
   }
 
   ngOnDestroy() {
