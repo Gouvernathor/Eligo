@@ -17,13 +17,14 @@ export class NotesComponent {
 
   notes = mapSignal(new Map<number, number>(), {equal: () => false});
 
-  minNNotes = computed(() => {
-    return 1 + Math.max(1,
-      ...this.notes().values(),
-      ...computedSignals.relevantBulletins()
-        .flatMap(b => Array.from((b as BulletinNotes).notes.values())),
-    );
-  });
+  minNNotes = computed(() =>
+    // using several calls to Math.max so that the number of parameters is not too many
+    1 + Math.max(1,
+      Math.max(...this.notes().values()),
+      Math.max(...computedSignals.relevantBulletins()
+        .map(b => Math.max(...(b as BulletinNotes).notes.values()))),
+    )
+  );
 
   inputNNotesValue = Math.max(this.minNNotes(), baseSignals.nNotes());
 
