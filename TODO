@@ -3,11 +3,10 @@
 - consider moving to material angular
 - augment language level to limit extensions
 
-- implement voting methods
+- implement election methods
   - use Ecclesia
-  - add selection and customization of the voting methods
+  - add selection and customization of the attribution methods
   - move the number of notes there instead of in the bulletin form
-- implement attribution methods
 - rework the layout
   - hide the whole diagram card instead of just the diagram
   - for the election method card, have the voting method on the left, the attribution method on its right, and possible attribution options on the right
