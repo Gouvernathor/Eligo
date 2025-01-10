@@ -59,7 +59,7 @@
                 <div class="col-4">
                     <div class="mb-1">Type de vote</div>
                     <!-- liste simple avec checkbox rondes, ou menu déroulant -->
-                    <ul id="votingMethodContainer" class="list-group mb-2">
+                    <ul id="votingMethodContainer" class="list-group">
                         @for (method of VotingMethod.values(); track method.id) {
                             <li class="list-group-item">
                                 <input class="form-check-input me-1" type="radio" autocomplete="off" name="votingMethod" [value]="method.id" id="votingMethod_{{method.id}}" (click)="onSetVotingMethod(method)"/>
