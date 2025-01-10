@@ -54,22 +54,30 @@
             <div class="card-header">
                 Mode de scrutin
             </div>
-            <div class="card-body">
-                <div class="mb-1">Type de vote</div>
-                <!-- liste simple avec checkbox rondes, ou menu déroulant -->
-                <ul id="votingMethodContainer" class="list-group mb-2 w-25">
-                    @for (method of VotingMethod.values(); track method.id) {
-                        <li class="list-group-item">
-                            <input class="form-check-input me-1" type="radio" autocomplete="off" name="votingMethod" [value]="method.id" id="votingMethod_{{method.id}}" (click)="onSetVotingMethod(method)"/>
-                            <label class="form-check-label stretched-link" for="votingMethod_{{method.id}}">{{method.desc}}</label>
-                        </li>
-                    }
-                </ul>
-
-                <div class="mb-1">Type d'attribution</div>
-                <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
-                <!-- liste d'options pour cette attribution -->
-                <div id="attributionMethodContainer" class="mb-2"></div>
+            <div class="card-body row">
+                <!-- voting methods -->
+                <div class="col-4">
+                    <div class="mb-1">Type de vote</div>
+                    <!-- liste simple avec checkbox rondes, ou menu déroulant -->
+                    <ul id="votingMethodContainer" class="list-group mb-2">
+                        @for (method of VotingMethod.values(); track method.id) {
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="votingMethod" [value]="method.id" id="votingMethod_{{method.id}}" (click)="onSetVotingMethod(method)"/>
+                                <label class="form-check-label stretched-link" for="votingMethod_{{method.id}}">{{method.desc}}</label>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <!-- attribution methods -->
+                <div class="col-4">
+                    <div class="mb-1">Type d'attribution</div>
+                    <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
+                    <!-- liste d'options pour cette attribution -->
+                    <div id="attributionMethodContainer" class="mb-2"></div>
+                </div>
+                <!-- various options -->
+                <div class="col-4">
+                </div>
             </div>
         </div>
     </div>
