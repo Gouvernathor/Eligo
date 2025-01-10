@@ -32,7 +32,7 @@ export class ElectionComponent {
   onAddCandidat() {
     const cid = newRandomValue(baseSignals.candidats().keys());
     const candidat = new Candidat(cid, "", getRandomColor(), 0, "#000000");
-    baseSignals.setCandidat(cid, candidat);
+    baseSignals.candidats.set(cid, candidat);
 
     // jscolor.install(partycard)
   }
@@ -51,7 +51,7 @@ export class ElectionComponent {
   }
 
   onDeleteCandidat(cid: number) {
-    baseSignals.deleteCandidat(cid);
+    baseSignals.candidats.delete(cid);
   }
 
   onSetVotingMethod(method: VotingMethod) {

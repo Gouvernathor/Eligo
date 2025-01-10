@@ -1,25 +1,25 @@
 import { Signal, signal, WritableSignal } from "@angular/core";
 import { VotingMethod } from "../datamodel/constants";
 import { Bulletin, Candidat } from "../datamodel/classes";
+import { mapSignal } from "../utils/mapSignal";
 import { sortMap } from "../utils/utils";
 
 // base versions
-const votingMethod: WritableSignal<VotingMethod|null> = signal(null);
-const attributionMethod: WritableSignal<null> = signal(null);
-const candidats: WritableSignal<Map<number, Candidat>> = signal(new Map(), {equal: Map.prototype.equals});
-const bulletins: WritableSignal<Map<number, Bulletin>> = signal(new Map(), {equal: Map.prototype.equals});
-const votes: WritableSignal<Map<number, number>> = signal(new Map(), {equal: Map.prototype.equals});
-const nbElecteursManuel: WritableSignal<number|null> = signal(null);
-const nNotes: WritableSignal<number> = signal(5);
+const votingMethod = signal<VotingMethod|null>(null);
+const attributionMethod = signal(null);
+const candidats = mapSignal<number, Candidat>();
+const bulletins = signal(new Map<number, Bulletin>(), {equal: Map.prototype.equals});
+const votes = signal(new Map<number, number>(), {equal: Map.prototype.equals});
+const nbElecteursManuel = signal<number|null>(null);
+const nNotes = signal(5);
 
 // readonly versions, exported under the base name
-const candidats_r = candidats.asReadonly() as Signal<ReadonlyMap<number, Candidat>>;
 const bulletins_r = bulletins.asReadonly() as Signal<ReadonlyMap<number, Bulletin>>;
 const votes_r = votes.asReadonly() as Signal<ReadonlyMap<number, number>>;
 export {
     votingMethod,
     attributionMethod,
-    candidats_r as candidats,
+    candidats,
     bulletins_r as bulletins,
     votes_r as votes,
     nbElecteursManuel,
@@ -27,17 +27,6 @@ export {
 };
 
 // public specific setters (for those that need it)
-export function setCandidat(cid: number, candidat: Candidat) {
-    const candidatsValue = candidats();
-    candidatsValue.set(cid, candidat);
-    candidats.set(candidatsValue);
-}
-export function deleteCandidat(cid: number) {
-    const candidatsValue = candidats();
-    if (candidatsValue.delete(cid)) {
-        candidats.set(candidatsValue);
-    }
-}
 export function setBulletin(bid: number, bulletin: Bulletin) {
     const bulletinsValue = bulletins();
     bulletinsValue.set(bid, bulletin);
