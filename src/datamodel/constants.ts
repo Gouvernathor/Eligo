@@ -9,13 +9,6 @@ export class VotingMethod {
         public readonly desc: string,
     ) {}
 
-    // public static *values() {
-    //     const cls = this.constructor as typeof VotingMethod;
-    //     yield cls.UNIQUE;
-    //     yield cls.APPROBATION;
-    //     yield cls.CLASSEMENT;
-    //     yield cls.NOTES;
-    // }
     public static values() {
         return [VotingMethod.UNIQUE, VotingMethod.APPROBATION, VotingMethod.CLASSEMENT, VotingMethod.NOTES];
     }
