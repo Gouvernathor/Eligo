@@ -33,9 +33,14 @@ export const relevantBulletins: Signal<ReadonlyArray<Bulletin>> = computed(() =>
         .filter(b => b.kind === method && isRelevant(b));
 });
 
+export const relevantVotes = computed(() => {
+    const vots = votes();
+    return new Map(relevantBulletins()
+        .map((bulletin) => [bulletin, vots.getOrDefault(bulletin.id, 0)] as const));
+});
+
 export const nbVotes: Signal<number> = computed(() => {
-    return sum(relevantBulletins()
-        .map((bulletin) => votes().getOrDefault(bulletin.id, 0)));
+    return sum(relevantVotes().values());
 });
 
 export const nbElecteurs: Signal<number> = computed(() => {
