@@ -36,6 +36,8 @@
 - add a results page
   - maybe a pop-up / modal
   - display the arch
+    - pass the Ballots through the Attribution methods to get the Counter results
+    - generate parliamentarchs from the Counter results
   - optionally add another vote results diagram, but leave one in the vote tab
   - display a list of the parties and the seat shares (as filled progression bars)
     - that way people can compare the amount of each bulletin, with the number of votes for each candidate, with the number of seats after the attribution
