@@ -1,10 +1,11 @@
 import { Component, computed } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
+import { sum } from '@gouvernathor/python';
 import { VotingMethod } from '../../datamodel/constants';
 import { BulletinApprobation, BulletinNotes, BulletinSimple } from '../../datamodel/classes';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
-import { generateRainbow, sum } from '../../utils/utils';
+import { generateRainbow } from '../../utils/utils';
 
 @Component({
   selector: 'app-diagramme',

@@ -1,8 +1,8 @@
 import { computed, Signal } from "@angular/core";
+import { sum } from "@gouvernathor/python";
 import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, BulletinSimple } from "../datamodel/classes";
 import { VotingMethod } from "../datamodel/constants";
 import { bulletins, candidats, nbElecteursManuel, votes, votingMethod } from "./base";
-import { sum } from "../utils/utils";
 
 export const relevantBulletins: Signal<ReadonlyArray<Bulletin>> = computed(() => {
     const method = votingMethod();

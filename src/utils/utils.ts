@@ -35,11 +35,6 @@ export function getRandomColor(seed?: number|string): string {
     return color;
 }
 
-export function sum(ar: Iterable<number>, start = 0): number {
-    return (Array.isArray(ar) ? ar : [...ar])
-        .reduce((a, b) => a + b, start);
-}
-
 /**
  * @param n number of colors to generate
  * @param maxHue in degrees
