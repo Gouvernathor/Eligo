@@ -56,7 +56,7 @@
             </div>
             <div class="card-body row">
                 <!-- voting methods -->
-                <div class="col-4">
+                <div class="col-3">
                     <div class="mb-1">Type de vote</div>
                     <!-- liste simple avec checkbox rondes, ou menu déroulant -->
                     <ul id="votingMethodContainer" class="list-group">
@@ -69,11 +69,56 @@
                     </ul>
                 </div>
                 <!-- attribution methods -->
-                <div class="col-4">
+                <div class="col-5">
                     <div class="mb-1">Type d'attribution</div>
                     <!-- liste d'attributions possibles, grisées en fonction du type de vote -->
                     <!-- liste d'options pour cette attribution -->
-                    <div id="attributionMethodContainer" class="mb-2"></div>
+                    <ul id="attributionMethodContainer" class="list-group">
+                        @if ([VotingMethod.UNIQUE, VotingMethod.APPROBATION].includes(baseSignals.votingMethod()!)) {
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_SIMPLE" value="MAJO" id="attributionMethod_MAJO" (click)="onSetAttributionMethod(AttributionMethod.MAJO)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_MAJO">Scrutin majoritaire</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_SIMPLE" value="DHONDT" id="attributionMethod_DHONDT" (click)="onSetAttributionMethod(AttributionMethod.DHONDT)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_DHONDT">Proportionnelle, plus forte moyenne (D'Hondt)</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_SIMPLE" value="WEBSTER" id="attributionMethod_WEBSTER" (click)="onSetAttributionMethod(AttributionMethod.WEBSTER)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_WEBSTER">Proportionnelle, plus forte moyenne (Webster/Sainte-Laguë)</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_SIMPLE" value="HARE" id="attributionMethod_HARE" (click)="onSetAttributionMethod(AttributionMethod.HARE)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_HARE">Proportionnelle, plus fort reste (Hare)</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_SIMPLE" value="HHILL" id="attributionMethod_HHILL" (click)="onSetAttributionMethod(AttributionMethod.HHILL)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_HHILL">Proportionnelle, Huntington-Hill</label>
+                            </li>
+                        } @else if (baseSignals.votingMethod() === VotingMethod.CLASSEMENT) {
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_ORDER" value="STV" id="attributionMethod_STV" (click)="onSetAttributionMethod(AttributionMethod.STV)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_STV">Vote unique transférable</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_ORDER" value="BORDA" id="attributionMethod_BORDA" (click)="onSetAttributionMethod(AttributionMethod.BORDA)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_BORDA">Méthode Borda</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_ORDER" value="CONDOR" id="attributionMethod_CONDOR" (click)="onSetAttributionMethod(AttributionMethod.CONDOR)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_CONDOR">Méthode de Condorcet</label>
+                            </li>
+                        } @else if (baseSignals.votingMethod() === VotingMethod.NOTES) {
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_SCORES" value="MEAN" id="attributionMethod_MEAN" (click)="onSetAttributionMethod(AttributionMethod.MEAN)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_MEAN">Jugement majoritaire, meilleure note moyenne</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_SCORES" value="MEDIAN" id="attributionMethod_MEDIAN" (click)="onSetAttributionMethod(AttributionMethod.MEDIAN)"/>
+                                <label class="form-check-label stretched-link" for="attributionMethod_MEDIAN">Jugement majoritaire, meilleure note médiane</label>
+                            </li>
+                        }
+                    </ul>
                 </div>
                 <!-- various options -->
                 <div class="col-4">

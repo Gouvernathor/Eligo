@@ -1,12 +1,12 @@
 import { Signal, signal } from "@angular/core";
 import { mapSignal } from "mapsignal";
-import { VotingMethod } from "../datamodel/constants";
+import { AttributionMethod, BallotKind, VotingMethod } from "../datamodel/constants";
 import { Bulletin, Candidat } from "../datamodel/classes";
 import { sortMap } from "../utils/utils";
 
 // base versions
 const votingMethod = signal<VotingMethod|null>(null);
-const attributionMethod = signal(null);
+const attributionMethod = mapSignal<BallotKind, AttributionMethod>();
 const candidats = mapSignal<number, Candidat>();
 const bulletins = signal(new Map<number, Bulletin>(), {equal: Map.prototype.equals});
 const votes = signal(new Map<number, number>(), {equal: Map.prototype.equals});

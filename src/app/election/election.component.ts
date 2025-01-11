@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, untracked } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { VotingMethod } from '../../datamodel/constants';
+import { AttributionMethod, VotingMethod } from '../../datamodel/constants';
 import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, BulletinSimple, Candidat } from '../../datamodel/classes';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
@@ -19,6 +19,7 @@ export class ElectionComponent {
 
   Math = Math;
   VotingMethod = VotingMethod;
+  AttributionMethod = AttributionMethod;
   baseSignals = baseSignals;
   computedSignals = computedSignals;
 
@@ -56,6 +57,10 @@ export class ElectionComponent {
 
   onSetVotingMethod(method: VotingMethod) {
     baseSignals.votingMethod.set(method);
+  }
+
+  onSetAttributionMethod(method: AttributionMethod) {
+    baseSignals.attributionMethod.set(method.ballotType, method);
   }
 
   onSetNbElecteursManuel(event: Event) {
