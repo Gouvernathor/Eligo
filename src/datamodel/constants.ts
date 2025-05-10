@@ -47,13 +47,15 @@ export namespace AttributionMethod {
         ballotType: BallotKind.SIMPLE,
         attribution: plurality,
     };
+    // superMajority
+
     export const DHONDT: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: dHondt,
+        attribution: dHondt, // jefferson
     };
     export const WEBSTER: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: webster,
+        attribution: webster, // sainteLague
     };
     export const HHILL: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
@@ -61,8 +63,11 @@ export namespace AttributionMethod {
     };
     export const HARE: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: hareLargestRemainders,
+        attribution: hareLargestRemainders, // hamilton
     };
+
+    // randomize
+
 
     export const STV: AttributionMethod = {
         ballotType: BallotKind.ORDER,
