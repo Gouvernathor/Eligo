@@ -35,7 +35,7 @@ export namespace VotingMethod {
     export const values = () => [UNIQUE, APPROBATION, CLASSEMENT, NOTES];
 }
 
-type AttributionMethodBuilder = <Party>({ nSeats }: {
+export type AttributionMethodBuilder = <Party>({ nSeats }: {
     nSeats: number;
 }) => Attribution<Party, any> & HasNSeats;
 
@@ -69,14 +69,14 @@ export const tips: Readonly<Record<string, string>> = {
 };
 
 // deprecated
-export interface AttributionMethod {
+interface AttributionMethod {
     readonly ballotType: BallotKind;
     readonly attribution: <Party>({ nSeats }: {
         nSeats: number;
     }) => Attribution<Party, any> & HasNSeats;
     readonly tip?: string;
 }
-export namespace AttributionMethod {
+namespace AttributionMethod {
     export const MAJO: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
         attribution: plurality,

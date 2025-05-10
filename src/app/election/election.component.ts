@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, untracked } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AttributionMethod, VotingMethod } from '../../datamodel/constants';
+import { AttributionMethodBuilder, attributionMethods, BallotKind, VotingMethod } from '../../datamodel/constants';
 import { Bulletin, BulletinApprobation, BulletinClassement, BulletinNotes, BulletinSimple, Candidat } from '../../datamodel/classes';
 import * as baseSignals from '../../signals/base';
 import * as computedSignals from '../../signals/computed';
@@ -19,7 +19,6 @@ export class ElectionComponent {
 
   Math = Math;
   VotingMethod = VotingMethod;
-  AttributionMethod = AttributionMethod;
   baseSignals = baseSignals;
   computedSignals = computedSignals;
 
@@ -29,6 +28,43 @@ export class ElectionComponent {
       computedSignals.nbVotes() :
       Math.max(val, computedSignals.nbVotes());
   });
+  currentBallotKind = computed(() => {
+    const voting = baseSignals.votingMethod();
+    if (voting === null) {
+      return null;
+    }
+    return BallotKind[voting.ballotKind];
+  });
+  validAttributionMethods = computed(() => {
+    const voting = baseSignals.votingMethod();
+    if (voting === null) {
+      return {};
+    }
+    return attributionMethods[voting.ballotKind];
+  });
+  idsAttributionMethods = computed(() => {
+    return Object.keys(this.validAttributionMethods());
+  });
+
+  private attribMethodNames = new Map<string, string>([
+    ["MAJO", "Scrutin majoritaire"],
+
+    ["DHONDT", "Proportionnelle, plus forte moyenne (D'Hondt)"],
+    ["WEBSTER", "Proportionnelle, plus forte moyenne (Webster/Sainte-Laguë)"],
+    ["HHILL", "Proportionnelle, plus forte moyenne (Huntington-Hill)"],
+    ["HARE", "Proportionnelle, plus forte reste (Hamilton/Hare)"],
+
+    ["STV", "Vote unique transférable"],
+    ["BORDA", "Méthode Borda"],
+    ["CONDOR", "Méthode de Condorcet"],
+
+    ["MEAN", "Jugement majoritaire, meilleure note moyenne"],
+    ["MEDIAN", "Jugement majoritaire, meilleure note médiane"],
+  ]);
+
+  getAttribMethodName(id: string) {
+    return this.attribMethodNames.get(id) ?? id;
+  }
 
   onAddCandidat() {
     const cid = newRandomValue(baseSignals.candidats().keys());
@@ -59,8 +95,8 @@ export class ElectionComponent {
     baseSignals.votingMethod.set(method);
   }
 
-  onSetAttributionMethod(method: AttributionMethod) {
-    baseSignals.attributionMethod.set(method.ballotType, method);
+  onSetAttributionMethod(method: AttributionMethodBuilder) {
+    baseSignals.attributionMethod.set(baseSignals.votingMethod()!.ballotKind, method);
   }
 
   onSetNbElecteursManuel(event: Event) {
