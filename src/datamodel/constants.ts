@@ -7,21 +7,33 @@ export enum BallotKind {
     SCORES,
 }
 
-export class VotingMethod {
-    private constructor(
-        public readonly id: string,
-        public readonly desc: string,
-        public readonly ballotKind: BallotKind,
-    ) {}
-
-    static UNIQUE = new VotingMethod("unique", "Simple (vote unique)", BallotKind.SIMPLE);
-    static APPROBATION = new VotingMethod("approbation", "Approbation", BallotKind.SIMPLE);
-    static CLASSEMENT = new VotingMethod("classement", "Classement", BallotKind.ORDER);
-    static NOTES = new VotingMethod("notes", "Cardinal (par notes)", BallotKind.SCORES);
-
-    public static values() {
-        return [VotingMethod.UNIQUE, VotingMethod.APPROBATION, VotingMethod.CLASSEMENT, VotingMethod.NOTES];
-    }
+export interface VotingMethod {
+    readonly id: string;
+    readonly desc: string;
+    readonly ballotKind: BallotKind;
+}
+export namespace VotingMethod {
+    export const UNIQUE: VotingMethod = {
+        id: "unique",
+        desc: "Simple (vote unique)",
+        ballotKind: BallotKind.SIMPLE,
+    };
+    export const APPROBATION: VotingMethod = {
+        id: "approbation",
+        desc: "Approbation",
+        ballotKind: BallotKind.SIMPLE,
+    };
+    export const CLASSEMENT: VotingMethod = {
+        id: "classement",
+        desc: "Classement",
+        ballotKind: BallotKind.ORDER,
+    };
+    export const NOTES: VotingMethod = {
+        id: "notes",
+        desc: "Cardinal (par notes)",
+        ballotKind: BallotKind.SCORES,
+    };
+    export const values = () => [UNIQUE, APPROBATION, CLASSEMENT, NOTES];
 }
 
 export class AttributionMethod {
