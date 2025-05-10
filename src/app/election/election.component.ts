@@ -18,6 +18,7 @@ export class ElectionComponent {
   private modalService = inject(NgbModal);
 
   Math = Math;
+  BallotKind = BallotKind;
   VotingMethod = VotingMethod;
   baseSignals = baseSignals;
   computedSignals = computedSignals;
@@ -33,7 +34,7 @@ export class ElectionComponent {
     if (voting === null) {
       return null;
     }
-    return BallotKind[voting.ballotKind];
+    return voting.ballotKind;
   });
   validAttributionMethods = computed(() => {
     const voting = baseSignals.votingMethod();
@@ -95,8 +96,9 @@ export class ElectionComponent {
     baseSignals.votingMethod.set(method);
   }
 
-  onSetAttributionMethod(method: AttributionMethodBuilder) {
-    baseSignals.attributionMethod.set(baseSignals.votingMethod()!.ballotKind, method);
+  onSetAttributionMethod(methodId: string) {
+    const method = this.validAttributionMethods()[methodId];
+    baseSignals.attributionMethod.set(this.currentBallotKind()!, method);
   }
 
   onSetNbElecteursManuel(event: Event) {
