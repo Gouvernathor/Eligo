@@ -36,25 +36,54 @@ export namespace VotingMethod {
     export const values = () => [UNIQUE, APPROBATION, CLASSEMENT, NOTES];
 }
 
-export class AttributionMethod {
-    private constructor(
-        public readonly ballotType: BallotKind,
-        public readonly attribution: new(a: any) => Attribution<any, any>,
-        public readonly tip?: string,
-    ) {}
+export interface AttributionMethod {
+    readonly ballotType: BallotKind;
+    readonly attribution: new (a: any) => Attribution<any, any>;
+    readonly tip?: string;
+}
+export namespace AttributionMethod {
+    export const MAJO: AttributionMethod = {
+        ballotType: BallotKind.SIMPLE,
+        attribution: Plurality,
+    };
+    export const DHONDT: AttributionMethod = {
+        ballotType: BallotKind.SIMPLE,
+        attribution: DHondt,
+    };
+    export const WEBSTER: AttributionMethod = {
+        ballotType: BallotKind.SIMPLE,
+        attribution: Webster,
+    };
+    export const HHILL: AttributionMethod = {
+        ballotType: BallotKind.SIMPLE,
+        attribution: HuntingtonHill,
+    };
+    export const HARE: AttributionMethod = {
+        ballotType: BallotKind.SIMPLE,
+        attribution: Hare,
+    };
 
-    static MAJO = new AttributionMethod(BallotKind.SIMPLE, Plurality);
-    static DHONDT = new AttributionMethod(BallotKind.SIMPLE, DHondt);
-    static WEBSTER = new AttributionMethod(BallotKind.SIMPLE, Webster);
-    static HHILL = new AttributionMethod(BallotKind.SIMPLE, HuntingtonHill);
-    static HARE = new AttributionMethod(BallotKind.SIMPLE, Hare);
+    export const STV: AttributionMethod = {
+        ballotType: BallotKind.ORDER,
+        attribution: InstantRunoff,
+        tip: "Chaque électeur classe les candidats par ordre de préférence. Tant qu'aucun candidat n'est en tête sur une majorité de bulletins, candidat étant en tête du plus petit nombre de bulletins est élimité.",
+    };
+    export const BORDA: AttributionMethod = {
+        ballotType: BallotKind.ORDER,
+        attribution: Borda,
+    };
+    export const CONDOR: AttributionMethod = {
+        ballotType: BallotKind.ORDER,
+        attribution: Condorcet,
+        tip: "Chaque électeur classe les candidats par ordre de préférence. Des duels sont simulés entre chaque paire de candidats. Si un candidat gagne tous ses duels, il est élu.",
+    };
 
-    static STV = new AttributionMethod(BallotKind.ORDER, InstantRunoff,
-        "Chaque électeur classe les candidats par ordre de préférence. Tant qu'aucun candidat n'est en tête sur une majorité de bulletins, candidat étant en tête du plus petit nombre de bulletins est élimité.");
-    static BORDA = new AttributionMethod(BallotKind.ORDER, Borda);
-    static CONDOR = new AttributionMethod(BallotKind.ORDER, Condorcet,
-        "Chaque électeur classe les candidats par ordre de préférence. Des duels sont simulés entre chaque paire de candidats. Si un candidat gagne tous ses duels, il est élu.");
-
-    static MEAN = new AttributionMethod(BallotKind.SCORES, AverageScore);
-    static MEDIAN = new AttributionMethod(BallotKind.SCORES, MedianScore);
+    export const MEAN: AttributionMethod = {
+        ballotType: BallotKind.SCORES,
+        attribution: AverageScore,
+    };
+    export const MEDIAN: AttributionMethod = {
+        ballotType: BallotKind.SCORES,
+        attribution: MedianScore,
+    };
 }
