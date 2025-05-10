@@ -1,5 +1,4 @@
-import { Attribution } from "ecclesia/base/election/attribution"
-import { AverageScore, Borda, Condorcet, DHondt, Hare, HuntingtonHill, InstantRunoff, MedianScore, Plurality, Webster } from "ecclesia/concrete/election/attribution"
+import { type Attribution, type HasNSeats, averageScore, bordaCount, condorcet, dHondt, hareLargestRemainders, huntingtonHill, instantRunoff, medianScore, plurality, webster } from "ecclesia/election/attribution";
 
 export enum BallotKind {
     SIMPLE,
@@ -38,52 +37,54 @@ export namespace VotingMethod {
 
 export interface AttributionMethod {
     readonly ballotType: BallotKind;
-    readonly attribution: new (a: any) => Attribution<any, any>;
+    readonly attribution: <Party>({ nSeats }: {
+        nSeats: number;
+    }) => Attribution<Party, any> & HasNSeats;
     readonly tip?: string;
 }
 export namespace AttributionMethod {
     export const MAJO: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: Plurality,
+        attribution: plurality,
     };
     export const DHONDT: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: DHondt,
+        attribution: dHondt,
     };
     export const WEBSTER: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: Webster,
+        attribution: webster,
     };
     export const HHILL: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: HuntingtonHill,
+        attribution: (o) => huntingtonHill({ threshold: 0, ...o }),
     };
     export const HARE: AttributionMethod = {
         ballotType: BallotKind.SIMPLE,
-        attribution: Hare,
+        attribution: hareLargestRemainders,
     };
 
     export const STV: AttributionMethod = {
         ballotType: BallotKind.ORDER,
-        attribution: InstantRunoff,
+        attribution: instantRunoff,
         tip: "Chaque électeur classe les candidats par ordre de préférence. Tant qu'aucun candidat n'est en tête sur une majorité de bulletins, candidat étant en tête du plus petit nombre de bulletins est élimité.",
     };
     export const BORDA: AttributionMethod = {
         ballotType: BallotKind.ORDER,
-        attribution: Borda,
+        attribution: bordaCount,
     };
     export const CONDOR: AttributionMethod = {
         ballotType: BallotKind.ORDER,
-        attribution: Condorcet,
+        attribution: condorcet,
         tip: "Chaque électeur classe les candidats par ordre de préférence. Des duels sont simulés entre chaque paire de candidats. Si un candidat gagne tous ses duels, il est élu.",
     };
 
     export const MEAN: AttributionMethod = {
         ballotType: BallotKind.SCORES,
-        attribution: AverageScore,
+        attribution: averageScore,
     };
     export const MEDIAN: AttributionMethod = {
         ballotType: BallotKind.SCORES,
-        attribution: MedianScore,
+        attribution: medianScore,
     };
 }
