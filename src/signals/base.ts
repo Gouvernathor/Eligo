@@ -9,13 +9,13 @@ const votingMethod = signal<VotingMethod|null>(null);
 const attributionMethod = mapSignal<BallotKind, AttributionMethodBuilder>();
 const candidats = mapSignal<number, Candidat>();
 const bulletins = signal(new Map<number, Bulletin>(), { equal: () => false });
-const votes = signal(new Map<number, number>(), { equal: () => false });
+const votes = mapSignal<number, number>();
 const nbElecteursManuel = signal<number|null>(null);
 const nNotes = signal(5);
 
 // readonly versions, exported under the base name
 const bulletins_r = bulletins.asReadonly() as Signal<ReadonlyMap<number, Bulletin>>;
-const votes_r = votes.asReadonly() as Signal<ReadonlyMap<number, number>>;
+const votes_r = votes.asReadonly() as unknown as Signal<ReadonlyMap<number, number>>; // FIXME remove unknown
 export {
     votingMethod,
     attributionMethod,
@@ -33,9 +33,7 @@ export function setBulletin(bid: number, bulletin: Bulletin) {
     bulletins.set(bulletinsValue);
 }
 export function setVote(bid: number, nVotes: number) {
-    const votesValue = votes();
-    votesValue.set(bid, nVotes);
-    votes.set(votesValue);
+    votes.set(bid, nVotes);
 }
 export function sortBulletins(orderedIds: Iterable<number>, update = false) {
     sortMap(bulletins(), orderedIds);
@@ -46,21 +44,17 @@ export function sortBulletins(orderedIds: Iterable<number>, update = false) {
 }
 export function deleteBulletin(bid: number) {
     const bulletinsValue = bulletins();
-    const votesValue = votes();
     if (bulletinsValue.delete(bid)) {
         bulletins.set(bulletinsValue);
     }
-    if (votesValue.delete(bid)) {
-        votes.set(votesValue);
-    }
+    votes.delete(bid);
 }
 function crementVote(bid: number, crem: number) {
     const votesValue = votes();
     if (!votesValue.has(bid)) {
         throw new Error(`id ${bid} not found among votes`);
     }
-    votesValue.set(bid, votesValue.get(bid)! + crem);
-    votes.set(votesValue);
+    votes.set(bid, votesValue.get(bid)! + crem);
 }
 export function incrementVote(bid: number) {
     crementVote(bid, 1);
