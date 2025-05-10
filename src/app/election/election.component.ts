@@ -96,8 +96,7 @@ export class ElectionComponent {
     baseSignals.votingMethod.set(method);
   }
 
-  onSetAttributionMethod(methodId: string) {
-    const method = this.validAttributionMethods()[methodId];
+  onSetAttributionMethod(method: AttributionMethodBuilder) {
     baseSignals.attributionMethod.set(this.currentBallotKind()!, method);
   }
 

@@ -75,8 +75,9 @@
                     <!-- liste d'options pour cette attribution -->
                     <ul id="attributionMethodContainer" class="list-group">
                         @for (attribId of idsAttributionMethods(); track attribId) {
+                            @let attrib = this.validAttributionMethods()[attribId];
                             <li class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_{{BallotKind[currentBallotKind()!]}}" [value]="attribId" id="attributionMethod_{{attribId}}" (click)="onSetAttributionMethod(attribId)"/>
+                                <input class="form-check-input me-1" type="radio" autocomplete="off" name="attributionMethod_{{BallotKind[currentBallotKind()!]}}" [value]="attribId" id="attributionMethod_{{attribId}}" (click)="onSetAttributionMethod(attrib)" [defaultChecked]="attrib === computedSignals.attributionMethod()"/>
                                 <label class="form-check-label stretched-link" for="attributionMethod_{{attribId}}">{{getAttribMethodName(attribId)}}</label>
                             </li>
                         }
