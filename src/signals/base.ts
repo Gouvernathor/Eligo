@@ -8,8 +8,8 @@ import { sortMap } from "../utils/utils";
 const votingMethod = signal<VotingMethod|null>(null);
 const attributionMethod = mapSignal<BallotKind, AttributionMethodBuilder>();
 const candidats = mapSignal<number, Candidat>();
-const bulletins = signal(new Map<number, Bulletin>(), {equal: Map.prototype.equals});
-const votes = signal(new Map<number, number>(), {equal: Map.prototype.equals});
+const bulletins = signal(new Map<number, Bulletin>(), { equal: () => false });
+const votes = signal(new Map<number, number>(), { equal: () => false });
 const nbElecteursManuel = signal<number|null>(null);
 const nNotes = signal(5);
 
