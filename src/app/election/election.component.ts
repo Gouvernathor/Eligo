@@ -236,17 +236,16 @@ export class ElectionComponent {
         }
         // get sorted ballot ids,
         // creating missing ballots in the way
-        const sortedBulletinIds = Array.from(baseSignals.candidats().keys())
-          .map(cid => {
-            let bid = bulletinByCandidatId.get(cid)?.id;
-            if (bid === undefined) {
-              bid = newRandomValue(bulletins.keys());
-              const bulletin = new BulletinSimple(bid, cid);
-              baseSignals.setBulletin(bid, bulletin);
-              baseSignals.setVote(bid, 1);
-            }
-            return bid;
-          });
+        const sortedBulletinIds = Array.from(baseSignals.candidats().keys(), cid => {
+          let bid = bulletinByCandidatId.get(cid)?.id;
+          if (bid === undefined) {
+            bid = newRandomValue(bulletins.keys());
+            const bulletin = new BulletinSimple(bid, cid);
+            baseSignals.setBulletin(bid, bulletin);
+            baseSignals.setVote(bid, 1);
+          }
+          return bid;
+        });
         // sort the ballots by the order of the candidates
         baseSignals.sortBulletins(sortedBulletinIds);
         // cannot do it by updating the bulletins signal,
