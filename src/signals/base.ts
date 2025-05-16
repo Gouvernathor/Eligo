@@ -15,7 +15,7 @@ const nNotes = signal(5);
 
 // readonly versions, exported under the base name
 const bulletins_r = bulletins.asReadonly() as Signal<ReadonlyMap<number, Bulletin>>;
-const votes_r = votes.asReadonly() as unknown as Signal<ReadonlyMap<number, number>>; // FIXME remove unknown
+const votes_r = votes.asReadonly() as Signal<ReadonlyMap<number, number>>;
 export {
     votingMethod,
     attributionMethod,
