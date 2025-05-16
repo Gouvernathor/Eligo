@@ -1,4 +1,4 @@
-import RNG from "./RNG";
+import RNG from "@gouvernathor/rng";
 import "./extensions";
 
 export function newRandomValue(blacklist: Iterable<number> = []): number {
@@ -21,8 +21,6 @@ export function sortMap<K, V>(map: Map<K, V>, orderedKeys: Iterable<K>) {
         map.set(key, map.pop(key));
     }
 }
-
-export {RNG};
 
 const colorRNG = new RNG();
 export function getRandomColor(seed?: number|string): string {
