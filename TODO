@@ -41,3 +41,9 @@
   - optionally add another vote results diagram, but leave one in the vote tab
   - display a list of the parties and the seat shares (as filled progression bars)
     - that way people can compare the amount of each bulletin, with the number of votes for each candidate, with the number of seats after the attribution
+
+Reform how the attribution method is chosen
+the attribution method "kind" is chosen simply, but there are also options, sometimes required
+- the center column naming attribution method kinds sets a flag or enum value
+- the right column's display of options depends on that value
+- the final attribution method is a signal computed from the two - or null if required info is missing
